@@ -1,0 +1,8 @@
+/home/magpie/Skola/Programovanie_2/zapoctak/graphlib/bin/Debug/netstandard2.0/graphlib.deps.json
+/home/magpie/Skola/Programovanie_2/zapoctak/graphlib/bin/Debug/netstandard2.0/graphlib.dll
+/home/magpie/Skola/Programovanie_2/zapoctak/graphlib/bin/Debug/netstandard2.0/graphlib.pdb
+/home/magpie/Skola/Programovanie_2/zapoctak/graphlib/obj/Debug/netstandard2.0/graphlib.csprojAssemblyReference.cache
+/home/magpie/Skola/Programovanie_2/zapoctak/graphlib/obj/Debug/netstandard2.0/graphlib.AssemblyInfoInputs.cache
+/home/magpie/Skola/Programovanie_2/zapoctak/graphlib/obj/Debug/netstandard2.0/graphlib.AssemblyInfo.cs
+/home/magpie/Skola/Programovanie_2/zapoctak/graphlib/obj/Debug/netstandard2.0/graphlib.dll
+/home/magpie/Skola/Programovanie_2/zapoctak/graphlib/obj/Debug/netstandard2.0/graphlib.pdb

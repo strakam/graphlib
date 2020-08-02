@@ -1,0 +1,11 @@
+/home/magpie/Skola/Programovanie_2/zapoctak/graphlib/obj/Debug/netcoreapp3.1/graphlib.csprojAssemblyReference.cache
+/home/magpie/Skola/Programovanie_2/zapoctak/graphlib/obj/Debug/netcoreapp3.1/graphlib.AssemblyInfoInputs.cache
+/home/magpie/Skola/Programovanie_2/zapoctak/graphlib/obj/Debug/netcoreapp3.1/graphlib.AssemblyInfo.cs
+/home/magpie/Skola/Programovanie_2/zapoctak/graphlib/bin/Debug/netcoreapp3.1/graphlib
+/home/magpie/Skola/Programovanie_2/zapoctak/graphlib/bin/Debug/netcoreapp3.1/graphlib.deps.json
+/home/magpie/Skola/Programovanie_2/zapoctak/graphlib/bin/Debug/netcoreapp3.1/graphlib.runtimeconfig.json
+/home/magpie/Skola/Programovanie_2/zapoctak/graphlib/bin/Debug/netcoreapp3.1/graphlib.runtimeconfig.dev.json
+/home/magpie/Skola/Programovanie_2/zapoctak/graphlib/bin/Debug/netcoreapp3.1/graphlib.dll
+/home/magpie/Skola/Programovanie_2/zapoctak/graphlib/bin/Debug/netcoreapp3.1/graphlib.pdb
+/home/magpie/Skola/Programovanie_2/zapoctak/graphlib/obj/Debug/netcoreapp3.1/graphlib.dll
+/home/magpie/Skola/Programovanie_2/zapoctak/graphlib/obj/Debug/netcoreapp3.1/graphlib.pdb
