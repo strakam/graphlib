@@ -12,10 +12,12 @@ namespace graphlib
 		{
 			public int v {get;set;}
 			public int cost {get;set;}
-			public Vertex(int v, int cost)
+			public int parent {get;set;}
+			public Vertex(int v, int cost, int parent)
 			{
 				this.v = v;
 				this.cost = cost;
+				this.parent = parent;
 			}
 		}
 
@@ -40,9 +42,9 @@ namespace graphlib
 			}
 		}
 
-		public void add(int vertex, int cost)
+		public void add(int vertex, int cost, int parent)
 		{
-			heap.Add(new Vertex(vertex, cost));	
+			heap.Add(new Vertex(vertex, cost, parent));	
 			pos.Add(vertex, heap.Count-1);
 			heapify(heap.Count-1);
 		}
@@ -76,12 +78,13 @@ namespace graphlib
 			return heap.Count;
 		}
 
-		public void decrease_key(int target, int val)
+		public void decrease_key(int target, int val, int new_parent)
 		{
 			if(heap[pos[target]].cost > val)
 			{
 				Vertex t = heap[pos[target]];
 				t.cost = val;
+				t.parent = new_parent;
 				heap[pos[target]] = t;
 				heapify(pos[target]);
 			}

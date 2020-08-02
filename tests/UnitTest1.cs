@@ -43,14 +43,14 @@ namespace tests
 		public void test_heap()
 		{
 			Heap h = new Heap();
-			h.add(3, 6);
-			h.add(2, 7);
-			h.add(4, 5);
+			h.add(3, 6, 1);
+			h.add(2, 7, 1);
+			h.add(4, 5, 1);
 			Assert.AreEqual(h.pop().v, 4);
-			h.add(0, 9);
+			h.add(0, 9, 1);
 			Assert.AreEqual(h.pop().v, 3);
 			Assert.AreEqual(h.size(), 2);
-			h.add(4, 8);
+			h.add(4, 8, 1);
 			Assert.AreEqual(h.pop().v, 2);
 			Assert.AreEqual(h.pop().v, 4);
 			Assert.AreEqual(h.pop().v, 0);
@@ -61,10 +61,18 @@ namespace tests
 		{
 			Dijkstra a = g.shortest_path(5, 4);
 			Assert.AreEqual(13, a.cheapestPath);
+			List<int> sa = new List<int>(){5, 1, 8, 3, 7, 4};
+			Assert.AreEqual(sa , a.shortestPath);
+
 			Dijkstra b = g.shortest_path(4, 8);
 			Assert.AreEqual(6, b.cheapestPath);
+			List<int> sb = new List<int>(){4, 7, 3, 8};
+			Assert.AreEqual(sb, b.shortestPath);
+
 			Dijkstra c = g.shortest_path(5, 8);
 			Assert.AreEqual(7, c.cheapestPath);
+			List<int> sc = new List<int>(){5, 1, 8};
+			Assert.AreEqual(sc, c.shortestPath);
 		}
     }
 }
