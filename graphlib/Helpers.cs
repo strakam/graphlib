@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 
 namespace graphlib
@@ -35,9 +34,8 @@ namespace graphlib
 				bp.blue_part = new List<int>();
 				foreach(KeyValuePair<int, int> kp in indexes)
 				{
-					if(color[v_index(kp.Key)] == 1){
+					if(color[v_index(kp.Key)] == 1)
 						bp.red_part.Add(kp.Key);
-					}
 					else 
 						bp.blue_part.Add(kp.Key);
 				}
@@ -63,5 +61,6 @@ namespace graphlib
 			}
 			return true;
 		}
+
     }
 }

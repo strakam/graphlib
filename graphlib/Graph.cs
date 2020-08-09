@@ -5,8 +5,7 @@ namespace graphlib
 {
     public partial class Graph
     {
-		protected List<List<Edge>> graph = 
-			new List<List<Edge>>();
+		protected List<List<Edge>> graph = new List<List<Edge>>();
 		protected Dictionary<int, int> indexes = new Dictionary<int, int>();
 		public int size = 0;
 
@@ -64,11 +63,11 @@ namespace graphlib
 			List<int> output = new List<int>();
 			foreach(KeyValuePair<int, int> k in indexes)
 			{
-				Console.Write("Susedia vrcholu {0}, su ", k.Key);
+				Console.Write("Susedia vrcholu {0} s indexom {1}, su ", k.Key, k.Value);
 				foreach(Edge e in graph[k.Value])
 				{
 					output.Add(e.destination);
-					Console.Write(e + " ");
+					Console.Write(e.destination + " ");
 				}
 				Console.WriteLine();
 			}
