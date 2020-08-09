@@ -9,6 +9,8 @@ namespace tests
     public class Tests
     {
 		Graph g = new Graph();
+		OrientedGraph og = new OrientedGraph();
+		Graph g2 = new Graph();
         [SetUp]
         public void Setup()
         {
@@ -31,14 +33,65 @@ namespace tests
 			g.add_edge(7, 3, 1);
 			g.add_edge(7, 2, 2);
 			g.add_edge(7, 4, 2);
-        }
 
-        /* [Test] */
-        /* public void test_print_graph() */
-        /* { */
-			/* List<int> correct = new List<int>(){1, 1, 5, 8}; */
-			/* Assert.AreEqual(correct, g.print_graph()); */
-        /* } */
+			og.add_vertex(1);
+			og.add_vertex(2);
+			og.add_vertex(3);
+			og.add_vertex(4);
+			og.add_vertex(5);
+			og.add_vertex(6);
+			og.add_edge(1, 2, 2);
+			og.add_edge(1, 3, 1);
+			og.add_edge(2, 3, 1);
+			og.add_edge(1, 4, 4);
+			og.add_edge(3, 6, 3);
+			og.add_edge(4, 5, 3);
+			og.add_edge(5, 6, 1);
+
+			// g2
+			g2.add_vertex(1);
+			g2.add_vertex(2);
+			g2.add_vertex(3);
+			g2.add_vertex(4);
+			g2.add_vertex(5);
+			g2.add_vertex(6);
+			g2.add_vertex(7);
+			g2.add_edge(1, 2);
+			g2.add_edge(1, 4);
+			g2.add_edge(2, 3);
+			g2.add_edge(4, 3);
+			g2.add_edge(4, 6);
+			g2.add_edge(3, 5);
+			g2.add_edge(6, 5);
+			g2.add_edge(3, 7);
+			g2.add_edge(6, 7);
+        }
+		[Test]
+		public void test_bipartity()
+		{
+			Bipartite b = g.check_bipartity();
+			Assert.AreEqual(b.is_bipartite, false);
+
+			Bipartite b2 = g2.check_bipartity();
+			Assert.AreEqual(true, b2.is_bipartite);
+			List<int> red_nodes = new List<int>(){1, 3, 6};
+			List<int> blue_nodes = new List<int>(){2, 4, 5, 7};
+			Assert.AreEqual(b2.red_part, red_nodes);
+			Assert.AreEqual(b2.blue_part, blue_nodes);
+
+		}
+
+		[Test]
+		public void test_toposort()
+		{
+			List<int> order = og.toposort();
+			List<int> correct = new List<int>(){6, 3, 2, 5, 4, 1};
+			Assert.AreEqual(correct, order);
+			og.add_edge(3, 1, 1);
+			order = og.toposort();
+			Assert.AreEqual(new List<int>(), order);
+		}
+
 		[Test]
 		public void test_heap()
 		{

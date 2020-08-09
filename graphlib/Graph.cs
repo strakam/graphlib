@@ -8,6 +8,7 @@ namespace graphlib
 		protected List<List<Edge>> graph = 
 			new List<List<Edge>>();
 		protected Dictionary<int, int> indexes = new Dictionary<int, int>();
+		public int size = 0;
 
 		public struct Edge
 		{
@@ -26,6 +27,7 @@ namespace graphlib
 			indexes[val] = graph.Count-1;
 			if(indexes[val] == -1)
 				indexes[val] = 0;
+			size++;
 		}
 
 		public virtual void add_edge(int v1, int v2, int weight)
@@ -75,7 +77,7 @@ namespace graphlib
 
     }
 
-	public class OrientedGraph:Graph
+	public partial class OrientedGraph:Graph
 	{
 		public override void add_edge(int source, int destination, int weight)
 		{
