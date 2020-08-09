@@ -10,7 +10,6 @@ namespace tests
     {
 		Graph g = new Graph();
 		Graph g2 = new Graph();
-		Graph fg = new Graph();
 		OrientedGraph og = new OrientedGraph();
         [SetUp]
         public void Setup()
@@ -35,7 +34,7 @@ namespace tests
 			g.add_edge(7, 3, 1);
 			g.add_edge(7, 2, 2);
 			g.add_edge(7, 4, 2);
-
+			
 			// og
 			og.add_vertex(1);
 			og.add_vertex(2);
@@ -68,18 +67,6 @@ namespace tests
 			g2.add_edge(6, 5);
 			g2.add_edge(3, 7);
 			g2.add_edge(6, 7);
-
-			// fg
-			fg.add_vertex(1);
-			fg.add_vertex(2);
-			fg.add_vertex(3);
-			fg.add_vertex(4);
-			fg.add_edge(1, 2, 1);
-			fg.add_edge(1, 4, 1);
-			fg.add_edge(2, 3, 2);
-			fg.add_edge(4, 2, 1);
-			fg.add_edge(1, 3, 3);
-			fg.add_edge(3, 4, 1);
         }
 
 		[Test]
@@ -124,36 +111,48 @@ namespace tests
 			Assert.AreEqual(h.pop().v, 0);
 		}
 
-		/* [Test] */
-		/* public void test_dijkstra() */
-		/* { */
-		/* 	Dijkstra a = g.shortest_path(5, 4); */
-		/* 	Assert.AreEqual(13, a.cheapestPath); */
-		/* 	List<int> sa = new List<int>(){5, 1, 8, 3, 7, 4}; */
-		/* 	Assert.AreEqual(sa , a.shortestPath); */
+		[Test]
+		public void test_dijkstra()
+		{
+			Dijkstra a = g.shortest_path(5, 4);
+			Assert.AreEqual(13, a.cheapestPath);
+			List<int> sa = new List<int>(){5, 1, 8, 3, 7, 4};
+			Assert.AreEqual(sa , a.shortestPath);
 
-		/* 	Dijkstra b = g.shortest_path(4, 8); */
-		/* 	Assert.AreEqual(6, b.cheapestPath); */
-		/* 	List<int> sb = new List<int>(){4, 7, 3, 8}; */
-		/* 	Assert.AreEqual(sb, b.shortestPath); */
+			Dijkstra b = g.shortest_path(4, 8);
+			Assert.AreEqual(6, b.cheapestPath);
+			List<int> sb = new List<int>(){4, 7, 3, 8};
+			Assert.AreEqual(sb, b.shortestPath);
 
-		/* 	Dijkstra c = g.shortest_path(5, 8); */
-		/* 	Assert.AreEqual(7, c.cheapestPath); */
-		/* 	List<int> sc = new List<int>(){5, 1, 8}; */
-		/* 	Assert.AreEqual(sc, c.shortestPath); */
-		/* } */
+			Dijkstra c = g.shortest_path(5, 8);
+			Assert.AreEqual(7, c.cheapestPath);
+			List<int> sc = new List<int>(){5, 1, 8};
+			Assert.AreEqual(sc, c.shortestPath);
+		}
 
 		[Test]
 		public void test_floyd()
 		{
+			Graph fg = new Graph();
+			// fg
+			fg.add_vertex(1);
+			fg.add_vertex(2);
+			fg.add_vertex(3);
+			fg.add_vertex(4);
+			fg.add_edge(1, 2, 1);
+			fg.add_edge(1, 4, 1);
+			fg.add_edge(2, 3, 2);
+			fg.add_edge(4, 2, 1);
+			fg.add_edge(1, 3, 3);
+			fg.add_edge(3, 4, 1);
 			int [,] ans = fg.floydWarshall();
-			for(int i = 0; i < ans.GetLength(0); i++)
-			{
-				for(int j = 0; j < ans.GetLength(0); j++)
-					Console.Write(ans[i,j] + " " );
-				Console.WriteLine();
-			}
-			Console.WriteLine(ans.GetLength(0));
+			/* for(int i = 0; i < ans.GetLength(0); i++) */
+			/* { */
+			/* 	for(int j = 0; j < ans.GetLength(0); j++) */
+			/* 		Console.Write(ans[i,j] + " " ); */
+			/* 	Console.WriteLine(); */
+			/* } */
+			/* Console.WriteLine(ans.GetLength(0)); */
 			int [,] correct = new int[4, 4]
 				{{0, 1, 2, 1}, {1, 0, 2, 1}, {2, 2, 0, 1}, {1, 1, 1, 0}};
 			Assert.AreEqual(correct, ans);
