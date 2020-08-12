@@ -3,22 +3,25 @@ using System.Collections.Generic;
 
 namespace graphlib
 {
+	public class Edge
+	{
+		public int source {get; set;}
+		public int destination {get;set;}
+		public int weight {get;set;}
+		public Edge(int source, int destination, int weight)
+		{
+			this.source = source;
+			this.destination = destination;
+			this.weight = weight;
+		}
+	}
+
     public partial class Graph
     {
 		protected List<List<Edge>> graph = new List<List<Edge>>();
 		protected Dictionary<int, int> indexes = new Dictionary<int, int>();
 		public int size = 0;
 
-		public struct Edge
-		{
-			public int destination {get;set;}
-			public int weight {get;set;}
-			public Edge(int destination, int weight)
-			{
-				this.destination = destination;
-				this.weight = weight;
-			}
-		}
 
 		public void add_vertex(int val)
 		{
@@ -33,8 +36,8 @@ namespace graphlib
 		{
 			if(indexes.ContainsKey(v1) && indexes.ContainsKey(v2))
 			{
-				graph[indexes[v1]].Add(new Edge(v2, weight));
-				graph[indexes[v2]].Add(new Edge(v1, weight));
+				graph[indexes[v1]].Add(new Edge(v1, v2, weight));
+				graph[indexes[v2]].Add(new Edge(v2, v1, weight));
 			}
 			else
 				Console.WriteLine("There are no such vertices!");
@@ -46,8 +49,8 @@ namespace graphlib
 			if(indexes.ContainsKey(v1) && indexes.ContainsKey(v2))
 			{
 				int weight = 1;
-				graph[indexes[v1]].Add(new Edge(v2, weight));
-				graph[indexes[v2]].Add(new Edge(v1, weight));
+				graph[indexes[v1]].Add(new Edge(v1, v2, weight));
+				graph[indexes[v2]].Add(new Edge(v2, v1, weight));
 			}
 			else
 				Console.WriteLine("There are no such vertices!");
@@ -81,7 +84,7 @@ namespace graphlib
 		public override void add_edge(int source, int destination, int weight)
 		{
 			if(indexes.ContainsKey(source) && indexes.ContainsKey(destination))
-				graph[indexes[source]].Add(new Edge(destination, weight));
+				graph[indexes[source]].Add(new Edge(source, destination, weight));
 			else
 				Console.WriteLine("There are no such vertices!");
 		}
@@ -91,7 +94,7 @@ namespace graphlib
 		{
 			int weight = 1;
 			if(indexes.ContainsKey(source) && indexes.ContainsKey(destination))
-				graph[indexes[source]].Add(new Edge(destination, weight));
+				graph[indexes[source]].Add(new Edge(source, destination, weight));
 			else
 				Console.WriteLine("There are no such vertices!");
 		}
