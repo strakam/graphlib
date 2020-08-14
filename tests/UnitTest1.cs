@@ -8,12 +8,26 @@ namespace tests
 	[TestFixture]
     public class Tests
     {
-		Graph g = new Graph();
+		Graph g  = new Graph();
 		Graph g2 = new Graph();
+		Graph fg = new Graph();
 		OrientedGraph og = new OrientedGraph();
-        [SetUp]
+
+        [OneTimeSetUp]
         public void Setup()
         {
+			// fg
+			fg.add_vertex(1);
+			fg.add_vertex(2);
+			fg.add_vertex(3);
+			fg.add_vertex(4);
+			fg.add_edge(1, 2, 1);
+			fg.add_edge(1, 4, 1);
+			fg.add_edge(2, 3, 2);
+			fg.add_edge(4, 2, 1);
+			fg.add_edge(1, 3, 3);
+			fg.add_edge(3, 4, 1);
+
 			// g
 			g.add_vertex(5);
 			g.add_vertex(8);
@@ -68,6 +82,45 @@ namespace tests
 			g2.add_edge(3, 7);
 			g2.add_edge(6, 7);
         }
+
+		[Test]
+		public void test_aps()
+		{
+			Graph a = new Graph();
+			a.add_vertex(1);
+			a.add_vertex(2);
+			a.add_vertex(3);
+			a.add_vertex(4);
+			a.add_vertex(5);
+			a.add_edge(1, 2);
+			a.add_edge(3, 2);
+			a.add_edge(3, 4);
+			a.add_edge(4, 5);
+			a.add_edge(3, 5);
+			List<int> ans = a.find_aps();
+			Assert.AreEqual(new List<int>(){2,3}, ans);
+			ans = g.find_aps();
+			Assert.AreEqual(new List<int>(){7}, ans);
+		}
+
+		[Test]
+		public void test_kruskal()
+		{
+			SpanningTree s = g.get_spanning();
+			Assert.AreEqual(16, s.cost);
+			Assert.AreEqual(s.edges.Count, 7);
+
+			SpanningTree mst = mst_graph().get_spanning();
+			Assert.AreEqual(10, mst.cost);
+			Assert.AreEqual(mst.edges.Count, 7);
+			// Test for listing edges
+			/* foreach(Edge e in mst.edges) */
+			/* { */
+			/* 	Console.WriteLine("From {0} to {1} with cost {2}", */ 
+			/* 			e.source, e.destination, e.weight); */
+			/* } */
+			/* Assert.True(false); */
+		}
 
 		[Test]
 		public void test_bipartity()
@@ -133,29 +186,39 @@ namespace tests
 		[Test]
 		public void test_floyd()
 		{
-			Graph fg = new Graph();
-			// fg
-			fg.add_vertex(1);
-			fg.add_vertex(2);
-			fg.add_vertex(3);
-			fg.add_vertex(4);
-			fg.add_edge(1, 2, 1);
-			fg.add_edge(1, 4, 1);
-			fg.add_edge(2, 3, 2);
-			fg.add_edge(4, 2, 1);
-			fg.add_edge(1, 3, 3);
-			fg.add_edge(3, 4, 1);
 			int [,] ans = fg.floydWarshall();
-			/* for(int i = 0; i < ans.GetLength(0); i++) */
-			/* { */
-			/* 	for(int j = 0; j < ans.GetLength(0); j++) */
-			/* 		Console.Write(ans[i,j] + " " ); */
-			/* 	Console.WriteLine(); */
-			/* } */
-			/* Console.WriteLine(ans.GetLength(0)); */
 			int [,] correct = new int[4, 4]
 				{{0, 1, 2, 1}, {1, 0, 2, 1}, {2, 2, 0, 1}, {1, 1, 1, 0}};
 			Assert.AreEqual(correct, ans);
+		}
+
+		Graph mst_graph()
+		{
+			Graph g = new Graph();
+			g.add_vertex(1);
+			g.add_vertex(2);
+			g.add_vertex(3);
+			g.add_vertex(4);
+			g.add_vertex(5);
+			g.add_vertex(6);
+			g.add_vertex(7);
+			g.add_vertex(8);
+			g.add_edge(1, 4, 4);
+			g.add_edge(1, 7, 1);
+			g.add_edge(1, 6, 3);
+			g.add_edge(1, 8, 7);
+			g.add_edge(2, 3, 7);
+			g.add_edge(2, 6, 3);
+			g.add_edge(2, 5, 1);
+			g.add_edge(2, 4, 3);
+			g.add_edge(3, 4, 2);
+			g.add_edge(3, 8, 3);
+			g.add_edge(5, 4, 1);
+			g.add_edge(5, 6, 2);
+			g.add_edge(5, 7, 1);
+			g.add_edge(6, 7, 1);
+			g.add_edge(5, 4, 1);
+			return g;
 		}
     }
 }
