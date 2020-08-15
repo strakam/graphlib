@@ -50,12 +50,8 @@ namespace tests
 			g.add_edge(7, 4, 2);
 			
 			// og
-			og.add_vertex(1);
-			og.add_vertex(2);
-			og.add_vertex(3);
-			og.add_vertex(4);
-			og.add_vertex(5);
-			og.add_vertex(6);
+			for(int i = 1; i < 7; i++)
+				og.add_vertex(i);
 			og.add_edge(1, 2, 2);
 			og.add_edge(1, 3, 1);
 			og.add_edge(2, 3, 1);
@@ -65,13 +61,8 @@ namespace tests
 			og.add_edge(5, 6, 1);
 
 			// g2
-			g2.add_vertex(1);
-			g2.add_vertex(2);
-			g2.add_vertex(3);
-			g2.add_vertex(4);
-			g2.add_vertex(5);
-			g2.add_vertex(6);
-			g2.add_vertex(7);
+			for(int i = 1; i < 8; i++)
+				g2.add_vertex(i);
 			g2.add_edge(1, 2);
 			g2.add_edge(1, 4);
 			g2.add_edge(2, 3);
@@ -87,11 +78,8 @@ namespace tests
 		public void test_aps()
 		{
 			Graph a = new Graph();
-			a.add_vertex(1);
-			a.add_vertex(2);
-			a.add_vertex(3);
-			a.add_vertex(4);
-			a.add_vertex(5);
+			for(int i = 1; i < 6; i++)
+				a.add_vertex(i);
 			a.add_edge(1, 2);
 			a.add_edge(3, 2);
 			a.add_edge(3, 4);
@@ -99,7 +87,24 @@ namespace tests
 			a.add_edge(3, 5);
 			List<int> ans = a.find_aps();
 			Assert.AreEqual(new List<int>(){2,3}, ans);
+			Assert.AreEqual(2, a.find_bridges().Count);
+
+			Graph t = new Graph();
+			for(int i = 1; i < 8; i++)
+				t.add_vertex(i);
+			t.add_edge(1, 3);	
+			t.add_edge(2, 5);	
+			t.add_edge(3, 5);	
+			t.add_edge(3, 4);	
+			t.add_edge(6, 4);	
+			t.add_edge(6, 5);	
+			t.add_edge(6, 7);	
+			List<int> ans2 = t.find_aps();
+			Assert.AreEqual(3, t.find_bridges().Count);
+			Assert.AreEqual(new List<int>(){3, 5, 6}, ans2);
+
 			ans = g.find_aps();
+			Assert.AreEqual(1, g.find_bridges().Count);
 			Assert.AreEqual(new List<int>(){7}, ans);
 		}
 
