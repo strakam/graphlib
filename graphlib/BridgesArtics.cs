@@ -25,8 +25,8 @@ namespace graphlib
 			List<int> ans = new List<int>();
 			for(int i = 0; i < graph.Count; i++)
 			{
-				info.low[i] = 30000;
-				info.disc[i] = 30000;
+				info.low[i] = Int32.MaxValue;
+				info.disc[i] = Int32.MaxValue;
 			}
 			foreach(KeyValuePair<int, int> kp in indexes)
 			{
@@ -72,17 +72,13 @@ namespace graphlib
 			List<Edge> ans = new List<Edge>();
 			for(int i = 0; i < graph.Count; i++)
 			{
-				info.low[i] = 30000;
-				info.disc[i] = 30000;
+				info.low[i] = Int32.MaxValue;
+				info.disc[i] = Int32.MaxValue;
 			}
 			foreach(KeyValuePair<int, int> kp in indexes)
 			{
 				if(!info.visited[kp.Value])
 					fb(kp.Key, kp.Key, ref ans, ref info);
-			}
-			foreach(Edge e in ans)
-			{
-				Console.WriteLine("from {0} to {1}", e.source, e.destination);
 			}
 			return ans;
 		}

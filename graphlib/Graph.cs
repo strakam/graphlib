@@ -19,13 +19,15 @@ namespace graphlib
     public partial class Graph
     {
 		protected List<List<Edge>> graph = new List<List<Edge>>();
+		protected List<List<Edge>> gT = new List<List<Edge>>();
 		protected Dictionary<int, int> indexes = new Dictionary<int, int>();
 		public int size = 0;
 
 
-		public void add_vertex(int val)
+		public virtual void add_vertex(int val)
 		{
 			graph.Add(new List<Edge>());
+			gT.Add(new List<Edge>());
 			indexes[val] = graph.Count-1;
 			if(indexes[val] == -1)
 				indexes[val] = 0;
@@ -84,7 +86,10 @@ namespace graphlib
 		public override void add_edge(int source, int destination, int weight)
 		{
 			if(indexes.ContainsKey(source) && indexes.ContainsKey(destination))
+			{
 				graph[indexes[source]].Add(new Edge(source, destination, weight));
+				gT[indexes[destination]].Add(new Edge(destination, source, weight));
+			}
 			else
 				Console.WriteLine("There are no such vertices!");
 		}
@@ -94,7 +99,10 @@ namespace graphlib
 		{
 			int weight = 1;
 			if(indexes.ContainsKey(source) && indexes.ContainsKey(destination))
+			{
 				graph[indexes[source]].Add(new Edge(source, destination, weight));
+				gT[indexes[destination]].Add(new Edge(destination, source, weight));
+			}
 			else
 				Console.WriteLine("There are no such vertices!");
 		}
