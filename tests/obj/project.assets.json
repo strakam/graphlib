@@ -4644,11 +4644,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/home/magpie/Skola/Programovanie_2/zapoctak/tests/tests.csproj",
+      "projectUniqueName": "/home/magpie/Skola/Programovanie_2/graphlib/tests/tests.csproj",
       "projectName": "tests",
-      "projectPath": "/home/magpie/Skola/Programovanie_2/zapoctak/tests/tests.csproj",
+      "projectPath": "/home/magpie/Skola/Programovanie_2/graphlib/tests/tests.csproj",
       "packagesPath": "/home/magpie/.nuget/packages/",
-      "outputPath": "/home/magpie/Skola/Programovanie_2/zapoctak/tests/obj/",
+      "outputPath": "/home/magpie/Skola/Programovanie_2/graphlib/tests/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "/home/magpie/.nuget/NuGet/NuGet.Config"
@@ -4662,8 +4662,8 @@
       "frameworks": {
         "netcoreapp3.1": {
           "projectReferences": {
-            "/home/magpie/Skola/Programovanie_2/zapoctak/graphlib/graphlib.csproj": {
-              "projectPath": "/home/magpie/Skola/Programovanie_2/zapoctak/graphlib/graphlib.csproj"
+            "/home/magpie/Skola/Programovanie_2/graphlib/graphlib/graphlib.csproj": {
+              "projectPath": "/home/magpie/Skola/Programovanie_2/graphlib/graphlib/graphlib.csproj"
             }
           }
         }

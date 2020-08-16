@@ -1,6 +1,7 @@
 using graphlib;
 using NUnit.Framework;
 using System.Collections.Generic;
+using System.IO;
 using System;
 
 namespace tests
@@ -73,6 +74,30 @@ namespace tests
 			g2.add_edge(3, 7);
 			g2.add_edge(6, 7);
         }
+		[Test]
+		public void test_sccs()
+		{
+			OrientedGraph s = new OrientedGraph();
+			for(int i = 1; i < 8; i++)
+				s.add_vertex(i);
+			s.add_edge(1, 2);	
+			s.add_edge(2, 3);	
+			s.add_edge(3, 1);	
+			s.add_edge(2, 4);	
+			s.add_edge(2, 5);	
+			s.add_edge(5, 6);	
+			s.add_edge(6, 7);	
+			s.add_edge(7, 5);	
+			List<List<int>> res = s.find_sccs();
+			foreach(List<int> l in res)
+			{
+				foreach(int i in l)
+					Console.Write(i + " ");
+				Console.WriteLine();
+			}
+			Assert.AreEqual(3, res.Count);
+			Assert.AreEqual(6, og.find_sccs().Count);
+		}
 
 		[Test]
 		public void test_aps()

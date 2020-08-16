@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "/home/magpie/Skola/Programovanie_2/zapoctak/graphlib/graphlib.csproj": {}
+    "/home/magpie/Skola/Programovanie_2/graphlib/graphlib/graphlib.csproj": {}
   },
   "projects": {
-    "/home/magpie/Skola/Programovanie_2/zapoctak/graphlib/graphlib.csproj": {
+    "/home/magpie/Skola/Programovanie_2/graphlib/graphlib/graphlib.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/home/magpie/Skola/Programovanie_2/zapoctak/graphlib/graphlib.csproj",
+        "projectUniqueName": "/home/magpie/Skola/Programovanie_2/graphlib/graphlib/graphlib.csproj",
         "projectName": "graphlib",
-        "projectPath": "/home/magpie/Skola/Programovanie_2/zapoctak/graphlib/graphlib.csproj",
+        "projectPath": "/home/magpie/Skola/Programovanie_2/graphlib/graphlib/graphlib.csproj",
         "packagesPath": "/home/magpie/.nuget/packages/",
-        "outputPath": "/home/magpie/Skola/Programovanie_2/zapoctak/graphlib/obj/",
+        "outputPath": "/home/magpie/Skola/Programovanie_2/graphlib/graphlib/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "/home/magpie/.nuget/NuGet/NuGet.Config"
