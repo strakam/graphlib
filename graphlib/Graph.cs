@@ -3,12 +3,14 @@ using System.Collections.Generic;
 
 namespace graphlib
 {
+    // Class describing edges in graph
 	public class Edge
 	{
-		public int source {get; set;}
-		public int destination {get;set;}
-		public int weight {get;set;}
-		public Edge(int source, int destination, int weight)
+        // In oriented graph names are self explanatory
+		public long source {get; set;}
+		public long destination {get;set;}
+		public long weight {get;set;}
+		public Edge(long source, long destination, long weight)
 		{
 			this.source = source;
 			this.destination = destination;
@@ -18,23 +20,33 @@ namespace graphlib
 
     public partial class Graph
     {
+        /* Internal representation of the graph is in form of list of neighbors
+         * for every vertex */
 		protected List<List<Edge>> graph = new List<List<Edge>>();
+        // Transposed graph
 		protected List<List<Edge>> gT = new List<List<Edge>>();
-		protected Dictionary<int, int> indexes = new Dictionary<int, int>();
-		public int size = 0;
+        /* indexes is Dictionary that maps names of vertices to their position
+         * in internal representation */
+		protected Dictionary<long, int> indexes = new Dictionary<long, int>();
+        // Size is a number of vertices
+		public long size = 0;
 
 
-		public virtual void add_vertex(int val)
+        // User calls this function to add vertex into the graph
+		public virtual void add_vertex(long val)
 		{
 			graph.Add(new List<Edge>());
 			gT.Add(new List<Edge>());
 			indexes[val] = graph.Count-1;
 			if(indexes[val] == -1)
+            {
 				indexes[val] = 0;
+            }
 			size++;
 		}
 
-		public virtual void add_edge(int v1, int v2, int weight)
+        // User calls this function to add edge into the graph
+		public virtual void add_edge(long v1, long v2, long weight)
 		{
 			if(indexes.ContainsKey(v1) && indexes.ContainsKey(v2))
 			{
@@ -42,15 +54,18 @@ namespace graphlib
 				graph[indexes[v2]].Add(new Edge(v2, v1, weight));
 			}
 			else
+            {
+                // TODO tu treba dat vynimku
 				Console.WriteLine("There are no such vertices!");
+            }
 		}
 
 		// Overloading for unweighted graph
-		public virtual void add_edge(int v1, int v2)
+		public virtual void add_edge(long v1, long v2)
 		{
 			if(indexes.ContainsKey(v1) && indexes.ContainsKey(v2))
 			{
-				int weight = 1;
+				long weight = 1;
 				graph[indexes[v1]].Add(new Edge(v1, v2, weight));
 				graph[indexes[v2]].Add(new Edge(v2, v1, weight));
 			}
@@ -58,15 +73,17 @@ namespace graphlib
 				Console.WriteLine("There are no such vertices!");
 		}
 
-		public int v_index(int vertex)
+        // Function to translate name of vertex to its position
+		public int v_index(long vertex)
 		{
 			return indexes[vertex];
 		}
 
-		public List<int> print_graph()
+        // Function to print vertices and list their neighbors
+		public List<long> print_graph()
 		{
-			List<int> output = new List<int>();
-			foreach(KeyValuePair<int, int> k in indexes)
+			List<long> output = new List<long>();
+			foreach(KeyValuePair<long, int> k in indexes)
 			{
 				Console.Write("Susedia vrcholu {0} s indexom {1}, su ", k.Key, k.Value);
 				foreach(Edge e in graph[k.Value])
@@ -81,9 +98,11 @@ namespace graphlib
 
     }
 
+    /* Class for oriented graph has the same logic as Graph class 
+     * but edges are added only in one way */
 	public partial class OrientedGraph:Graph
 	{
-		public override void add_edge(int source, int destination, int weight)
+		public override void add_edge(long source, long destination, long weight)
 		{
 			if(indexes.ContainsKey(source) && indexes.ContainsKey(destination))
 			{
@@ -95,9 +114,9 @@ namespace graphlib
 		}
 
 		// Overloading for unweighted graph
-		public override void add_edge(int source, int destination)
+		public override void add_edge(long source, long destination)
 		{
-			int weight = 1;
+			long weight = 1;
 			if(indexes.ContainsKey(source) && indexes.ContainsKey(destination))
 			{
 				graph[indexes[source]].Add(new Edge(source, destination, weight));

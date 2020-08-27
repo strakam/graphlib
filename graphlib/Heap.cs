@@ -6,14 +6,14 @@ namespace graphlib
     {
 		List<Vertex> heap = new List<Vertex>();
 		// Key is vertex, value is position in heap
-		public Dictionary<int, int> pos = new Dictionary<int, int>();
+		public Dictionary<long, int> pos = new Dictionary<long, int>();
 
 		public struct Vertex
 		{
-			public int v {get;set;}
-			public int cost {get;set;}
-			public int parent {get;set;}
-			public Vertex(int v, int cost, int parent)
+			public long v {get;set;}
+			public long cost {get;set;}
+			public long parent {get;set;}
+			public Vertex(long v, long cost, long parent)
 			{
 				this.v = v;
 				this.cost = cost;
@@ -24,8 +24,8 @@ namespace graphlib
 		void swap(int i, int j)
 		{
 			Vertex t = heap[i];
-			int pos_i = pos[heap[i].v]; // Tu bolo i-cko
-			int pos_j = pos[heap[j].v]; // TU bolo j-cko
+			int pos_i = pos[heap[i].v];
+			int pos_j = pos[heap[j].v];
 			heap[i] = heap[j];
 			heap[j] = t;
 			pos[heap[i].v] = pos_i;
@@ -42,7 +42,7 @@ namespace graphlib
 			}
 		}
 
-		public void add(int vertex, int cost, int parent)
+		public void add(long vertex, long cost, long parent)
 		{
 			heap.Add(new Vertex(vertex, cost, parent));	
 			pos.Add(vertex, heap.Count-1);
@@ -73,12 +73,12 @@ namespace graphlib
 			return top;
 		}
 
-		public int size()
+		public long size()
 		{
 			return heap.Count;
 		}
 
-		public void decrease_key(int target, int val, int new_parent)
+		public void decrease_key(int target, long val, long new_parent)
 		{
 			if(heap[pos[target]].cost > val)
 			{

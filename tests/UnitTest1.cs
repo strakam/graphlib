@@ -88,10 +88,10 @@ namespace tests
 			s.add_edge(5, 6);	
 			s.add_edge(6, 7);	
 			s.add_edge(7, 5);	
-			List<List<int>> res = s.find_sccs();
-			foreach(List<int> l in res)
+			List<List<long>> res = s.find_sccs();
+			foreach(List<long> l in res)
 			{
-				foreach(int i in l)
+				foreach(long i in l)
 					Console.Write(i + " ");
 				Console.WriteLine();
 			}
@@ -110,8 +110,8 @@ namespace tests
 			a.add_edge(3, 4);
 			a.add_edge(4, 5);
 			a.add_edge(3, 5);
-			List<int> ans = a.find_aps();
-			Assert.AreEqual(new List<int>(){2,3}, ans);
+			List<long> ans = a.find_articulations();
+			Assert.AreEqual(new List<long>(){2,3}, ans);
 			Assert.AreEqual(2, a.find_bridges().Count);
 
 			Graph t = new Graph();
@@ -124,13 +124,13 @@ namespace tests
 			t.add_edge(6, 4);	
 			t.add_edge(6, 5);	
 			t.add_edge(6, 7);	
-			List<int> ans2 = t.find_aps();
+			List<long> ans2 = t.find_articulations();
 			Assert.AreEqual(3, t.find_bridges().Count);
-			Assert.AreEqual(new List<int>(){3, 5, 6}, ans2);
+			Assert.AreEqual(new List<long>(){3, 5, 6}, ans2);
 
-			ans = g.find_aps();
+			ans = g.find_articulations();
 			Assert.AreEqual(1, g.find_bridges().Count);
-			Assert.AreEqual(new List<int>(){7}, ans);
+			Assert.AreEqual(new List<long>(){7}, ans);
 		}
 
 		[Test]
@@ -160,8 +160,8 @@ namespace tests
 
 			Bipartite b2 = g2.check_bipartity();
 			Assert.AreEqual(true, b2.is_bipartite);
-			List<int> red_nodes = new List<int>(){1, 3, 6};
-			List<int> blue_nodes = new List<int>(){2, 4, 5, 7};
+			List<long> red_nodes = new List<long>(){1, 3, 6};
+			List<long> blue_nodes = new List<long>(){2, 4, 5, 7};
 			Assert.AreEqual(b2.red_part, red_nodes);
 			Assert.AreEqual(b2.blue_part, blue_nodes);
 		}
@@ -169,12 +169,12 @@ namespace tests
 		[Test]
 		public void test_toposort()
 		{
-			List<int> order = og.toposort();
-			List<int> correct = new List<int>(){6, 3, 2, 5, 4, 1};
+			List<long> order = og.topological_ordering();
+			List<long> correct = new List<long>(){6, 3, 2, 5, 4, 1};
 			Assert.AreEqual(correct, order);
 			og.add_edge(3, 1, 1);
-			order = og.toposort();
-			Assert.AreEqual(new List<int>(), order);
+			order = og.topological_ordering();
+			Assert.AreEqual(new List<long>(), order);
 		}
 
 		[Test]
@@ -199,25 +199,25 @@ namespace tests
 		{
 			Dijkstra a = g.shortest_path(5, 4);
 			Assert.AreEqual(13, a.cheapestPath);
-			List<int> sa = new List<int>(){5, 1, 8, 3, 7, 4};
+			List<long> sa = new List<long>(){5, 1, 8, 3, 7, 4};
 			Assert.AreEqual(sa , a.shortestPath);
 
 			Dijkstra b = g.shortest_path(4, 8);
 			Assert.AreEqual(6, b.cheapestPath);
-			List<int> sb = new List<int>(){4, 7, 3, 8};
+			List<long> sb = new List<long>(){4, 7, 3, 8};
 			Assert.AreEqual(sb, b.shortestPath);
 
 			Dijkstra c = g.shortest_path(5, 8);
 			Assert.AreEqual(7, c.cheapestPath);
-			List<int> sc = new List<int>(){5, 1, 8};
+			List<long> sc = new List<long>(){5, 1, 8};
 			Assert.AreEqual(sc, c.shortestPath);
 		}
 
 		[Test]
 		public void test_floyd()
 		{
-			int [,] ans = fg.floydWarshall();
-			int [,] correct = new int[4, 4]
+			long [,] ans = fg.floydWarshall();
+			long [,] correct = new long[4, 4]
 				{{0, 1, 2, 1}, {1, 0, 2, 1}, {2, 2, 0, 1}, {1, 1, 1, 0}};
 			Assert.AreEqual(correct, ans);
 		}

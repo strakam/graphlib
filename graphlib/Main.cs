@@ -14,7 +14,6 @@ namespace graphlib
 			g.add_vertex(1);
 			g.add_edge(5, 1);
 			g.add_edge(1, 8);
-			g.print_graph();
 		}
     }
 }

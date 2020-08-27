@@ -6,63 +6,102 @@ namespace graphlib
 {
     public partial class OrientedGraph:Graph
     {
-		public List<List<int>> find_sccs()
+        /* find_sccs (find strongly connected components is implemented in form
+         * of Kosaraju's algorithm */
+		public List<List<long>> find_sccs()
 		{
-			Stack<int> vertices = new Stack<int>();
-			int [] helper = new int[graph.Count];
-			int comp = 1;
+            /* List vertices contains graph vertices in order of leaving them in
+             * dfs */
+			Stack<long> vertices = new Stack<long>();
+            /* vertex_components will contain component number of every vertex
+             * number -1 means vertex is unvisited */
+			int [] vertex_components = new int[graph.Count];
+            // Variable that separates vertices into components
+			int component = 1;
 			for(int i = 0; i < graph.Count; i++)
-				helper[i] = -1;
-			foreach(KeyValuePair<int, int> kp in indexes)
+            {
+				vertex_components[i] = -1;
+            }
+
+            // Call find_sink on unvisited vertices
+			foreach(KeyValuePair<long, int> kp in indexes)
 			{
-				if(helper[kp.Value] == -1)
-					dfs1(kp.Key, ref helper, ref vertices);		
+				if(vertex_components[kp.Value] == -1)
+                {
+					find_sink(kp.Key, ref vertex_components, ref vertices);		
+                }
 			}
+            // Take vertices from stack and perform search on them
 			while(vertices.Count > 0)
 			{
-				if(helper[v_index(vertices.Peek())] == 0)
+				if(vertex_components[v_index(vertices.Peek())] == 0)
 				{
-					dfs2(vertices.Peek(), comp, ref helper, ref vertices);
-					comp++;
+					assign_components(vertices.Peek(), component, 
+                            ref vertex_components, ref vertices);
+					component++;
 				}
 				vertices.Pop();
 			}
-			List<List<int>> t = new List<List<int>>();
+
+            /* Helper list that contains numbers of vertices if i-th component
+             * in i-th list, its just temporary */
+			List<List<long>> t = new List<List<long>>();
 			for(int i = 0; i < graph.Count+1; i++)
-				t.Add(new List<int>());
-			List<List<int>> comps = new List<List<int>>();
-			foreach(KeyValuePair<int, int> kp in indexes)
+            {
+				t.Add(new List<long>());
+            }
+
+            // Comps will contain 2D list of components. 1 list = 1 component
+			List<List<long>> comps = new List<List<long>>();
+
+			foreach(KeyValuePair<long, int> kp in indexes)
 			{
-				t[helper[kp.Value]].Add(kp.Key);
+				t[vertex_components[kp.Value]].Add(kp.Key);
 			}
+            // Squish components into smaller list
 			for(int i = 1; i < graph.Count+1; i++)
 			{
 				if(t[i].Count > 0)
+                {
 					comps.Add(t[i]);
+                }
 			}
 			return comps;
 		}
-
-		void dfs1(int v, ref int [] helper, ref Stack<int> st)
+        /* find_sink is a modified dfs that searches transposed graph and
+         * inserts vertices in desired order - that is, source is on top */
+		void find_sink(long v, ref int [] vertex_components, ref Stack<long> st)
 		{
-			helper[v_index(v)] = 0;	
+			vertex_components[v_index(v)] = 0;	
 			foreach(Edge e in gT[v_index(v)])
 			{
-				int next = v_index(e.destination);
-				if(helper[next] == -1)
-					dfs1(e.destination, ref helper, ref st);
+				long next = v_index(e.destination);
+				if(vertex_components[next] == -1)
+                {
+					find_sink(e.destination, ref vertex_components, ref st);
+                }
 			}
 			st.Push(v);
 		}
-
-		void dfs2(int v, int c, ref int [] helper, ref Stack<int> st)
+        /* assign_components is a modified dfs that searches graph from given
+         * vertices and assigns them to a given component */
+        // First argument - current vertex
+        // Second argument - component number
+        // Third argument - srray of component numbers of all vertices
+        // Fourth argument - stack of vertices in correct order from first
+        // search
+		void assign_components(long v, int c, ref int [] vertex_components, 
+                ref Stack<long> st)
 		{
-			helper[v_index(v)] = c;
+			vertex_components[v_index(v)] = c;
 			foreach(Edge e in graph[v_index(v)])
 			{
-				int next = v_index(e.destination);
-				if(helper[next] == 0)
-					dfs2(e.destination, c, ref helper, ref st);
+				long next = v_index(e.destination);
+				if(vertex_components[next] == 0)
+                {
+					assign_components(e.destination, c, 
+                            ref vertex_components, ref st);
+                }
 			}
 		}
     }

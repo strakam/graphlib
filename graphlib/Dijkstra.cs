@@ -5,9 +5,11 @@ namespace graphlib
 {
     public class Dijkstra
     {
-		public List<int> shortestPath = new List<int>();
-		public int cheapestPath = Int32.MaxValue;
-		public Dijkstra(int cP, List<int> shortestPath)
+        // List of vertices in shortest path in order
+		public List<long> shortestPath = new List<long>();
+        // Cost of the shortest path
+		public long cheapestPath = long.MaxValue;
+		public Dijkstra(long cP, List<long> shortestPath)
 		{
 			cheapestPath = cP;
 			this.shortestPath = shortestPath;
@@ -17,21 +19,28 @@ namespace graphlib
 
 	public partial class Graph
 	{
-		public Dijkstra shortest_path(int source, int destination)
+		public Dijkstra shortest_path(long source, long destination)
 		{
 			// Create priority queue
 			Heap pq = new Heap();
 			short [] visited = new short[graph.Count];
-			int [] backtrack = new int[graph.Count];
-			int cheapestPath = Int32.MaxValue;
+            // For every node, remember from where it was visited first
+			long [] backtrack = new long[graph.Count];
+			long cheapestPath = long.MaxValue;
 			// 0 - not visited, 1 - in queue, 2 - closed
 			pq.add(source, 0, source);
 			backtrack[indexes[source]] = source;
+
+            // While there are unprocessed vertices do search
 			while(pq.size() > 0)
 			{
+                /* Take closest reached vertex, mark it as visited and process
+                 * its neighbors */
 				Heap.Vertex top = pq.pop();
 				visited[indexes[top.v]] = 2;
+                // Set parent of the current node
 				backtrack[indexes[top.v]] = top.parent;
+                // If destination was reached, stop the search
 				if(top.v == destination)
 				{
 					cheapestPath = Math.Min(cheapestPath, top.cost);
@@ -40,29 +49,37 @@ namespace graphlib
 				// for all neighbors
 				for(int i = 0; i < graph[indexes[top.v]].Count; i++)
 				{
-					int neighbor = graph[indexes[top.v]][i].destination;
-					int weight = graph[indexes[top.v]][i].weight;
+					long neighbor = graph[indexes[top.v]][i].destination;
+					long weight = graph[indexes[top.v]][i].weight;
+                    // Skip if the neighbor was already processed
 					if(visited[v_index(neighbor)] == 2)
-						continue;
+                    {
+                        continue;
+                    }
 					// If neighbor is not visited, add it to queue
 					if(visited[v_index(neighbor)] == 0)
 					{
-						int price = top.cost + weight;
+						long price = top.cost + weight;
 						pq.add(neighbor, price, top.v);
 						visited[v_index(neighbor)] = 1;
 					}
+                    // Upload cost if there was a better path found
 					else if(pq.pos.ContainsKey(neighbor))
-						pq.decrease_key(neighbor, top.cost+weight, top.v);
+                    {
+						pq.decrease_key((int)neighbor, top.cost+weight, top.v);
+                    }
 				}	
 			}
-			int parent = destination;
-			List<int> path = new List<int>();
+			long parent = destination;
+			List<long> path = new List<long>();
+            // Reconstruct the shortest path
 			while(backtrack[indexes[parent]] != parent)
 			{
 				path.Add(parent);	
 				parent = backtrack[indexes[parent]];
 			}
 			path.Add(source);
+            // Return Dijkstra object with informations about shortest path
 			return new Dijkstra(cheapestPath, path);
 		}
 	}
