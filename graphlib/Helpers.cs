@@ -5,16 +5,16 @@ namespace graphlib
     // Struct that describes bipartity status of the graph
 	public struct Bipartite
 	{
-		public bool is_bipartite {get; set;}
+		public bool isBipartite {get; set;}
         // Two lists containing vertices of both partitions
-		public List<long> red_part, blue_part;
+		public List<long> redPart, bluePart;
 	}
     public partial class Graph
     {
-		public Bipartite check_bipartity()
+		public Bipartite checkBipartity()
 		{
 			Bipartite bp = new Bipartite();
-			bp.is_bipartite = true;
+			bp.isBipartite = true;
             // color[i] is telling to what partition i-th vertex belongs
 			short [] color = new short[size];	
             // If result is false, is not bipartite and algorithm halts
@@ -22,12 +22,12 @@ namespace graphlib
             // Search from unvisited vertices
 			foreach(KeyValuePair<long, int> kp in indexes)
 			{
-				if(color[v_index(kp.Key)] == 0)
+				if(color[vIndex(kp.Key)] == 0)
 				{
-					result = cb_dfs(kp.Key, 1, ref color);
+					result = cbDFS(kp.Key, 1, ref color);
 					if(!result)
 					{
-						bp.is_bipartite = false;
+						bp.isBipartite = false;
 						break;
 					}
 				}
@@ -36,30 +36,30 @@ namespace graphlib
              * according to vertex colors */
 			if(result)
 			{
-				bp.red_part = new List<long>();
-				bp.blue_part = new List<long>();
+				bp.redPart = new List<long>();
+				bp.bluePart = new List<long>();
 				foreach(KeyValuePair<long, int> kp in indexes)
 				{
-					if(color[v_index(kp.Key)] == 1)
+					if(color[vIndex(kp.Key)] == 1)
                     {
-						bp.red_part.Add(kp.Key);
+						bp.redPart.Add(kp.Key);
                     }
 					else 
                     {
-						bp.blue_part.Add(kp.Key);
+						bp.bluePart.Add(kp.Key);
                     }
 				}
 			}
 			return bp;
 		}
-        /* cb_dfs (check_bipartity dfs) is a modified dfs function
+        /* cbDFS (checkBipartity dfs) is a modified dfs function
          * that tries to divide vertices into two groups */
         // First argument - current vertex number
         // Second argument - its color
         // Third argument - array of colors of all vertices
-		private bool cb_dfs(long vertex, short color, ref short [] colors)
+		private bool cbDFS(long vertex, short color, ref short [] colors)
 		{
-			int v = v_index(vertex);	
+			int v = vIndex(vertex);	
             // Variable result serves the same function as above
 			bool result = true;
             // Set color
@@ -68,11 +68,11 @@ namespace graphlib
 			for(int i = 0; i < graph[v].Count; i++)
 			{
 				long neighbor = graph[v][i].destination;
-				if(colors[v_index(neighbor)] == 0)
+				if(colors[vIndex(neighbor)] == 0)
 				{
-					result = cb_dfs(neighbor, (short)(color * -1), ref colors);
+					result = cbDFS(neighbor, (short)(color * -1), ref colors);
 				}
-				else if(colors[v_index(neighbor)] == color)
+				else if(colors[vIndex(neighbor)] == color)
                 {
 					result = false;
                 }

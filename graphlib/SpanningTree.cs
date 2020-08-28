@@ -48,34 +48,34 @@ namespace graphlib
 		bool union(Edge e, ref ufVertex [] p)
 		{
 			// Union hanging by size
-			long root_a = find(e.source, ref p);
-			long root_b = find(e.destination, ref p);
+			long rootA = find(e.source, ref p);
+			long rootB = find(e.destination, ref p);
             // If we are comparing two different trees, merge them into one
-			if(root_a != root_b)
+			if(rootA != rootB)
 			{
                 // Compare size of both trees and hang smaller one under the
                 // bigger one to increase performance
-				if(p[v_index(root_a)].size > p[v_index(root_b)].size)
+				if(p[vIndex(rootA)].size > p[vIndex(rootB)].size)
 				{
                     // Hanging operations using temporary variables
-					ufVertex ta = p[v_index(root_a)];
-					ta.size += p[v_index(root_b)].size;
-					p[v_index(root_a)] = ta;
+					ufVertex ta = p[vIndex(rootA)];
+					ta.size += p[vIndex(rootB)].size;
+					p[vIndex(rootA)] = ta;
 
-					ufVertex tb = p[v_index(root_b)];
-					tb.parent = root_a;
-					p[v_index(root_b)] = tb;
+					ufVertex tb = p[vIndex(rootB)];
+					tb.parent = rootA;
+					p[vIndex(rootB)] = tb;
 				}
                 // Else is the same as above just for opposite case
 				else
 				{
-					ufVertex tb = p[v_index(root_b)];
-					tb.size += p[v_index(root_a)].size;
-					p[v_index(root_b)] = tb;
+					ufVertex tb = p[vIndex(rootB)];
+					tb.size += p[vIndex(rootA)].size;
+					p[vIndex(rootB)] = tb;
 
-					ufVertex ta = p[v_index(root_a)];
-					ta.parent = root_b;
-					p[v_index(root_a)] = ta;
+					ufVertex ta = p[vIndex(rootA)];
+					ta.parent = rootB;
+					p[vIndex(rootA)] = ta;
 				}
 				return true;
 			}
@@ -87,13 +87,13 @@ namespace graphlib
 		{
 			// Path compression 
 			long root = v;
-			if(p[v_index(v)].parent != v)
+			if(p[vIndex(v)].parent != v)
             {
-				root = find(p[v_index(v)].parent, ref p);
+				root = find(p[vIndex(v)].parent, ref p);
             }
-			ufVertex t = p[v_index(v)];
+			ufVertex t = p[vIndex(v)];
 			t.parent = root;
-			p[v_index(v)] = t;
+			p[vIndex(v)] = t;
 			return root;
 		}
 
@@ -101,7 +101,7 @@ namespace graphlib
          * 1. Get all edges
          * 2. Sort them by size
          * 3. Go one by one and add them into MST if needed */
-		public SpanningTree get_spanning()
+		public SpanningTree getSpanning()
 		{
             // List of all graph edges
 			List<Edge> edges = new List<Edge>();
@@ -110,8 +110,8 @@ namespace graphlib
 			ufVertex[] parents = new ufVertex [graph.Count];
 
             // Edges that are used in MST
-			List<Edge> tree_edges = new List<Edge>();
-			long total_cost = 0;
+			List<Edge> treeEdges = new List<Edge>();
+			long totalCost = 0;
 			foreach(KeyValuePair<long, int> kp in indexes)
 			{
 				parents[kp.Value] = new ufVertex(kp.Key, 1);
@@ -134,11 +134,11 @@ namespace graphlib
                  * together two components of a graph so it is added into MST */
 				if(union(e, ref parents))
 				{
-					tree_edges.Add(e);
-					total_cost += e.weight;
+					treeEdges.Add(e);
+					totalCost += e.weight;
 				}
 			}
-			return new SpanningTree(tree_edges, total_cost);
+			return new SpanningTree(treeEdges, totalCost);
 		}
 	}
 }

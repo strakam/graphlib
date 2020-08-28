@@ -33,7 +33,7 @@ namespace graphlib
 
 
         // User calls this function to add vertex into the graph
-		public virtual void add_vertex(long val)
+		public virtual void addVertex(long val)
 		{
 			graph.Add(new List<Edge>());
 			gT.Add(new List<Edge>());
@@ -46,7 +46,7 @@ namespace graphlib
 		}
 
         // User calls this function to add edge into the graph
-		public virtual void add_edge(long v1, long v2, long weight)
+		public virtual void addEdge(long v1, long v2, long weight)
 		{
 			if(indexes.ContainsKey(v1) && indexes.ContainsKey(v2))
 			{
@@ -61,7 +61,7 @@ namespace graphlib
 		}
 
 		// Overloading for unweighted graph
-		public virtual void add_edge(long v1, long v2)
+		public virtual void addEdge(long v1, long v2)
 		{
 			if(indexes.ContainsKey(v1) && indexes.ContainsKey(v2))
 			{
@@ -74,13 +74,13 @@ namespace graphlib
 		}
 
         // Function to translate name of vertex to its position
-		public int v_index(long vertex)
+		public int vIndex(long vertex)
 		{
 			return indexes[vertex];
 		}
 
         // Function to print vertices and list their neighbors
-		public List<long> print_graph()
+		public List<long> printGraph()
 		{
 			List<long> output = new List<long>();
 			foreach(KeyValuePair<long, int> k in indexes)
@@ -102,7 +102,7 @@ namespace graphlib
      * but edges are added only in one way */
 	public partial class OrientedGraph:Graph
 	{
-		public override void add_edge(long source, long destination, long weight)
+		public override void addEdge(long source, long destination, long weight)
 		{
 			if(indexes.ContainsKey(source) && indexes.ContainsKey(destination))
 			{
@@ -114,7 +114,7 @@ namespace graphlib
 		}
 
 		// Overloading for unweighted graph
-		public override void add_edge(long source, long destination)
+		public override void addEdge(long source, long destination)
 		{
 			long weight = 1;
 			if(indexes.ContainsKey(source) && indexes.ContainsKey(destination))
@@ -123,7 +123,9 @@ namespace graphlib
 				gT[indexes[destination]].Add(new Edge(destination, source, weight));
 			}
 			else
+            {
 				Console.WriteLine("There are no such vertices!");
+            }
 		}
 	}
 }

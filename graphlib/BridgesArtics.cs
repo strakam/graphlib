@@ -8,12 +8,12 @@ namespace graphlib
     {
         // variable time is a timestamp indicating when was node visited
 		long time = 0;
-		struct helper_arrays{
+		struct helperArrays{
             // time for each node is stored in disc, low is the lowest node that
             // is reachable from a given node
 			public long [] disc, low;
 			public bool [] articulations, visited;
-			public helper_arrays(long s)
+			public helperArrays(long s)
 			{
 				disc = new long[s];
 				low = new long[s];
@@ -22,9 +22,9 @@ namespace graphlib
 			}
 		}
         // Find articulation points
-		public List<long> find_articulations()
+		public List<long> findArticulations()
 		{
-			helper_arrays info = new helper_arrays(graph.Count);
+			helperArrays info = new helperArrays(graph.Count);
             // answer is a list of articlation points
 			List<long> answer = new List<long>();
 			for(int i = 0; i < graph.Count; i++)
@@ -37,7 +37,7 @@ namespace graphlib
                 // Start searching for articulations if not visited
 				if(!info.visited[kp.Value])
                 {
-					ap_dfs(kp.Key, kp.Key, ref info);
+					apDFS(kp.Key, kp.Key, ref info);
                 }
 			}
 			foreach(KeyValuePair<long, int> kp in indexes)
@@ -52,48 +52,48 @@ namespace graphlib
 		}
 
         // Recursive function (modified dfs) that is searching for articulations
-		void ap_dfs(long v, long parent, ref helper_arrays info)
+		void apDFS(long v, long parent, ref helperArrays info)
 		{
 			long children = 0;
             // Uploading informations
-			info.visited[v_index(v)] = true;	
-			info.disc[v_index(v)] = time;
-			info.low[v_index(v)] = time;
-			foreach(Edge e in graph[v_index(v)])
+			info.visited[vIndex(v)] = true;	
+			info.disc[vIndex(v)] = time;
+			info.low[vIndex(v)] = time;
+			foreach(Edge e in graph[vIndex(v)])
 			{
 				children++;
-				long next = v_index(e.destination);
+				long next = vIndex(e.destination);
                 // if a child is not visited, start search from it
 				if(!info.visited[next])
 				{
 					time++;
-					ap_dfs(e.destination, v, ref info);
+					apDFS(e.destination, v, ref info);
                     /* Compute lowest visitable ancestor and compare it with
                      * current node to determine whether it is an articulation */
-					info.low[v_index(v)] = 
-                        Math.Min(info.low[v_index(v)], info.low[next]);
-					if(info.disc[v_index(v)] <= info.low[next] && v != parent)
+					info.low[vIndex(v)] = 
+                        Math.Min(info.low[vIndex(v)], info.low[next]);
+					if(info.disc[vIndex(v)] <= info.low[next] && v != parent)
                     {
-						info.articulations[v_index(v)] = true;
+						info.articulations[vIndex(v)] = true;
                     }
 					if(parent == v && children > 1)
                     {
-						info.articulations[v_index(v)] = true;
+						info.articulations[vIndex(v)] = true;
                     }
 				}
 				if(e.destination != parent)
                 {
-					info.low[v_index(v)] = 
-                        Math.Min(info.low[v_index(v)], info.low[next]);
+					info.low[vIndex(v)] = 
+                        Math.Min(info.low[vIndex(v)], info.low[next]);
                 }
 			}
 		}
 
         /* This function is called to find bridges in graph
          * Logic is same as in artiulation points entry function */
-		public List<Edge> find_bridges()
+		public List<Edge> findBridges()
 		{
-			helper_arrays info = new helper_arrays(graph.Count);
+			helperArrays info = new helperArrays(graph.Count);
 			List<Edge> answer = new List<Edge>();
 			for(long i = 0; i < graph.Count; i++)
 			{
@@ -104,7 +104,7 @@ namespace graphlib
 			{
 				if(!info.visited[kp.Value])
                 {
-					b_dfs(kp.Key, kp.Key, ref answer, ref info);
+					bDFS(kp.Key, kp.Key, ref answer, ref info);
                 }
 			}
             time = 0;
@@ -113,31 +113,31 @@ namespace graphlib
 
         /* Function very similiar to ab function, difference is in comparison
          * signs and 1 less if statement */
-		void b_dfs(long v, long parent, ref List<Edge> ans, ref helper_arrays info)
+		void bDFS(long v, long parent, ref List<Edge> ans, ref helperArrays info)
 		{
 			long children = 0;
-			info.visited[v_index(v)] = true;	
-			info.disc[v_index(v)] = time;
-			info.low[v_index(v)] = time;
-			foreach(Edge e in graph[v_index(v)])
+			info.visited[vIndex(v)] = true;	
+			info.disc[vIndex(v)] = time;
+			info.low[vIndex(v)] = time;
+			foreach(Edge e in graph[vIndex(v)])
 			{
 				children++;
-				long next = v_index(e.destination);
+				long next = vIndex(e.destination);
 				if(!info.visited[next])
 				{
 					time++;
-					b_dfs(e.destination, v, ref ans, ref info);
-					info.low[v_index(v)] = 
-                        Math.Min(info.low[v_index(v)], info.low[next]);
-					if(info.disc[v_index(v)] < info.low[next])
+					bDFS(e.destination, v, ref ans, ref info);
+					info.low[vIndex(v)] = 
+                        Math.Min(info.low[vIndex(v)], info.low[next]);
+					if(info.disc[vIndex(v)] < info.low[next])
                     {
 						ans.Add(e);
                     }
 				}
 				if(e.destination != parent)
                 {
-					info.low[v_index(v)] =
-                        Math.Min(info.low[v_index(v)], info.low[next]);
+					info.low[vIndex(v)] =
+                        Math.Min(info.low[vIndex(v)], info.low[next]);
                 }
 			}
 		}

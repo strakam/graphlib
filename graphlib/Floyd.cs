@@ -21,13 +21,13 @@ namespace graphlib
             // Set initial distances between vertices 
 			foreach(KeyValuePair<long, int> kp in indexes)
 			{
-				int v = v_index(kp.Key);
+				int v = vIndex(kp.Key);
 				for(int i = 0; i < graph[v].Count; i++)
 				{
-					map[v, v_index(graph[v][i].destination)] =
+					map[v, vIndex(graph[v][i].destination)] =
                         graph[v][i].weight;
 				}
-			}
+		    }	
             // Perform basic floyd warshall algorithm
 			for(int k = 0; k < l; k++)
             {

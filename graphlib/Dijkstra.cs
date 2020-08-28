@@ -8,10 +8,10 @@ namespace graphlib
         // List of vertices in shortest path in order
 		public List<long> shortestPath = new List<long>();
         // Cost of the shortest path
-		public long cheapestPath = long.MaxValue;
+		public long cost = long.MaxValue;
 		public Dijkstra(long cP, List<long> shortestPath)
 		{
-			cheapestPath = cP;
+			cost = cP;
 			this.shortestPath = shortestPath;
 			shortestPath.Reverse();
 		}
@@ -19,14 +19,14 @@ namespace graphlib
 
 	public partial class Graph
 	{
-		public Dijkstra shortest_path(long source, long destination)
+		public Dijkstra findShortestPath(long source, long destination)
 		{
 			// Create priority queue
 			Heap pq = new Heap();
 			short [] visited = new short[graph.Count];
             // For every node, remember from where it was visited first
 			long [] backtrack = new long[graph.Count];
-			long cheapestPath = long.MaxValue;
+			long cost = long.MaxValue;
 			// 0 - not visited, 1 - in queue, 2 - closed
 			pq.add(source, 0, source);
 			backtrack[indexes[source]] = source;
@@ -43,7 +43,7 @@ namespace graphlib
                 // If destination was reached, stop the search
 				if(top.v == destination)
 				{
-					cheapestPath = Math.Min(cheapestPath, top.cost);
+					cost = Math.Min(cost, top.cost);
 					break;
 				}
 				// for all neighbors
@@ -52,19 +52,19 @@ namespace graphlib
 					long neighbor = graph[indexes[top.v]][i].destination;
 					long weight = graph[indexes[top.v]][i].weight;
                     // Skip if the neighbor was already processed
-					if(visited[v_index(neighbor)] == 2)
+					if(visited[vIndex(neighbor)] == 2)
                     {
                         continue;
                     }
 					// If neighbor is not visited, add it to queue
-					if(visited[v_index(neighbor)] == 0)
+					if(visited[vIndex(neighbor)] == 0)
 					{
 						long price = top.cost + weight;
 						pq.add(neighbor, price, top.v);
-						visited[v_index(neighbor)] = 1;
+						visited[vIndex(neighbor)] = 1;
 					}
                     // Upload cost if there was a better path found
-					else if(pq.pos.ContainsKey(neighbor))
+					else if(pq.position.ContainsKey(neighbor))
                     {
 						pq.decrease_key((int)neighbor, top.cost+weight, top.v);
                     }
@@ -80,7 +80,7 @@ namespace graphlib
 			}
 			path.Add(source);
             // Return Dijkstra object with informations about shortest path
-			return new Dijkstra(cheapestPath, path);
+			return new Dijkstra(cost, path);
 		}
 	}
 }

@@ -6,38 +6,38 @@ namespace graphlib
 {
     public partial class OrientedGraph:Graph
     {
-        /* find_sccs (find strongly connected components is implemented in form
+        /* findSCCS (find strongly connected components is implemented in form
          * of Kosaraju's algorithm */
-		public List<List<long>> find_sccs()
+		public List<List<long>> findSCCS()
 		{
             /* List vertices contains graph vertices in order of leaving them in
              * dfs */
 			Stack<long> vertices = new Stack<long>();
-            /* vertex_components will contain component number of every vertex
+            /* vertexComponents will contain component number of every vertex
              * number -1 means vertex is unvisited */
-			int [] vertex_components = new int[graph.Count];
+			int [] vertexComponents = new int[graph.Count];
             // Variable that separates vertices into components
 			int component = 1;
 			for(int i = 0; i < graph.Count; i++)
             {
-				vertex_components[i] = -1;
+				vertexComponents[i] = -1;
             }
 
-            // Call find_sink on unvisited vertices
+            // Call findSink on unvisited vertices
 			foreach(KeyValuePair<long, int> kp in indexes)
 			{
-				if(vertex_components[kp.Value] == -1)
+				if(vertexComponents[kp.Value] == -1)
                 {
-					find_sink(kp.Key, ref vertex_components, ref vertices);		
+					findSink(kp.Key, ref vertexComponents, ref vertices);		
                 }
 			}
             // Take vertices from stack and perform search on them
 			while(vertices.Count > 0)
 			{
-				if(vertex_components[v_index(vertices.Peek())] == 0)
+				if(vertexComponents[vIndex(vertices.Peek())] == 0)
 				{
-					assign_components(vertices.Peek(), component, 
-                            ref vertex_components, ref vertices);
+					assignComponents(vertices.Peek(), component, 
+                            ref vertexComponents, ref vertices);
 					component++;
 				}
 				vertices.Pop();
@@ -56,7 +56,7 @@ namespace graphlib
 
 			foreach(KeyValuePair<long, int> kp in indexes)
 			{
-				t[vertex_components[kp.Value]].Add(kp.Key);
+				t[vertexComponents[kp.Value]].Add(kp.Key);
 			}
             // Squish components into smaller list
 			for(int i = 1; i < graph.Count+1; i++)
@@ -68,39 +68,39 @@ namespace graphlib
 			}
 			return comps;
 		}
-        /* find_sink is a modified dfs that searches transposed graph and
+        /* findSink is a modified dfs that searches transposed graph and
          * inserts vertices in desired order - that is, source is on top */
-		void find_sink(long v, ref int [] vertex_components, ref Stack<long> st)
+		void findSink(long v, ref int [] vertexComponents, ref Stack<long> st)
 		{
-			vertex_components[v_index(v)] = 0;	
-			foreach(Edge e in gT[v_index(v)])
+			vertexComponents[vIndex(v)] = 0;	
+			foreach(Edge e in gT[vIndex(v)])
 			{
-				long next = v_index(e.destination);
-				if(vertex_components[next] == -1)
+				long next = vIndex(e.destination);
+				if(vertexComponents[next] == -1)
                 {
-					find_sink(e.destination, ref vertex_components, ref st);
+					findSink(e.destination, ref vertexComponents, ref st);
                 }
 			}
 			st.Push(v);
 		}
-        /* assign_components is a modified dfs that searches graph from given
+        /* assignComponents is a modified dfs that searches graph from given
          * vertices and assigns them to a given component */
         // First argument - current vertex
         // Second argument - component number
         // Third argument - srray of component numbers of all vertices
         // Fourth argument - stack of vertices in correct order from first
         // search
-		void assign_components(long v, int c, ref int [] vertex_components, 
+		void assignComponents(long v, int c, ref int [] vertexComponents, 
                 ref Stack<long> st)
 		{
-			vertex_components[v_index(v)] = c;
-			foreach(Edge e in graph[v_index(v)])
+			vertexComponents[vIndex(v)] = c;
+			foreach(Edge e in graph[vIndex(v)])
 			{
-				long next = v_index(e.destination);
-				if(vertex_components[next] == 0)
+				long next = vIndex(e.destination);
+				if(vertexComponents[next] == 0)
                 {
-					assign_components(e.destination, c, 
-                            ref vertex_components, ref st);
+					assignComponents(e.destination, c, 
+                            ref vertexComponents, ref st);
                 }
 			}
 		}

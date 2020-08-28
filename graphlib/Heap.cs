@@ -5,8 +5,8 @@ namespace graphlib
     public class Heap
     {
 		List<Vertex> heap = new List<Vertex>();
-		// Key is vertex, value is position in heap
-		public Dictionary<long, int> pos = new Dictionary<long, int>();
+		// Key is vertex, value is positionition in heap
+		public Dictionary<long, int> position = new Dictionary<long, int>();
 
 		public struct Vertex
 		{
@@ -24,12 +24,12 @@ namespace graphlib
 		void swap(int i, int j)
 		{
 			Vertex t = heap[i];
-			int pos_i = pos[heap[i].v];
-			int pos_j = pos[heap[j].v];
+			int positionI = position[heap[i].v];
+			int positionJ = position[heap[j].v];
 			heap[i] = heap[j];
 			heap[j] = t;
-			pos[heap[i].v] = pos_i;
-			pos[heap[j].v] = pos_j;
+			position[heap[i].v] = positionI;
+			position[heap[j].v] = positionJ;
 		}
 
 		void heapify(int i)
@@ -45,7 +45,7 @@ namespace graphlib
 		public void add(long vertex, long cost, long parent)
 		{
 			heap.Add(new Vertex(vertex, cost, parent));	
-			pos.Add(vertex, heap.Count-1);
+			position.Add(vertex, heap.Count-1);
 			heapify(heap.Count-1);
 		}
 
@@ -53,7 +53,7 @@ namespace graphlib
 		{
 			Vertex top = heap[0];
 			swap(0, heap.Count-1);
-			pos.Remove(top.v);
+			position.Remove(top.v);
 			heap.RemoveAt(heap.Count-1);
 			int i = 0;
 			while(i < heap.Count)
@@ -80,13 +80,13 @@ namespace graphlib
 
 		public void decrease_key(int target, long val, long new_parent)
 		{
-			if(heap[pos[target]].cost > val)
+			if(heap[position[target]].cost > val)
 			{
-				Vertex t = heap[pos[target]];
+				Vertex t = heap[position[target]];
 				t.cost = val;
 				t.parent = new_parent;
-				heap[pos[target]] = t;
-				heapify(pos[target]);
+				heap[position[target]] = t;
+				heapify(position[target]);
 			}
 		}
     }
