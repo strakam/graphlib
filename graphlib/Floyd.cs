@@ -5,41 +5,41 @@ namespace graphlib
 {
     public partial class Graph
     {
-		public long[,] floydWarshall()
-		{
-			long l = size;
+        public long[,] floydWarshall()
+        {
+            long l = size;
             // Adjacency matrix
-			long [,] map = new long[l, l];
+            long [,] map = new long[l, l];
             // Set distances to zero or 'infinity'
-			for(int i = 0; i < l; i++)
+            for(int i = 0; i < l; i++)
             {
-				for(int j = 0; j < l; j++)
+                for(int j = 0; j < l; j++)
                 {
-					map[i,j] = (i == j)? 0 : long.MaxValue;
+                    map[i,j] = (i == j)? 0 : long.MaxValue;
                 }
             }
             // Set initial distances between vertices 
-			foreach(KeyValuePair<long, int> kp in indexes)
-			{
-				int v = vIndex(kp.Key);
-				for(int i = 0; i < graph[v].Count; i++)
-				{
-					map[v, vIndex(graph[v][i].destination)] =
-                        graph[v][i].weight;
-				}
-		    }	
-            // Perform basic floyd warshall algorithm
-			for(int k = 0; k < l; k++)
+            foreach(KeyValuePair<long, int> kp in indexes)
             {
-				for(int i = 0; i < l; i++)
+                int v = vIndex(kp.Key);
+                for(int i = 0; i < graph[v].Count; i++)
                 {
-					for(int j = 0; j < l; j++)
+                    map[v, vIndex(graph[v][i].destination)] =
+                        graph[v][i].weight;
+                }
+            }	
+            // Perform basic floyd warshall algorithm
+            for(int k = 0; k < l; k++)
+            {
+                for(int i = 0; i < l; i++)
+                {
+                    for(int j = 0; j < l; j++)
                     {
-						map[i,j] = Math.Min(map[i,j], map[i,k] + map[k,j]);
+                        map[i,j] = Math.Min(map[i,j], map[i,k] + map[k,j]);
                     }
                 }
             }
-			return map;
-		}
+            return map;
+        }
     }
 }

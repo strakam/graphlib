@@ -9,10 +9,8 @@ namespace tests
 	[TestFixture]
     public class Tests
     {
-		Graph g  = new Graph();
 		Graph g2 = new Graph();
 		Graph fg = new Graph();
-		OrientedGraph og = new OrientedGraph();
 
         [OneTimeSetUp]
         public void Setup()
@@ -29,38 +27,6 @@ namespace tests
 			fg.addEdge(1, 3, 3);
 			fg.addEdge(3, 4, 1);
 
-			// g
-			g.addVertex(5);
-			g.addVertex(8);
-			g.addVertex(1);
-			g.addVertex(6);
-			g.addVertex(3);
-			g.addVertex(2);
-			g.addVertex(4);
-			g.addVertex(7);
-			g.addEdge(5, 1, 3);
-			g.addEdge(1, 8, 4);
-			g.addEdge(5, 8, 9);
-			g.addEdge(1, 6, 2);
-			g.addEdge(3, 6, 9);
-			g.addEdge(3, 8, 3);
-			g.addEdge(2, 8, 5);
-			g.addEdge(2, 3, 1);
-			g.addEdge(7, 3, 1);
-			g.addEdge(7, 2, 2);
-			g.addEdge(7, 4, 2);
-			
-			// og
-			for(int i = 1; i < 7; i++)
-				og.addVertex(i);
-			og.addEdge(1, 2, 2);
-			og.addEdge(1, 3, 1);
-			og.addEdge(2, 3, 1);
-			og.addEdge(1, 4, 4);
-			og.addEdge(3, 6, 3);
-			og.addEdge(4, 5, 3);
-			og.addEdge(5, 6, 1);
-
 			// g2
 			for(int i = 1; i < 8; i++)
 				g2.addVertex(i);
@@ -74,10 +40,54 @@ namespace tests
 			g2.addEdge(3, 7);
 			g2.addEdge(6, 7);
         }
+        [Test]
+        public void testAddRemoveEdgesVertices()
+        {
+            // Not oriented graph
+            Graph g = new Graph();
+            Assert.True(g.addVertex(2));
+            Assert.True(g.addVertex(1));
+            Assert.True(g.addVertex(5));
+            Assert.True(g.addVertex(3));
+            Assert.False(g.addVertex(3));
+            Assert.False(g.addVertex(1));
+            g.addEdge(2, 3);
+            g.addEdge(1, 3);
+            g.addEdge(2, 5);
+            g.addEdge(3, 5);
+            Assert.False(g.removeEdge(1, 2));
+            Assert.False(g.removeEdge(5, 1));
+            Assert.True(g.removeEdge(1, 3));
+            Assert.True(g.removeEdge(2, 5));
+            Assert.False(g.removeEdge(2, 5));
+
+            // Oriented graph
+            Graph og = new OrientedGraph();
+            Assert.True(og.addVertex(4));
+            Assert.True(og.addVertex(6));
+            Assert.True(og.addVertex(1));
+            Assert.False(og.addVertex(1));
+            Assert.True(og.addVertex(3));
+            Assert.False(og.addVertex(3));
+            Assert.False(og.addVertex(4));
+            og.addEdge(1, 4, 2);
+            og.addEdge(6, 1, 3);
+            og.addEdge(1, 3, 3);
+            og.addEdge(4, 6, 1);
+            og.addEdge(6, 4, 2);
+            Assert.True(og.removeEdge(1, 4));
+            Assert.False(og.removeEdge(1, 4));
+            Assert.False(og.removeEdge(1, 6));
+            Assert.False(og.removeEdge(3, 1));
+            Assert.True(og.removeEdge(4, 6));
+            Assert.True(og.removeEdge(1, 3));
+        }
+
 		[Test]
 		public void testSCCS()
 		{
 			OrientedGraph s = new OrientedGraph();
+			OrientedGraph og = oriented();
 			for(int i = 1; i < 8; i++)
 				s.addVertex(i);
 			s.addEdge(1, 2);	
@@ -102,6 +112,7 @@ namespace tests
 		[Test]
 		public void testAps()
 		{
+            Graph g = g1();
 			Graph a = new Graph();
 			for(int i = 1; i < 6; i++)
 				a.addVertex(i);
@@ -136,6 +147,7 @@ namespace tests
 		[Test]
 		public void test_kruskal()
 		{
+            Graph g = g1();
 			SpanningTree s = g.getSpanning();
 			Assert.AreEqual(16, s.cost);
 			Assert.AreEqual(s.edges.Count, 7);
@@ -155,6 +167,7 @@ namespace tests
 		[Test]
 		public void testBipartity()
 		{
+            Graph g = g1();
 			Bipartite b = g.checkBipartity();
 			Assert.AreEqual(b.isBipartite, false);
 
@@ -169,6 +182,7 @@ namespace tests
 		[Test]
 		public void testToposort()
 		{
+            OrientedGraph og = oriented();
 			List<long> order = og.topologicalOrdering();
 			List<long> correct = new List<long>(){6, 3, 2, 5, 4, 1};
 			Assert.AreEqual(correct, order);
@@ -197,6 +211,7 @@ namespace tests
 		[Test]
 		public void testDijkstra()
 		{
+            Graph g = g1();
 			Dijkstra a = g.findShortestPath(5, 4);
 			Assert.AreEqual(13, a.cost);
 			List<long> sa = new List<long>(){5, 1, 8, 3, 7, 4};
@@ -250,5 +265,44 @@ namespace tests
 			g.addEdge(5, 4, 1);
 			return g;
 		}
+
+        Graph g1()
+        {
+            Graph g = new Graph();
+			g.addVertex(5);
+			g.addVertex(8);
+			g.addVertex(1);
+			g.addVertex(6);
+			g.addVertex(3);
+			g.addVertex(2);
+			g.addVertex(4);
+			g.addVertex(7);
+			g.addEdge(5, 1, 3);
+			g.addEdge(1, 8, 4);
+			g.addEdge(5, 8, 9);
+			g.addEdge(1, 6, 2);
+			g.addEdge(3, 6, 9);
+			g.addEdge(3, 8, 3);
+			g.addEdge(2, 8, 5);
+			g.addEdge(2, 3, 1);
+			g.addEdge(7, 3, 1);
+			g.addEdge(7, 2, 2);
+			g.addEdge(7, 4, 2);
+            return g;
+        }
+        OrientedGraph oriented()
+        {
+            OrientedGraph og = new OrientedGraph();
+			for(int i = 1; i < 7; i++)
+				og.addVertex(i);
+			og.addEdge(1, 2, 2);
+			og.addEdge(1, 3, 1);
+			og.addEdge(2, 3, 1);
+			og.addEdge(1, 4, 4);
+			og.addEdge(3, 6, 3);
+			og.addEdge(4, 5, 3);
+			og.addEdge(5, 6, 1);
+            return og;
+        }
     }
 }
