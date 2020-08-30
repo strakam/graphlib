@@ -23,3 +23,15 @@ Metódy triedy **Graph** sú:
 Metódy triedy **OrientedGraph** sú:
 - findSCCS
 - topologicalOrdering
+
+## Ukážky a vysvetlenie používania
+V prípade oboch tried, na pridanie vrcholu do grafu slúži metóda addVertex.
+Má len jeden parameter typu long, ktorý je názvom vrcholu:
+```
+addVertex(5);
+```
+Využitie pamäte nezáleží od hodnoty identifikátoru najväčšieho vrcholu
+a preto je bezškodné využitie veľkých longovych hodnôt.
+Časová zložitosť tejto operácie je **O(1)**.
+
+
