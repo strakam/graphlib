@@ -3,8 +3,8 @@
 Už z názvu je jasné, že výsledkom tohto projektu je grafová knižnica.
 Je napísaná v jazyku C# a je aj určená na používanie v C#.
 
-Jadrom knižnice sú triedy **Graph**, ktorá reprezentuje neorientovaný graf
-a **OrientedGraph**. V nich sa nachádzajú všetky metódy knižnice.
+Jadrom knižnice sú triedy **Graph** (neorientovaný graf) a **OrientedGraph**. 
+V nich sa nachádzajú všetky metódy knižnice.
 
 Spoločné metódy sú:
 - addVertex
