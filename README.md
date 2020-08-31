@@ -71,7 +71,7 @@ Tento kód vytvorí graf v tvare trojuholníka, kde súčet hodnôt hrán je 8, 
 
 Ďalšou metódou je **printGraph()**, ktorá vypíše pre každý vrchol susedov, ku ktorým od neho vedie hrana.
 
-Na reprezentáciu hrán je využitá trieda **Edge**, ktorá má vlasnosti:
+Na reprezentáciu hrán je využitá trieda **Edge**, ktorá má vlastnosti:
 ```c#
 public long source;
 public long destination;
