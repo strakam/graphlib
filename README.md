@@ -71,6 +71,14 @@ Tento kód vytvorí graf v tvare trojuholníka, kde súčet hodnôt hrán je 8, 
 
 Ďalšou metódou je **printGraph()**, ktorá vypíše pre každý vrchol susedov, ku ktorým od neho vedie hrana.
 
+Na reprezentáciu hrán je využitá trieda **Edge**, ktorá má vlasnosti:
+```c#
+public long source;
+public long destination;
+public long weight;
+```
+Pomocou týchto vlastností môže uživateľ zisťovať informácie o hranách pri výstupe metód ako **getSpanning()** vysvetlenej nižšie.
+
 ### Spoločné algoritmy
 
 #### Floyd Warshall (nájdenie najkratších ciest medzi všetkými vrcholmi)
@@ -106,6 +114,8 @@ foreach(long i in d.shortestPath)
 }
 ```
 Tento kód nájde najkratšiu cestu medzi dvomi vrcholmi a vypíše potrebné informácie o tejto ceste.
+***Táto knižnica neobsahuje algoritmus BFS pre neohodnotené grafy. Avšak použitá halda v Dijkstrovom algoritme je
+napísaná tak, aby metóda findShortestPath našla najkratšiu cestu v neohodnotenom grafe v čase O(E+V).***
 
 ### Algoritmy pre neorientované grafy
 
@@ -135,3 +145,26 @@ foreach(Edge e in le)
 }
 ```
 Časová zložitosť tejto metódy je taktiež **O(V+E)**.
+
+#### Hľadanie najlacnejšej kostry
+Pre nájdenie najlacnejšej kostry grafu slúži metóda **getSpanning()**. Jej návratovou hodnotou je
+inštancia triedy **SpanningTree**, ktorá má tieto vlasnosti:
+```c#
+List<edge> edges; // zoznam hrán, ktoré tvoria najlacnejšiu kostru
+long cost; // cena najlacnejšej kostry
+```
+Kostra grafu je množina hrán, ktorá spája všetky vrcholy do jednej komponenty a neobsahuje kružnicu.
+Najlacnejšia kostra je taká kostra, ktorej súčet všetkých cien hrán je najmenšia.
+```c#
+SpanningTree st = g.getSpanning();
+Console.WriteLine("Cena najlacnejsej kostry je " + st.cost);
+Console.WriteLine("A jej hrany su:");
+foreach(Edge e in st.edges)
+{
+    Console.WriteLine("Hrana veduca z {0} do {1}", e.source, e.destination);
+}
+```
+Na hľadanie najacnejšej kostry je použitý Kruskalov algoritmus, ktorý využíva Union-Find štruktúru.
+Časová zložitosť je **O(ElogE)**.
+
+### Algoritmy pre orientované grafy
