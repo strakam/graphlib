@@ -79,6 +79,7 @@ public long weight;
 ```
 Pomocou týchto vlastností môže uživateľ zisťovať informácie o hranách pri výstupe metód ako **getSpanning()** vysvetlenej nižšie.
 
+
 ### Spoločné algoritmy
 
 #### Floyd Warshall (nájdenie najkratších ciest medzi všetkými vrcholmi)
@@ -116,6 +117,7 @@ foreach(long i in d.shortestPath)
 Tento kód nájde najkratšiu cestu medzi dvomi vrcholmi a vypíše potrebné informácie o tejto ceste.
 ***Táto knižnica neobsahuje algoritmus BFS pre neohodnotené grafy. Avšak použitá halda v Dijkstrovom algoritme je
 napísaná tak, aby metóda findShortestPath našla najkratšiu cestu v neohodnotenom grafe v čase O(E+V).***
+
 
 ### Algoritmy pre neorientované grafy
 
@@ -167,4 +169,42 @@ foreach(Edge e in st.edges)
 Na hľadanie najacnejšej kostry je použitý Kruskalov algoritmus, ktorý využíva Union-Find štruktúru.
 Časová zložitosť je **O(ElogE)**.
 
+
 ### Algoritmy pre orientované grafy
+
+#### Hľadanie silno súvislých komponent
+Pre tento problém je určená metóda **findSCCS()**, ktorá vracia 2D list, kde každý list obsahuje
+ID vrcholov, ktoré ležia v jednej komponente. Komponenta v orientovanom grafe je množina vrcholov,
+v ktorej medzi každou dvojicou vrcholov existuje orientovaná cesta. Na hľadanie týchto komponent je
+použitý Kosaraju algoritmus.
+```c#
+List<List<long>> components = g.findSCCS();
+for(int i = 1; i <= components.Count; i++)
+{
+    Console.WriteLine("Vrcholy v komponente {0} su:", i);
+    foreach(long v in l)
+    {
+        Console.Write(v + " ");
+    }
+    Console.WriteLine();
+}
+```
+Časová zložitosť tohto algoritmu je **O(E+V)**.
+
+#### Hľadanie topologického usporiadania
+Topologické usporiadanie vrcholov v orientovanom grafe je také usporiadanie, v ktorom ak
+je vrchol **v** v danom usporiadaní pred vrcholom **u**, tak potom nemôže existovať orientovaná
+hrana z vrcholu **u** do **v**. Každý acyklický orientovaný graf má takéto usporiadanie.
+Grafy ktoré majú kružnicu, nemajú topologické usporiadanie. Na hľadanie tohto usporiadania
+je určená metóda **topologicalOrdering()**, ktorá vracia zoznam vrcholov **List\<long\>** 
+zoradený podľa vyššie spomenutej vlastnosti.
+```c#
+List<long> ordering = g.topologicalOrdering();
+Console.WriteLine("Topologicke usporiadanie je nasledovne:");
+foreach(long v in ordering)
+{
+    Console.Write(v + " ");
+}
+```
+***Pozor, ak topologické usporiadanie neexistuje, výsledný zoznam bude prázdny.*** Časová
+zložitosť tejto metódy je **O(V+E)**.
