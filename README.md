@@ -58,7 +58,7 @@ ktorá zmaže hranu vedúcu z vrcholu **source** do vrcholu **destination**.
 Časová zložitosť tejto funkcie je v najhoršom prípade **O(E)** ale v priemere by mala byť podstatne rýchlejšia.
 
 ### Príklad vytvorenia grafu a vloženia vrcholov a hrán
-```
+```c#
 Graph g = new Graph();
 g.addVertex(4);
 g.addVertex(1);
@@ -68,3 +68,17 @@ g.addEdge(4, 1, 5);
 g.addEdge(3, 4);
 ```
 Tento kód vytvorí graf v tvare trojuholníka, kde súčet hodnôt hrán je 8, pretože hrana z vrcholu 3 do 4 má váhu 1.
+
+Ďalšou metódou je **printGraph()**, ktorá vypíše pre každý vrchol susedov, ku ktorým od neho vedie hrana.
+
+### Algortimy
+
+Metóda **floydWarshall()** platí pre oba typy grafov. jej výstupom je dvojrozmerné pole s rozmermi **VxV**, kde na pozícii **[i,j]**
+je vzdialenosť vrcholu s indexom **j** od vrcholu s indexom **i**. Pozor, pri orientovaných grafoch sa **[i,j]** a **[j,i]** môžu líšiť.
+Keďže index vrcholu **v** je odlišný od samotnej hodnoty **v**, na zistenie vzdialenosti v tomto 2D poli použijeme metódu **vIndex(v)**.
+Použitie:
+```
+long answer[,] = g.floydWarshall();
+long distance = answer[g.vIndex(a), g.vIndex(b)];
+```
+Tento kód dostane vzdialenosť z vrcholu **a** do vrcholu **b** do premennej **distance**.
