@@ -1,4 +1,4 @@
-# How to use Graphlib
+# Používateľská príručka
 
 Už z názvu je jasné, že výsledkom tohto projektu je grafová knižnica.
 Je napísaná v jazyku C# a je aj určená na používanie v C#.
@@ -152,7 +152,7 @@ foreach(Edge e in le)
 Pre nájdenie najlacnejšej kostry grafu slúži metóda **getSpanning()**. Jej návratovou hodnotou je
 inštancia triedy **SpanningTree**, ktorá má tieto vlasnosti:
 ```c#
-List<edge> edges; // zoznam hrán, ktoré tvoria najlacnejšiu kostru
+List<Edge> edges; // zoznam hrán, ktoré tvoria najlacnejšiu kostru
 long cost; // cena najlacnejšej kostry
 ```
 Kostra grafu je množina hrán, ktorá spája všetky vrcholy do jednej komponenty a neobsahuje kružnicu.
