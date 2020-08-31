@@ -182,7 +182,7 @@ List<List<long>> components = g.findSCCS();
 for(int i = 1; i <= components.Count; i++)
 {
     Console.WriteLine("Vrcholy v komponente {0} su:", i);
-    foreach(long v in l)
+    foreach(long v in components[i])
     {
         Console.Write(v + " ");
     }
