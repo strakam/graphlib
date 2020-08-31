@@ -104,7 +104,8 @@ List<long> shortestPath; // zoznam ID vrcholov, ktoré sú zoradené a ležia na
 long cost; // obsahuje cenu tejto najkratšej cesty
 ```
 Ako už z názvu triedy vyplýva, v tejto metóde je použitý Dijsktrov algoritmus, ktorý nefunguje na záporných hranách a preto si je treba
-dať pozor. Časová zložitosť tejto verzie Dijkstrovho algoritmu je **O(ElogV)**.
+dať pozor. V prípade kedy neexistuje najkratšia cesta, list **shortestPath** bude prádzny.
+Časová zložitosť tejto verzie Dijkstrovho algoritmu je **O(ElogV)**.
 ```c#
 Dijkstra d = g.findShortestPath(a, b);
 Console.WriteLine("Cena najkratsej cesty z vrcholu {0} do {1} je {2}.", a, b, d.cost);
@@ -133,7 +134,7 @@ foreach(long i in ans)
     Console.Write(i + " ");
 }
 ```
-Časová zložitosť je **O(V+E)**.
+V prípade, kedy graf neobsahuje žiadne artikulácie, metóda vráti prázdny list. Časová zložitosť je **O(V+E)**.
 
 #### Mosty
 Most je hranový ekvivalent artikulácie. Ak zmažeme most, v grafe nám pribudne ďalšia komponenta. Metóda
@@ -146,6 +147,7 @@ foreach(Edge e in le)
     Console.WriteLine("Hrana veduca z {0} do {1}", e.source, e.destination);
 }
 ```
+Ak graf neobsahuje žiadne mosty, vráti prázdny list.
 Časová zložitosť tejto metódy je taktiež **O(V+E)**.
 
 #### Hľadanie najlacnejšej kostry
