@@ -135,7 +135,7 @@ namespace graphlib
             List<long> output = new List<long>();
             foreach(KeyValuePair<long, int> k in indexes)
             {
-                Console.Write("Susedia vrcholu {0} s indexom {1}, su ", k.Key, k.Value);
+                Console.Write("Susedia vrcholu {0}, su ", k.Key);
                 foreach(Edge e in graph[k.Value])
                 {
                     output.Add(e.destination);
