@@ -56,3 +56,15 @@ Opačnou metódou pre neorientovaný graf je **removeEdge(long v1, long v2)**, k
 spájajúcu vrchol **v1** a **v2** a pre orientovaný graf **removeEdge(long source, long destination)**,
 ktorá zmaže hranu vedúcu z vrcholu **source** do vrcholu **destination**.
 Časová zložitosť tejto funkcie je v najhoršom prípade **O(E)** ale v priemere by mala byť podstatne rýchlejšia.
+
+### Príklad vytvorenia grafu a vloženia vrcholov a hrán
+```
+Graph g = new Graph();
+g.addVertex(4);
+g.addVertex(1);
+g.addVertex(3);
+g.addEdge(1, 3, 2);
+g.addEdge(4, 1, 5);
+g.addEdge(3, 4);
+```
+Tento kód vytvorí graf v tvare trojuholníka, kde súčet hodnôt hrán je 8, pretože hrana z vrcholu 3 do 4 má váhu 1.
