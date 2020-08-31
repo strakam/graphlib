@@ -82,11 +82,12 @@ Použitie:
 long answer[,] = g.floydWarshall();
 long distance = answer[g.vIndex(a), g.vIndex(b)];
 ```
-Tento kód dostane vzdialenosť z vrcholu **a** do vrcholu **b** do premennej **distance**. 
+Tento kód dostane vzdialenosť z vrcholu **a** do vrcholu **b** do premennej **distance**.
+
 ***Pozor, ak medzi dvomi vrcholmi nevedie žiadna cesta, výsledné pole obsahuje na danom indexe hodnotu long.MaxValue***.
 Časová zložitosť tohto algoritmu je **O(V^3)**.
 
-#### Dijsktra
+#### Dijkstra
 Druhou spoločnou metódou je **findShortestPath(long source, long destination)**, ktorá nájde najkratšiu cestu z vrcholu **source** do
 vrcholu **destination**. Návratovou hodnotou tejto metódy je inštancia triedy **Dijsktra**, ktorá má nasledovné vlasnosti:
 ```c#
@@ -106,12 +107,31 @@ foreach(long i in d.shortestPath)
 ```
 Tento kód nájde najkratšiu cestu medzi dvomi vrcholmi a vypíše potrebné informácie o tejto ceste.
 
-### Algoritmy pre neorientované grafy
+### Algoritmy pre neorientované grafy
 
 #### Artikulácie
-Na hľadanie artikulácii v grafe slúži metóda **findArticulations()**. Jej návratová hodnota je **List<long>**,
+Na hľadanie artikulácii v grafe slúži metóda **findArticulations()**. Jej návratová hodnota je **List\<long\>**,
 ktorá obsahuje ID všetkých vrcholov, ktoré sú označené ako artikulácie v grafe. Artikulácia je vrchol, po ktorého
 odstránení sa graf rozdelí na viacero komponentov.
 ```c#
 List<long> ans = g.findArticulations();
+Console.WriteLine("Artikulacie su vrcholy:");
+foreach(long i in ans)
+{
+    Console.Write(i);
+}
 ```
+Časová zložitosť je **O(V+E)**.
+
+#### Mosty
+Most je hranový ekvivalent artikulácie. Ak zmažeme most, v grafe nám pribudne ďalšia komponenta. Metóda
+na hľadanie mostov je **findBridges()** a jej výstupom je **List\<Edge\>**, čiže zoznam hrán, ktoré sú mostami.
+```c#
+List<Edge> le = g.findBridges();
+Console.WriteLine("Mosty su:");
+foreach(Edge e in le)
+{
+    Console.WriteLine("Hrana veduca z {0} do {1}", e.source, e.destination);
+}
+```
+Časová zložitosť tejto metódy je taktiež **O(V+E)**.
