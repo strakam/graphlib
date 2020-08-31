@@ -130,7 +130,7 @@ List<long> ans = g.findArticulations();
 Console.WriteLine("Artikulacie su vrcholy:");
 foreach(long i in ans)
 {
-    Console.Write(i);
+    Console.Write(i + " ");
 }
 ```
 Časová zložitosť je **O(V+E)**.
