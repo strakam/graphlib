@@ -1,4 +1,4 @@
-# How to use Graphlib
+# Používateľská príručka
 
 Už z názvu je jasné, že výsledkom tohto projektu je grafová knižnica.
 Je napísaná v jazyku C# a je aj určená na používanie v C#.
@@ -71,7 +71,7 @@ Tento kód vytvorí graf v tvare trojuholníka, kde súčet hodnôt hrán je 8, 
 
 Ďalšou metódou je **printGraph()**, ktorá vypíše pre každý vrchol susedov, ku ktorým od neho vedie hrana.
 
-Na reprezentáciu hrán je využitá trieda **Edge**, ktorá má vlasnosti:
+Na reprezentáciu hrán je využitá trieda **Edge**, ktorá má vlastnosti:
 ```c#
 public long source;
 public long destination;
@@ -104,7 +104,8 @@ List<long> shortestPath; // zoznam ID vrcholov, ktoré sú zoradené a ležia na
 long cost; // obsahuje cenu tejto najkratšej cesty
 ```
 Ako už z názvu triedy vyplýva, v tejto metóde je použitý Dijsktrov algoritmus, ktorý nefunguje na záporných hranách a preto si je treba
-dať pozor. Časová zložitosť tejto verzie Dijkstrovho algoritmu je **O(ElogV)**.
+dať pozor. V prípade kedy neexistuje najkratšia cesta, list **shortestPath** bude prádzny.
+Časová zložitosť tejto verzie Dijkstrovho algoritmu je **O(ElogV)**.
 ```c#
 Dijkstra d = g.findShortestPath(a, b);
 Console.WriteLine("Cena najkratsej cesty z vrcholu {0} do {1} je {2}.", a, b, d.cost);
@@ -130,10 +131,10 @@ List<long> ans = g.findArticulations();
 Console.WriteLine("Artikulacie su vrcholy:");
 foreach(long i in ans)
 {
-    Console.Write(i);
+    Console.Write(i + " ");
 }
 ```
-Časová zložitosť je **O(V+E)**.
+V prípade, kedy graf neobsahuje žiadne artikulácie, metóda vráti prázdny list. Časová zložitosť je **O(V+E)**.
 
 #### Mosty
 Most je hranový ekvivalent artikulácie. Ak zmažeme most, v grafe nám pribudne ďalšia komponenta. Metóda
@@ -146,13 +147,14 @@ foreach(Edge e in le)
     Console.WriteLine("Hrana veduca z {0} do {1}", e.source, e.destination);
 }
 ```
+Ak graf neobsahuje žiadne mosty, vráti prázdny list.
 Časová zložitosť tejto metódy je taktiež **O(V+E)**.
 
 #### Hľadanie najlacnejšej kostry
 Pre nájdenie najlacnejšej kostry grafu slúži metóda **getSpanning()**. Jej návratovou hodnotou je
 inštancia triedy **SpanningTree**, ktorá má tieto vlasnosti:
 ```c#
-List<edge> edges; // zoznam hrán, ktoré tvoria najlacnejšiu kostru
+List<Edge> edges; // zoznam hrán, ktoré tvoria najlacnejšiu kostru
 long cost; // cena najlacnejšej kostry
 ```
 Kostra grafu je množina hrán, ktorá spája všetky vrcholy do jednej komponenty a neobsahuje kružnicu.
@@ -182,7 +184,7 @@ List<List<long>> components = g.findSCCS();
 for(int i = 1; i <= components.Count; i++)
 {
     Console.WriteLine("Vrcholy v komponente {0} su:", i);
-    foreach(long v in l)
+    foreach(long v in components[i])
     {
         Console.Write(v + " ");
     }
