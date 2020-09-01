@@ -88,8 +88,8 @@ je vzdialenosť vrcholu s indexom **j** od vrcholu s indexom **i**. Pozor, pri o
 Keďže index vrcholu **v** je odlišný od samotnej hodnoty **v**, na zistenie vzdialenosti v tomto 2D poli použijeme metódu **Vindex(v)**.
 Použitie:
 ```c#
-long answer[,] = g.floydWarshall();
-long distance = answer[g.vIndex(a), g.vIndex(b)];
+long answer[,] = g.FloydWarshall();
+long distance = answer[g.Vindex(a), g.Vindex(b)];
 ```
 Tento kód dostane vzdialenosť z vrcholu **a** do vrcholu **b** do premennej **distance**.
 
@@ -107,7 +107,7 @@ Ako už z názvu triedy vyplýva, v tejto metóde je použitý Dijsktrov algorit
 dať pozor. V prípade kedy neexistuje najkratšia cesta, list **shortestPath** bude prádzny.
 Časová zložitosť tejto verzie Dijkstrovho algoritmu je **O(ElogV)**.
 ```c#
-Dijkstra d = g.findShortestPath(a, b);
+Dijkstra d = g.FindShortestPath(a, b);
 Console.WriteLine("Cena najkratsej cesty z vrcholu {0} do {1} je {2}.", a, b, d.cost);
 Console.WriteLine("A vedie cez vrcholy:");
 foreach(long i in d.shortestPath)
@@ -127,7 +127,7 @@ Na hľadanie artikulácii v grafe slúži metóda **FindArticulations()**. Jej n
 ktorá obsahuje ID všetkých vrcholov, ktoré sú označené ako artikulácie v grafe. Artikulácia je vrchol, po ktorého
 odstránení sa graf rozdelí na viacero komponentov.
 ```c#
-List<long> ans = g.findArticulations();
+List<long> ans = g.FindArticulations();
 Console.WriteLine("Artikulacie su vrcholy:");
 foreach(long i in ans)
 {
@@ -140,7 +140,7 @@ V prípade, kedy graf neobsahuje žiadne artikulácie, metóda vráti prázdny l
 Most je hranový ekvivalent artikulácie. Ak zmažeme most, v grafe nám pribudne ďalšia komponenta. Metóda
 na hľadanie mostov je **FindBridges()** a jej výstupom je **List\<Edge\>**, čiže zoznam hrán, ktoré sú mostami.
 ```c#
-List<Edge> le = g.findBridges();
+List<Edge> le = g.FindBridges();
 Console.WriteLine("Mosty su:");
 foreach(Edge e in le)
 {
@@ -160,7 +160,7 @@ long cost; // cena najlacnejšej kostry
 Kostra grafu je množina hrán, ktorá spája všetky vrcholy do jednej komponenty a neobsahuje kružnicu.
 Najlacnejšia kostra je taká kostra, ktorej súčet všetkých cien hrán je najmenšia.
 ```c#
-SpanningTree st = g.getSpanning();
+SpanningTree st = g.GetSpanning();
 Console.WriteLine("Cena najlacnejsej kostry je " + st.cost);
 Console.WriteLine("A jej hrany su:");
 foreach(Edge e in st.edges)
@@ -180,7 +180,7 @@ ID vrcholov, ktoré ležia v jednej komponente. Komponenta v orientovanom grafe 
 v ktorej medzi každou dvojicou vrcholov existuje orientovaná cesta. Na hľadanie týchto komponent je
 použitý Kosaraju algoritmus.
 ```c#
-List<List<long>> components = g.findSCCS();
+List<List<long>> components = g.FindSCCS();
 for(int i = 1; i <= components.Count; i++)
 {
     Console.WriteLine("Vrcholy v komponente {0} su:", i);
@@ -201,7 +201,7 @@ Grafy ktoré majú kružnicu, nemajú topologické usporiadanie. Na hľadanie to
 je určená metóda **TopologicalOrdering()**, ktorá vracia zoznam vrcholov **List\<long\>** 
 zoradený podľa vyššie spomenutej vlastnosti.
 ```c#
-List<long> ordering = g.topologicalOrdering();
+List<long> ordering = g.TopologicalOrdering();
 Console.WriteLine("Topologicke usporiadanie je nasledovne:");
 foreach(long v in ordering)
 {
