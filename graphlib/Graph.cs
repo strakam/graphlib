@@ -3,37 +3,60 @@ using System.Collections.Generic;
 
 namespace graphlib
 {
-    // Class describing edges in graph
-    public class Edge
-    {
-        // In oriented graph names are self explanatory
-        public long source {get; set;}
-        public long destination {get;set;}
-        public long weight {get;set;}
-        public Edge(long source, long destination, long weight)
-        {
-            this.source = source;
-            this.destination = destination;
-            this.weight = weight;
-        }
-    }
-
-    public partial class Graph
+    /// <summary>
+    /// Graph is a main class of this library. It contains all the graph
+    /// properties and algorithms
+    /// </summary>
+    /// <item>
+    /// <term>AddVertex</term>
+    /// <description>Adds vertex to a graph.</description>
+    /// </item>
+    /// <item>
+    /// <term>RemoveVertex</term>
+    /// <description>Removes vertex from a graph.</description>
+    /// </item>
+    /// <item>
+    /// <term>AddEdge</term>
+    /// <description>Adds edge to a graph.</description>
+    /// </item>
+    /// <item>
+    /// <term>Remove Edge</term>
+    /// <description>Removes edge to a graph.</description>
+    /// </item>
+    /// <item>
+    /// <term>FindArticulations</term>
+    /// <description>Method used to find articulation points.</description>
+    /// </item>
+    /// <item>
+    /// <term>FindBridges</term>
+    /// <description>Method used to find bridges in graph.</description>
+    /// </item>
+    /// <item>
+    /// <term>GetSpanning</term>
+    /// <description>Method that finds minimum spanning tree.</description>
+    /// </item>
+    public partial class Graph:IGraph
     {
         /* Internal representation of the graph is in form of list of neighbors
-         * for every vertex */
+         * for every vertex. */
         protected List<List<Edge>> graph = new List<List<Edge>>();
-        // Transposed graph
+        // Transposed graph.
         protected List<List<Edge>> gT = new List<List<Edge>>();
         /* indexes is Dictionary that maps names of vertices to their position
-         * in internal representation */
+         * in internal representation. */
         protected Dictionary<long, int> indexes = new Dictionary<long, int>();
         // Size is a number of vertices
         public long size = 0;
 
 
-        // User calls this function to add vertex into the graph
-        public virtual bool addVertex(long val)
+        /// <summary>
+        /// AddVertex adds vertex with given value to a graph.
+        /// </summary>
+        /// <returns>
+        /// True, if vertex was added. False if vertex is already in graph.
+        /// </returns>
+        /// <param name="val"> Long that is an ID of added vertex. </param>
+        public virtual bool AddVertex(long val)
         {
             if(indexes.ContainsKey(val))
             {
@@ -50,12 +73,18 @@ namespace graphlib
             return true;
         }
 
-        // Remove given vertex and all edges connected with it
-        public bool removeVertex(long v)
+        /// <summary>
+        /// RemoveVertex removes vertex with given value to a graph.
+        /// </summary>
+        /// <returns>
+        /// True, if vertex was removed. False if vertex wasn't in a graph.
+        /// </returns>
+        /// <param name="v"> Long that is an ID of removed vertex. </param>
+        public bool RemoveVertex(long v)
         {
             if(indexes.ContainsKey(v))
             {
-                graph.RemoveAt(vIndex(v));
+                graph.RemoveAt(Vindex(v));
                 foreach(List<Edge> l in graph)
                 {
                     for(int i = 0; i < l.Count; i++)
@@ -72,8 +101,13 @@ namespace graphlib
             return false;
         }
 
-        // User calls this function to add edge into the graph
-        public virtual void addEdge(long v1, long v2, long weight)
+        /// <summary>
+        /// AddVertex adds edge with given parameters to a graph.
+        /// </summary>
+        /// <param name="v1"> Long that is an ID of a first vertex. </param>
+        /// <param name="v2"> Long that is an ID of a second vertex. </param>
+        /// <param name="weight"> Long that represents weight of edge. </param>
+        public virtual void AddEdge(long v1, long v2, long weight)
         {
             if(indexes.ContainsKey(v1) && indexes.ContainsKey(v2))
             {
@@ -83,8 +117,13 @@ namespace graphlib
         }
 
 
-        // Overloading for unweighted graph
-        public virtual void addEdge(long v1, long v2)
+        /// <summary>
+        /// Overloading of AddEdge.
+        /// It adds edge with given parameters to a graph with weight=1
+        /// </summary>
+        /// <param name="v1"> Long that is an ID of a first vertex. </param>
+        /// <param name="v2"> Long that is an ID of a second vertex. </param>
+        public virtual void AddEdge(long v1, long v2)
         {
             if(indexes.ContainsKey(v1) && indexes.ContainsKey(v2))
             {
@@ -94,25 +133,32 @@ namespace graphlib
             }
         }
 
-        // Remove edge from both vertices
-        public virtual bool removeEdge(long v1, long v2)
+        /// <summary>
+        /// RemoveVertex removes edge connecting given vertices from a graph.
+        /// </summary>
+        /// <returns>
+        /// True, if edge was removed. False if edge didn't exist.
+        /// </returns>
+        /// <param name="v1"> Long that is an ID of a first vertex. </param>
+        /// <param name="v2"> Long that is an ID of a second vertex. </param>
+        public virtual bool RemoveEdge(long v1, long v2)
         {
             if(indexes.ContainsKey(v1) && indexes.ContainsKey(v2))
             {
                 bool removed = false;
-                for(int i = 0; i < graph[vIndex(v1)].Count; i++)
+                for(int i = 0; i < graph[Vindex(v1)].Count; i++)
                 {
-                    if(graph[vIndex(v1)][i].destination == v2)
+                    if(graph[Vindex(v1)][i].destination == v2)
                     {
-                        graph[vIndex(v1)].RemoveAt(i); 
+                        graph[Vindex(v1)].RemoveAt(i); 
                         removed = true;
                     }
                 }
-                for(int i = 0; i < graph[vIndex(v2)].Count; i++)
+                for(int i = 0; i < graph[Vindex(v2)].Count; i++)
                 {
-                    if(graph[vIndex(v2)][i].destination == v1)
+                    if(graph[Vindex(v2)][i].destination == v1)
                     {
-                        graph[vIndex(v2)].RemoveAt(i); 
+                        graph[Vindex(v2)].RemoveAt(i); 
                     }
                 }
                 if(removed)
@@ -123,14 +169,19 @@ namespace graphlib
             return false;
         }
 
-        // Function to translate name of vertex to its position
-        public int vIndex(long vertex)
+        /// <summary>
+        /// Function to translate name of vertex to its position.
+        /// </summary>
+        /// <param name="vertex"> Is an ID of vertex </param>
+        public int Vindex(long vertex)
         {
             return indexes[vertex];
         }
 
-        // Function to print vertices and list their neighbors
-        public List<long> printGraph()
+        /// <summary>
+        /// Prints neighbors of every edge in given graph
+        /// </summary>
+        public void PrintGraph()
         {
             List<long> output = new List<long>();
             foreach(KeyValuePair<long, int> k in indexes)
@@ -143,54 +194,6 @@ namespace graphlib
                 }
                 Console.WriteLine();
             }
-            return output;
-        }
-
-    }
-
-    /* Class for oriented graph has the same logic as Graph class 
-     * but edges are added only in one way */
-    public partial class OrientedGraph:Graph
-    {
-        public override void addEdge(long source, long destination, long weight)
-        {
-            if(indexes.ContainsKey(source) && indexes.ContainsKey(destination))
-            {
-                graph[indexes[source]].Add(new Edge(source, destination, weight));
-                gT[indexes[destination]].Add(new Edge(destination, source, weight));
-            }
-        }
-
-        public override void addEdge(long source, long destination)
-        {
-            long weight = 1;
-            if(indexes.ContainsKey(source) && indexes.ContainsKey(destination))
-            {
-                graph[indexes[source]].Add(new Edge(source, destination, weight));
-                gT[indexes[destination]].Add(new Edge(destination, source, weight));
-            }
-        }
-
-        // Overriding for oriented graph
-        public override bool removeEdge(long source, long destination)
-        {
-            if(indexes.ContainsKey(source) && indexes.ContainsKey(destination))
-            {
-                bool removed = false;
-                for(int i = 0; i < graph[vIndex(source)].Count; i++)
-                {
-                    if(graph[vIndex(source)][i].destination == destination)
-                    {
-                        graph[vIndex(source)].RemoveAt(i); 
-                        removed = true;
-                    }
-                }
-                if(removed)
-                {
-                    return true;
-                }
-            }
-            return false;
         }
     }
 }

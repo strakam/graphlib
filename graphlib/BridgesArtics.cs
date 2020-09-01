@@ -8,12 +8,12 @@ namespace graphlib
     {
         // variable time is a timestamp indicating when was node visited
         long time = 0;
-        struct helperArrays{
-            // time for each node is stored in disc, low is the lowest node that
-            // is reachable from a given node
+        struct HelperArrays{
+            /* Time for each node is stored in disc, low is the lowest node that
+             * is reachable from a given node. */
             public long [] disc, low;
             public bool [] articulations, visited;
-            public helperArrays(long s)
+            public HelperArrays(long s)
             {
                 disc = new long[s];
                 low = new long[s];
@@ -21,10 +21,17 @@ namespace graphlib
                 visited = new bool[s];
             }
         }
-        // Find articulation points
-        public List<long> findArticulations()
+        /// <summary>
+        /// Method FindArticulations is made for finding articulation 
+        /// vertices in a graph.
+        /// </summary>
+        /// <returns>
+        /// It returns List<long> where elements of a list are IDs of
+        /// articulation vertices.
+        /// </returns>
+        public List<long> FindArticulations()
         {
-            helperArrays info = new helperArrays(graph.Count);
+            HelperArrays info = new HelperArrays(graph.Count);
             // answer is a list of articlation points
             List<long> answer = new List<long>();
             for(int i = 0; i < graph.Count; i++)
@@ -52,17 +59,17 @@ namespace graphlib
         }
 
         // Recursive function (modified dfs) that is searching for articulations
-        void apDFS(long v, long parent, ref helperArrays info)
+        void apDFS(long v, long parent, ref HelperArrays info)
         {
             long children = 0;
             // Uploading informations
-            info.visited[vIndex(v)] = true;	
-            info.disc[vIndex(v)] = time;
-            info.low[vIndex(v)] = time;
-            foreach(Edge e in graph[vIndex(v)])
+            info.visited[Vindex(v)] = true;	
+            info.disc[Vindex(v)] = time;
+            info.low[Vindex(v)] = time;
+            foreach(Edge e in graph[Vindex(v)])
             {
                 children++;
-                long next = vIndex(e.destination);
+                long next = Vindex(e.destination);
                 // if a child is not visited, start search from it
                 if(!info.visited[next])
                 {
@@ -70,30 +77,35 @@ namespace graphlib
                     apDFS(e.destination, v, ref info);
                     /* Compute lowest visitable ancestor and compare it with
                      * current node to determine whether it is an articulation */
-                    info.low[vIndex(v)] = 
-                        Math.Min(info.low[vIndex(v)], info.low[next]);
-                    if(info.disc[vIndex(v)] <= info.low[next] && v != parent)
+                    info.low[Vindex(v)] = 
+                        Math.Min(info.low[Vindex(v)], info.low[next]);
+                    if(info.disc[Vindex(v)] <= info.low[next] && v != parent)
                     {
-                        info.articulations[vIndex(v)] = true;
+                        info.articulations[Vindex(v)] = true;
                     }
                     if(parent == v && children > 1)
                     {
-                        info.articulations[vIndex(v)] = true;
+                        info.articulations[Vindex(v)] = true;
                     }
                 }
                 if(e.destination != parent)
                 {
-                    info.low[vIndex(v)] = 
-                        Math.Min(info.low[vIndex(v)], info.low[next]);
+                    info.low[Vindex(v)] = 
+                        Math.Min(info.low[Vindex(v)], info.low[next]);
                 }
             }
         }
 
-        /* This function is called to find bridges in graph
-         * Logic is same as in artiulation points entry function */
-        public List<Edge> findBridges()
+        /// <summary>
+        /// Method FindBridges is called to find bridges in graph. Logic is same
+        /// as in articulation points entry function.
+        /// </summary>
+        /// <returns>
+        /// It returns list of edges that are marked as bridges.
+        /// </returns>
+        public List<Edge> FindBridges()
         {
-            helperArrays info = new helperArrays(graph.Count);
+            HelperArrays info = new HelperArrays(graph.Count);
             List<Edge> answer = new List<Edge>();
             for(long i = 0; i < graph.Count; i++)
             {
@@ -113,31 +125,31 @@ namespace graphlib
 
         /* Function very similiar to ab function, difference is in comparison
          * signs and 1 less if statement */
-        void bDFS(long v, long parent, ref List<Edge> ans, ref helperArrays info)
+        void bDFS(long v, long parent, ref List<Edge> ans, ref HelperArrays info)
         {
             long children = 0;
-            info.visited[vIndex(v)] = true;	
-            info.disc[vIndex(v)] = time;
-            info.low[vIndex(v)] = time;
-            foreach(Edge e in graph[vIndex(v)])
+            info.visited[Vindex(v)] = true;	
+            info.disc[Vindex(v)] = time;
+            info.low[Vindex(v)] = time;
+            foreach(Edge e in graph[Vindex(v)])
             {
                 children++;
-                long next = vIndex(e.destination);
+                long next = Vindex(e.destination);
                 if(!info.visited[next])
                 {
                     time++;
                     bDFS(e.destination, v, ref ans, ref info);
-                    info.low[vIndex(v)] = 
-                        Math.Min(info.low[vIndex(v)], info.low[next]);
-                    if(info.disc[vIndex(v)] < info.low[next])
+                    info.low[Vindex(v)] = 
+                        Math.Min(info.low[Vindex(v)], info.low[next]);
+                    if(info.disc[Vindex(v)] < info.low[next])
                     {
                         ans.Add(e);
                     }
                 }
                 if(e.destination != parent)
                 {
-                    info.low[vIndex(v)] =
-                        Math.Min(info.low[vIndex(v)], info.low[next]);
+                    info.low[Vindex(v)] =
+                        Math.Min(info.low[Vindex(v)], info.low[next]);
                 }
             }
         }

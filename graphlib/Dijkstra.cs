@@ -3,11 +3,15 @@ using System;
 
 namespace graphlib
 {
+    /// <summary>
+    /// class Dijkstra contains informations about shortest path between two
+    /// given vertices
+    /// </summary>
     public class Dijkstra
     {
-        // List of vertices in shortest path in order
+        /// <value> List of vertices in shortest path in order </value>
         public List<long> shortestPath = new List<long>();
-        // Cost of the shortest path
+        /// <value> Cost of the shortest path </value>
         public long cost = long.MaxValue;
         public Dijkstra(long cP, List<long> shortestPath)
         {
@@ -19,7 +23,21 @@ namespace graphlib
 
     public partial class Graph
     {
-        public Dijkstra findShortestPath(long source, long destination)
+        /// <summary>
+        /// Method finShortestPath is using Dijkstra's algorithm to find
+        /// shortest path between two vertices.
+        /// </summary>
+        /// <returns>
+        /// It returns instance of Dijkstra class, containing info about
+        /// shortest path. If there is no path between given vertices,
+        /// shortestPath parameter in Dijkstra instance is empty and distance is
+        /// set to long.MaxValue.
+        /// </returns>
+        /// <param name="source"> long that is ID of source vertex of the
+        /// shortest path </param>
+        /// <param name="destination"> long that is ID of destination vertex of
+        /// the shortest path </param>
+        public Dijkstra FindShortestPath(long source, long destination)
         {
             // Create priority queue
             Heap pq = new Heap();
@@ -52,16 +70,16 @@ namespace graphlib
                     long neighbor = graph[indexes[top.v]][i].destination;
                     long weight = graph[indexes[top.v]][i].weight;
                     // Skip if the neighbor was already processed
-                    if(visited[vIndex(neighbor)] == 2)
+                    if(visited[Vindex(neighbor)] == 2)
                     {
                         continue;
                     }
                     // If neighbor is not visited, add it to queue
-                    if(visited[vIndex(neighbor)] == 0)
+                    if(visited[Vindex(neighbor)] == 0)
                     {
                         long price = top.cost + weight;
                         pq.add(neighbor, price, top.v);
-                        visited[vIndex(neighbor)] = 1;
+                        visited[Vindex(neighbor)] = 1;
                     }
                     // Upload cost if there was a better path found
                     else if(pq.position.ContainsKey(neighbor))

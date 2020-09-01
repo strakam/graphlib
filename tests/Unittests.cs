@@ -16,71 +16,71 @@ namespace tests
         public void Setup()
         {
             // fg
-            fg.addVertex(1);
-            fg.addVertex(2);
-            fg.addVertex(3);
-            fg.addVertex(4);
-            fg.addEdge(1, 2, 1);
-            fg.addEdge(1, 4, 1);
-            fg.addEdge(2, 3, 2);
-            fg.addEdge(4, 2, 1);
-            fg.addEdge(1, 3, 3);
-            fg.addEdge(3, 4, 1);
+            fg.AddVertex(1);
+            fg.AddVertex(2);
+            fg.AddVertex(3);
+            fg.AddVertex(4);
+            fg.AddEdge(1, 2, 1);
+            fg.AddEdge(1, 4, 1);
+            fg.AddEdge(2, 3, 2);
+            fg.AddEdge(4, 2, 1);
+            fg.AddEdge(1, 3, 3);
+            fg.AddEdge(3, 4, 1);
 
             // g2
             for(int i = 1; i < 8; i++)
-                g2.addVertex(i);
-            g2.addEdge(1, 2);
-            g2.addEdge(1, 4);
-            g2.addEdge(2, 3);
-            g2.addEdge(4, 3);
-            g2.addEdge(4, 6);
-            g2.addEdge(3, 5);
-            g2.addEdge(6, 5);
-            g2.addEdge(3, 7);
-            g2.addEdge(6, 7);
+                g2.AddVertex(i);
+            g2.AddEdge(1, 2);
+            g2.AddEdge(1, 4);
+            g2.AddEdge(2, 3);
+            g2.AddEdge(4, 3);
+            g2.AddEdge(4, 6);
+            g2.AddEdge(3, 5);
+            g2.AddEdge(6, 5);
+            g2.AddEdge(3, 7);
+            g2.AddEdge(6, 7);
         }
         [Test]
         public void testAddRemoveEdgesVertices()
         {
             // Not oriented graph
             Graph g = new Graph();
-            Assert.True(g.addVertex(2));
-            Assert.True(g.addVertex(1));
-            Assert.True(g.addVertex(5));
-            Assert.True(g.addVertex(3));
-            Assert.False(g.addVertex(3));
-            Assert.False(g.addVertex(1));
-            g.addEdge(2, 3);
-            g.addEdge(1, 3);
-            g.addEdge(2, 5);
-            g.addEdge(3, 5);
-            Assert.False(g.removeEdge(1, 2));
-            Assert.False(g.removeEdge(5, 1));
-            Assert.True(g.removeEdge(1, 3));
-            Assert.True(g.removeEdge(2, 5));
-            Assert.False(g.removeEdge(2, 5));
+            Assert.True(g.AddVertex(2));
+            Assert.True(g.AddVertex(1));
+            Assert.True(g.AddVertex(5));
+            Assert.True(g.AddVertex(3));
+            Assert.False(g.AddVertex(3));
+            Assert.False(g.AddVertex(1));
+            g.AddEdge(2, 3);
+            g.AddEdge(1, 3);
+            g.AddEdge(2, 5);
+            g.AddEdge(3, 5);
+            Assert.False(g.RemoveEdge(1, 2));
+            Assert.False(g.RemoveEdge(5, 1));
+            Assert.True(g.RemoveEdge(1, 3));
+            Assert.True(g.RemoveEdge(2, 5));
+            Assert.False(g.RemoveEdge(2, 5));
 
             // Oriented graph
             Graph og = new OrientedGraph();
-            Assert.True(og.addVertex(4));
-            Assert.True(og.addVertex(6));
-            Assert.True(og.addVertex(1));
-            Assert.False(og.addVertex(1));
-            Assert.True(og.addVertex(3));
-            Assert.False(og.addVertex(3));
-            Assert.False(og.addVertex(4));
-            og.addEdge(1, 4, 2);
-            og.addEdge(6, 1, 3);
-            og.addEdge(1, 3, 3);
-            og.addEdge(4, 6, 1);
-            og.addEdge(6, 4, 2);
-            Assert.True(og.removeEdge(1, 4));
-            Assert.False(og.removeEdge(1, 4));
-            Assert.False(og.removeEdge(1, 6));
-            Assert.False(og.removeEdge(3, 1));
-            Assert.True(og.removeEdge(4, 6));
-            Assert.True(og.removeEdge(1, 3));
+            Assert.True(og.AddVertex(4));
+            Assert.True(og.AddVertex(6));
+            Assert.True(og.AddVertex(1));
+            Assert.False(og.AddVertex(1));
+            Assert.True(og.AddVertex(3));
+            Assert.False(og.AddVertex(3));
+            Assert.False(og.AddVertex(4));
+            og.AddEdge(1, 4, 2);
+            og.AddEdge(6, 1, 3);
+            og.AddEdge(1, 3, 3);
+            og.AddEdge(4, 6, 1);
+            og.AddEdge(6, 4, 2);
+            Assert.True(og.RemoveEdge(1, 4));
+            Assert.False(og.RemoveEdge(1, 4));
+            Assert.False(og.RemoveEdge(1, 6));
+            Assert.False(og.RemoveEdge(3, 1));
+            Assert.True(og.RemoveEdge(4, 6));
+            Assert.True(og.RemoveEdge(1, 3));
         }
 
         [Test]
@@ -89,16 +89,16 @@ namespace tests
             OrientedGraph s = new OrientedGraph();
             OrientedGraph og = oriented();
             for(int i = 1; i < 8; i++)
-                s.addVertex(i);
-            s.addEdge(1, 2);	
-            s.addEdge(2, 3);	
-            s.addEdge(3, 1);	
-            s.addEdge(2, 4);	
-            s.addEdge(2, 5);	
-            s.addEdge(5, 6);	
-            s.addEdge(6, 7);	
-            s.addEdge(7, 5);	
-            List<List<long>> res = s.findSCCS();
+                s.AddVertex(i);
+            s.AddEdge(1, 2);	
+            s.AddEdge(2, 3);	
+            s.AddEdge(3, 1);	
+            s.AddEdge(2, 4);	
+            s.AddEdge(2, 5);	
+            s.AddEdge(5, 6);	
+            s.AddEdge(6, 7);	
+            s.AddEdge(7, 5);	
+            List<List<long>> res = s.FindSCCS();
             foreach(List<long> l in res)
             {
                 foreach(long i in l)
@@ -106,7 +106,7 @@ namespace tests
                 Console.WriteLine();
             }
             Assert.AreEqual(3, res.Count);
-            Assert.AreEqual(6, og.findSCCS().Count);
+            Assert.AreEqual(6, og.FindSCCS().Count);
         }
 
         [Test]
@@ -115,32 +115,32 @@ namespace tests
             Graph g = g1();
             Graph a = new Graph();
             for(int i = 1; i < 6; i++)
-                a.addVertex(i);
-            a.addEdge(1, 2);
-            a.addEdge(3, 2);
-            a.addEdge(3, 4);
-            a.addEdge(4, 5);
-            a.addEdge(3, 5);
-            List<long> ans = a.findArticulations();
+                a.AddVertex(i);
+            a.AddEdge(1, 2);
+            a.AddEdge(3, 2);
+            a.AddEdge(3, 4);
+            a.AddEdge(4, 5);
+            a.AddEdge(3, 5);
+            List<long> ans = a.FindArticulations();
             Assert.AreEqual(new List<long>(){2,3}, ans);
-            Assert.AreEqual(2, a.findBridges().Count);
+            Assert.AreEqual(2, a.FindBridges().Count);
 
             Graph t = new Graph();
             for(int i = 1; i < 8; i++)
-                t.addVertex(i);
-            t.addEdge(1, 3);	
-            t.addEdge(2, 5);	
-            t.addEdge(3, 5);	
-            t.addEdge(3, 4);	
-            t.addEdge(6, 4);	
-            t.addEdge(6, 5);	
-            t.addEdge(6, 7);	
-            List<long> ans2 = t.findArticulations();
-            Assert.AreEqual(3, t.findBridges().Count);
+                t.AddVertex(i);
+            t.AddEdge(1, 3);	
+            t.AddEdge(2, 5);	
+            t.AddEdge(3, 5);	
+            t.AddEdge(3, 4);	
+            t.AddEdge(6, 4);	
+            t.AddEdge(6, 5);	
+            t.AddEdge(6, 7);	
+            List<long> ans2 = t.FindArticulations();
+            Assert.AreEqual(3, t.FindBridges().Count);
             Assert.AreEqual(new List<long>(){3, 5, 6}, ans2);
 
-            ans = g.findArticulations();
-            Assert.AreEqual(1, g.findBridges().Count);
+            ans = g.FindArticulations();
+            Assert.AreEqual(1, g.FindBridges().Count);
             Assert.AreEqual(new List<long>(){7}, ans);
         }
 
@@ -168,10 +168,10 @@ namespace tests
         public void testBipartity()
         {
             Graph g = g1();
-            Bipartite b = g.checkBipartity();
+            Bipartite b = g.CheckBipartity();
             Assert.AreEqual(b.isBipartite, false);
 
-            Bipartite b2 = g2.checkBipartity();
+            Bipartite b2 = g2.CheckBipartity();
             Assert.AreEqual(true, b2.isBipartite);
             List<long> redNodes = new List<long>(){1, 3, 6};
             List<long> blueNodes = new List<long>(){2, 4, 5, 7};
@@ -183,11 +183,11 @@ namespace tests
         public void testToposort()
         {
             OrientedGraph og = oriented();
-            List<long> order = og.topologicalOrdering();
+            List<long> order = og.TopologicalOrdering();
             List<long> correct = new List<long>(){6, 3, 2, 5, 4, 1};
             Assert.AreEqual(correct, order);
-            og.addEdge(3, 1, 1);
-            order = og.topologicalOrdering();
+            og.AddEdge(3, 1, 1);
+            order = og.TopologicalOrdering();
             Assert.AreEqual(new List<long>(), order);
         }
 
@@ -212,17 +212,17 @@ namespace tests
         public void testDijkstra()
         {
             Graph g = g1();
-            Dijkstra a = g.findShortestPath(5, 4);
+            Dijkstra a = g.FindShortestPath(5, 4);
             Assert.AreEqual(13, a.cost);
             List<long> sa = new List<long>(){5, 1, 8, 3, 7, 4};
             Assert.AreEqual(sa , a.shortestPath);
 
-            Dijkstra b = g.findShortestPath(4, 8);
+            Dijkstra b = g.FindShortestPath(4, 8);
             Assert.AreEqual(6, b.cost);
             List<long> sb = new List<long>(){4, 7, 3, 8};
             Assert.AreEqual(sb, b.shortestPath);
 
-            Dijkstra c = g.findShortestPath(5, 8);
+            Dijkstra c = g.FindShortestPath(5, 8);
             Assert.AreEqual(7, c.cost);
             List<long> sc = new List<long>(){5, 1, 8};
             Assert.AreEqual(sc, c.shortestPath);
@@ -231,7 +231,7 @@ namespace tests
         [Test]
         public void testFloyd()
         {
-            long [,] ans = fg.floydWarshall();
+            long [,] ans = fg.FloydWarshall();
             long [,] correct = new long[4, 4]
             {{0, 1, 2, 1}, {1, 0, 2, 1}, {2, 2, 0, 1}, {1, 1, 1, 0}};
             Assert.AreEqual(correct, ans);
@@ -240,68 +240,68 @@ namespace tests
         Graph mstGraph()
         {
             Graph g = new Graph();
-            g.addVertex(1);
-            g.addVertex(2);
-            g.addVertex(3);
-            g.addVertex(4);
-            g.addVertex(5);
-            g.addVertex(6);
-            g.addVertex(7);
-            g.addVertex(8);
-            g.addEdge(1, 4, 4);
-            g.addEdge(1, 7, 1);
-            g.addEdge(1, 6, 3);
-            g.addEdge(1, 8, 7);
-            g.addEdge(2, 3, 7);
-            g.addEdge(2, 6, 3);
-            g.addEdge(2, 5, 1);
-            g.addEdge(2, 4, 3);
-            g.addEdge(3, 4, 2);
-            g.addEdge(3, 8, 3);
-            g.addEdge(5, 4, 1);
-            g.addEdge(5, 6, 2);
-            g.addEdge(5, 7, 1);
-            g.addEdge(6, 7, 1);
-            g.addEdge(5, 4, 1);
+            g.AddVertex(1);
+            g.AddVertex(2);
+            g.AddVertex(3);
+            g.AddVertex(4);
+            g.AddVertex(5);
+            g.AddVertex(6);
+            g.AddVertex(7);
+            g.AddVertex(8);
+            g.AddEdge(1, 4, 4);
+            g.AddEdge(1, 7, 1);
+            g.AddEdge(1, 6, 3);
+            g.AddEdge(1, 8, 7);
+            g.AddEdge(2, 3, 7);
+            g.AddEdge(2, 6, 3);
+            g.AddEdge(2, 5, 1);
+            g.AddEdge(2, 4, 3);
+            g.AddEdge(3, 4, 2);
+            g.AddEdge(3, 8, 3);
+            g.AddEdge(5, 4, 1);
+            g.AddEdge(5, 6, 2);
+            g.AddEdge(5, 7, 1);
+            g.AddEdge(6, 7, 1);
+            g.AddEdge(5, 4, 1);
             return g;
         }
 
         Graph g1()
         {
             Graph g = new Graph();
-            g.addVertex(5);
-            g.addVertex(8);
-            g.addVertex(1);
-            g.addVertex(6);
-            g.addVertex(3);
-            g.addVertex(2);
-            g.addVertex(4);
-            g.addVertex(7);
-            g.addEdge(5, 1, 3);
-            g.addEdge(1, 8, 4);
-            g.addEdge(5, 8, 9);
-            g.addEdge(1, 6, 2);
-            g.addEdge(3, 6, 9);
-            g.addEdge(3, 8, 3);
-            g.addEdge(2, 8, 5);
-            g.addEdge(2, 3, 1);
-            g.addEdge(7, 3, 1);
-            g.addEdge(7, 2, 2);
-            g.addEdge(7, 4, 2);
+            g.AddVertex(5);
+            g.AddVertex(8);
+            g.AddVertex(1);
+            g.AddVertex(6);
+            g.AddVertex(3);
+            g.AddVertex(2);
+            g.AddVertex(4);
+            g.AddVertex(7);
+            g.AddEdge(5, 1, 3);
+            g.AddEdge(1, 8, 4);
+            g.AddEdge(5, 8, 9);
+            g.AddEdge(1, 6, 2);
+            g.AddEdge(3, 6, 9);
+            g.AddEdge(3, 8, 3);
+            g.AddEdge(2, 8, 5);
+            g.AddEdge(2, 3, 1);
+            g.AddEdge(7, 3, 1);
+            g.AddEdge(7, 2, 2);
+            g.AddEdge(7, 4, 2);
             return g;
         }
         OrientedGraph oriented()
         {
             OrientedGraph og = new OrientedGraph();
             for(int i = 1; i < 7; i++)
-                og.addVertex(i);
-            og.addEdge(1, 2, 2);
-            og.addEdge(1, 3, 1);
-            og.addEdge(2, 3, 1);
-            og.addEdge(1, 4, 4);
-            og.addEdge(3, 6, 3);
-            og.addEdge(4, 5, 3);
-            og.addEdge(5, 6, 1);
+                og.AddVertex(i);
+            og.AddEdge(1, 2, 2);
+            og.AddEdge(1, 3, 1);
+            og.AddEdge(2, 3, 1);
+            og.AddEdge(1, 4, 4);
+            og.AddEdge(3, 6, 3);
+            og.AddEdge(4, 5, 3);
+            og.AddEdge(5, 6, 1);
             return og;
         }
     }

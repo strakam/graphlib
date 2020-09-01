@@ -55,27 +55,27 @@ namespace graphlib
             {
                 // Compare size of both trees and hang smaller one under the
                 // bigger one to increase performance
-                if(p[vIndex(rootA)].size > p[vIndex(rootB)].size)
+                if(p[Vindex(rootA)].size > p[Vindex(rootB)].size)
                 {
                     // Hanging operations using temporary variables
-                    ufVertex ta = p[vIndex(rootA)];
-                    ta.size += p[vIndex(rootB)].size;
-                    p[vIndex(rootA)] = ta;
+                    ufVertex ta = p[Vindex(rootA)];
+                    ta.size += p[Vindex(rootB)].size;
+                    p[Vindex(rootA)] = ta;
 
-                    ufVertex tb = p[vIndex(rootB)];
+                    ufVertex tb = p[Vindex(rootB)];
                     tb.parent = rootA;
-                    p[vIndex(rootB)] = tb;
+                    p[Vindex(rootB)] = tb;
                 }
                 // Else is the same as above just for opposite case
                 else
                 {
-                    ufVertex tb = p[vIndex(rootB)];
-                    tb.size += p[vIndex(rootA)].size;
-                    p[vIndex(rootB)] = tb;
+                    ufVertex tb = p[Vindex(rootB)];
+                    tb.size += p[Vindex(rootA)].size;
+                    p[Vindex(rootB)] = tb;
 
-                    ufVertex ta = p[vIndex(rootA)];
+                    ufVertex ta = p[Vindex(rootA)];
                     ta.parent = rootB;
-                    p[vIndex(rootA)] = ta;
+                    p[Vindex(rootA)] = ta;
                 }
                 return true;
             }
@@ -87,13 +87,13 @@ namespace graphlib
         {
             // Path compression 
             long root = v;
-            if(p[vIndex(v)].parent != v)
+            if(p[Vindex(v)].parent != v)
             {
-                root = find(p[vIndex(v)].parent, ref p);
+                root = find(p[Vindex(v)].parent, ref p);
             }
-            ufVertex t = p[vIndex(v)];
+            ufVertex t = p[Vindex(v)];
             t.parent = root;
-            p[vIndex(v)] = t;
+            p[Vindex(v)] = t;
             return root;
         }
 

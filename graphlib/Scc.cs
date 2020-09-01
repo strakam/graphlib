@@ -4,11 +4,11 @@ using System.Collections.Generic;
 
 namespace graphlib
 {
-    public partial class OrientedGraph:Graph
+    public partial class OrientedGraph:IGraph
     {
         /* findSCCS (find strongly connected components is implemented in form
          * of Kosaraju's algorithm */
-        public List<List<long>> findSCCS()
+        public List<List<long>> FindSCCS()
         {
             /* List vertices contains graph vertices in order of leaving them in
              * dfs */
@@ -34,7 +34,7 @@ namespace graphlib
             // Take vertices from stack and perform search on them
             while(vertices.Count > 0)
             {
-                if(vertexComponents[vIndex(vertices.Peek())] == 0)
+                if(vertexComponents[Vindex(vertices.Peek())] == 0)
                 {
                     assignComponents(vertices.Peek(), component, 
                             ref vertexComponents, ref vertices);
@@ -72,10 +72,10 @@ namespace graphlib
          * inserts vertices in desired order - that is, source is on top */
         void findSink(long v, ref int [] vertexComponents, ref Stack<long> st)
         {
-            vertexComponents[vIndex(v)] = 0;	
-            foreach(Edge e in gT[vIndex(v)])
+            vertexComponents[Vindex(v)] = 0;	
+            foreach(Edge e in gT[Vindex(v)])
             {
-                long next = vIndex(e.destination);
+                long next = Vindex(e.destination);
                 if(vertexComponents[next] == -1)
                 {
                     findSink(e.destination, ref vertexComponents, ref st);
@@ -93,10 +93,10 @@ namespace graphlib
         void assignComponents(long v, int c, ref int [] vertexComponents, 
                 ref Stack<long> st)
         {
-            vertexComponents[vIndex(v)] = c;
-            foreach(Edge e in graph[vIndex(v)])
+            vertexComponents[Vindex(v)] = c;
+            foreach(Edge e in graph[Vindex(v)])
             {
-                long next = vIndex(e.destination);
+                long next = Vindex(e.destination);
                 if(vertexComponents[next] == 0)
                 {
                     assignComponents(e.destination, c, 

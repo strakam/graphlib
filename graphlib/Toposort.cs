@@ -4,10 +4,16 @@ using System.Collections.Generic;
 
 namespace graphlib
 {
-    public partial class OrientedGraph:Graph
+    public partial class OrientedGraph:IGraph
     {
         // Function that finds topologicalOrdering if it exists
-        public List<long> topologicalOrdering()
+        /// <summary>
+        /// Method finds topological ordering of a graph.
+        /// </summary>
+        /// <returns>
+        /// It returns list of IDs of vertices sorted in topological order.
+        /// </returns>
+        public List<long> TopologicalOrdering()
         {
             List<long> order = new List<long>();
             /* In visited array there are 3 types of vertices
@@ -21,7 +27,7 @@ namespace graphlib
             foreach(KeyValuePair<long, int> kp in this.indexes)
             {
                 // If child vertex is not visied, go search from it
-                if(visited[vIndex(kp.Key)] == 0)
+                if(visited[Vindex(kp.Key)] == 0)
                 {
                     result = tsDFS(kp.Key, ref order, ref visited);
                     if(!result)
@@ -40,14 +46,14 @@ namespace graphlib
         // Third argument - arrays that tells status of vertices
         private bool tsDFS(long vertex, ref List<long> order, ref long[] visited)
         {
-            int v = vIndex(vertex);
+            int v = Vindex(vertex);
             // Set as visited but not closed
             visited[v] = 1;
             for(int i = 0; i < graph[v].Count; i++)
             {
                 int neighbor = (int)graph[v][i].destination;
                 // If child is unvisited, go search from there
-                if(visited[vIndex(neighbor)] == 0)
+                if(visited[Vindex(neighbor)] == 0)
                 {
                     bool res = tsDFS(neighbor, ref order, ref visited);
                     if(!res)
@@ -57,13 +63,13 @@ namespace graphlib
                 }
                 // If a child is visited but not closed, we found a cycle
                 // so topological ordering does not exist
-                else if(visited[vIndex(neighbor)] == 1)
+                else if(visited[Vindex(neighbor)] == 1)
                 {
                     return false;
                 }
             }
             // Set as closed and add to ordering
-            visited[vIndex(vertex)] = 2;
+            visited[Vindex(vertex)] = 2;
             order.Add(vertex);
             return true;
         }

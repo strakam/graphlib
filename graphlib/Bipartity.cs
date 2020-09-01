@@ -2,17 +2,26 @@ using System.Collections.Generic;
 
 namespace graphlib
 {
-    // Struct that describes bipartity status of the graph
+    /// <summary>
+    /// Struct that describes bipartity status of the graph
+    /// </summary>
     public struct Bipartite
     {
+        /// <value> isBipartite is true if graph is bipartite </value>
         public bool isBipartite {get; set;}
-        // Two lists containing vertices of both partitions
+        /// <value> Two lists containing vertices of both partitions </value>
         public List<long> redPart, bluePart;
     }
 
     public partial class Graph
     {
-        public Bipartite checkBipartity()
+        /// <summary>
+        /// CheckBipartity tests, whether graph is bipartite
+        /// </summary>
+        /// <returns>
+        /// It returns instance of class Bipartite with needed info
+        /// </returns>
+        public Bipartite CheckBipartity()
         {
             Bipartite bp = new Bipartite();
             bp.isBipartite = true;
@@ -23,7 +32,7 @@ namespace graphlib
             // Search from unvisited vertices
             foreach(KeyValuePair<long, int> kp in indexes)
             {
-                if(color[vIndex(kp.Key)] == 0)
+                if(color[Vindex(kp.Key)] == 0)
                 {
                     result = cbDFS(kp.Key, 1, ref color);
                     if(!result)
@@ -41,7 +50,7 @@ namespace graphlib
                 bp.bluePart = new List<long>();
                 foreach(KeyValuePair<long, int> kp in indexes)
                 {
-                    if(color[vIndex(kp.Key)] == 1)
+                    if(color[Vindex(kp.Key)] == 1)
                     {
                         bp.redPart.Add(kp.Key);
                     }
@@ -58,22 +67,22 @@ namespace graphlib
         // First argument - current vertex number
         // Second argument - its color
         // Third argument - array of colors of all vertices
-        private bool cbDFS(long vertex, short color, ref short [] colors)
+        private bool cbDFS(long Vertex, short color, ref short [] colors)
         {
-            int v = vIndex(vertex);	
+            int v = Vindex(Vertex);	
             // Variable result serves the same function as above
             bool result = true;
             // Set color
             colors[v] = color;
-            // Check all neighbors and recursively visit them
+            // Check all Neighbors and recursively visit them
             for(int i = 0; i < graph[v].Count; i++)
             {
-                long neighbor = graph[v][i].destination;
-                if(colors[vIndex(neighbor)] == 0)
+                long Neighbor = graph[v][i].destination;
+                if(colors[Vindex(Neighbor)] == 0)
                 {
-                    result = cbDFS(neighbor, (short)(color * -1), ref colors);
+                    result = cbDFS(Neighbor, (short)(color * -1), ref colors);
                 }
-                else if(colors[vIndex(neighbor)] == color)
+                else if(colors[Vindex(Neighbor)] == color)
                 {
                     result = false;
                 }
@@ -86,4 +95,4 @@ namespace graphlib
         }
 
     }
-}
+    }

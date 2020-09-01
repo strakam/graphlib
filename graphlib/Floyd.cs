@@ -5,7 +5,15 @@ namespace graphlib
 {
     public partial class Graph
     {
-        public long[,] floydWarshall()
+        /// <summary>
+        /// FloydWarshall method finds shortest paths between all pairs of
+        /// vertices.
+        /// </summary>
+        /// <returns>
+        /// It returns 2D array where array at [i, j] is a shortest path from
+        /// vertex i to j. 
+        /// </returns>
+        public long[,] FloydWarshall()
         {
             long l = size;
             // Adjacency matrix
@@ -21,10 +29,10 @@ namespace graphlib
             // Set initial distances between vertices 
             foreach(KeyValuePair<long, int> kp in indexes)
             {
-                int v = vIndex(kp.Key);
+                int v = Vindex(kp.Key);
                 for(int i = 0; i < graph[v].Count; i++)
                 {
-                    map[v, vIndex(graph[v][i].destination)] =
+                    map[v, Vindex(graph[v][i].destination)] =
                         graph[v][i].weight;
                 }
             }	
