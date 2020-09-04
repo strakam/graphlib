@@ -6,8 +6,14 @@ namespace graphlib
 {
     public class basic
     {
-		static void Main()
-		{
-		}
+      public static void Main()
+      {
+        Console.WriteLine("sr");
+        // OrientedGraph g = new OrientedGraph();
+        // g.AddVertex(8);
+        // g.AddVertex(3);
+        // g.AddEdge(3, 8, 2);
+        // Console.WriteLine("kek");
+      }
     }
 }

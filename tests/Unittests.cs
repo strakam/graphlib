@@ -10,7 +10,7 @@ namespace tests
     public class Tests
     {
         Graph g2 = new Graph();
-        Graph fg = new Graph();
+        SharedGraph fg = new Graph();
 
         [OneTimeSetUp]
         public void Setup()
@@ -62,7 +62,7 @@ namespace tests
             Assert.False(g.RemoveEdge(2, 5));
 
             // Oriented graph
-            Graph og = new OrientedGraph();
+            OrientedGraph og = new OrientedGraph();
             Assert.True(og.AddVertex(4));
             Assert.True(og.AddVertex(6));
             Assert.True(og.AddVertex(1));
@@ -83,31 +83,31 @@ namespace tests
             Assert.True(og.RemoveEdge(1, 3));
         }
 
-        [Test]
-        public void testSCCS()
-        {
-            OrientedGraph s = new OrientedGraph();
-            OrientedGraph og = oriented();
-            for(int i = 1; i < 8; i++)
-                s.AddVertex(i);
-            s.AddEdge(1, 2);	
-            s.AddEdge(2, 3);	
-            s.AddEdge(3, 1);	
-            s.AddEdge(2, 4);	
-            s.AddEdge(2, 5);	
-            s.AddEdge(5, 6);	
-            s.AddEdge(6, 7);	
-            s.AddEdge(7, 5);	
-            List<List<long>> res = s.FindSCCS();
-            foreach(List<long> l in res)
-            {
-                foreach(long i in l)
-                    Console.Write(i + " ");
-                Console.WriteLine();
-            }
-            Assert.AreEqual(3, res.Count);
-            Assert.AreEqual(6, og.FindSCCS().Count);
-        }
+        // [Test]
+        // public void testSCCS()
+        // {
+        //     OrientedGraph s = new OrientedGraph();
+        //     OrientedGraph og = oriented();
+        //     for(int i = 1; i < 8; i++)
+        //         s.AddVertex(i);
+        //     s.AddEdge(1, 2);	
+        //     s.AddEdge(2, 3);	
+        //     s.AddEdge(3, 1);	
+        //     s.AddEdge(2, 4);	
+        //     s.AddEdge(2, 5);	
+        //     s.AddEdge(5, 6);	
+        //     s.AddEdge(6, 7);	
+        //     s.AddEdge(7, 5);	
+        //     List<List<long>> res = s.FindSCCS();
+        //     foreach(List<long> l in res)
+        //     {
+        //         foreach(long i in l)
+        //             Console.Write(i + " ");
+        //         Console.WriteLine();
+        //     }
+        //     Assert.AreEqual(3, res.Count);
+        //     Assert.AreEqual(6, og.FindSCCS().Count);
+        // }
 
         [Test]
         public void testAps()
@@ -121,9 +121,9 @@ namespace tests
             a.AddEdge(3, 4);
             a.AddEdge(4, 5);
             a.AddEdge(3, 5);
-            List<long> ans = a.FindArticulations();
+            List<long> ans = BridgesArticulations.FindArticulations(ref a);
             Assert.AreEqual(new List<long>(){2,3}, ans);
-            Assert.AreEqual(2, a.FindBridges().Count);
+            Assert.AreEqual(2, BridgesArticulations.FindBridges(ref a).Count);
 
             Graph t = new Graph();
             for(int i = 1; i < 8; i++)
@@ -135,12 +135,12 @@ namespace tests
             t.AddEdge(6, 4);	
             t.AddEdge(6, 5);	
             t.AddEdge(6, 7);	
-            List<long> ans2 = t.FindArticulations();
-            Assert.AreEqual(3, t.FindBridges().Count);
+            List<long> ans2 = BridgesArticulations.FindArticulations(ref t);
+            Assert.AreEqual(3, BridgesArticulations.FindBridges(ref t).Count);
             Assert.AreEqual(new List<long>(){3, 5, 6}, ans2);
 
-            ans = g.FindArticulations();
-            Assert.AreEqual(1, g.FindBridges().Count);
+            ans = BridgesArticulations.FindArticulations(ref g);
+            Assert.AreEqual(1, BridgesArticulations.FindBridges(ref g).Count);
             Assert.AreEqual(new List<long>(){7}, ans);
         }
 
@@ -148,30 +148,29 @@ namespace tests
         public void test_kruskal()
         {
             Graph g = g1();
-            SpanningTree s = g.getSpanning();
+            SpanningTreeInfo s = SpanningTree.GetSpanning(ref g);
             Assert.AreEqual(16, s.cost);
-            Assert.AreEqual(s.edges.Count, 7);
 
-            SpanningTree mst = mstGraph().getSpanning();
+            Graph mg = mstGraph();
+            SpanningTreeInfo mst = SpanningTree.GetSpanning(ref mg);
             Assert.AreEqual(10, mst.cost);
-            Assert.AreEqual(mst.edges.Count, 7);
-            // Test for listing edges
-            /* foreach(Edge e in mst.edges) */
-            /* { */
-            /* 	Console.WriteLine("From {0} to {1} with cost {2}", */ 
-            /* 			e.source, e.destination, e.weight); */
-            /* } */
-            /* Assert.True(false); */
+         // Test for listing edges
+         /* foreach(Edge e in mst.edges) */
+         /* { */
+         /* 	Console.WriteLine("From {0} to {1} with cost {2}", */ 
+         /* 			e.source, e.destination, e.weight); */
+         /* } */
+         /* Assert.True(false); */
         }
 
         [Test]
         public void testBipartity()
         {
             Graph g = g1();
-            Bipartite b = g.CheckBipartity();
+            BipartiteInfo b = Bipartite.CheckBipartity(ref g);
             Assert.AreEqual(b.isBipartite, false);
 
-            Bipartite b2 = g2.CheckBipartity();
+            BipartiteInfo b2 = Bipartite.CheckBipartity(ref g2);
             Assert.AreEqual(true, b2.isBipartite);
             List<long> redNodes = new List<long>(){1, 3, 6};
             List<long> blueNodes = new List<long>(){2, 4, 5, 7};
@@ -211,18 +210,18 @@ namespace tests
         [Test]
         public void testDijkstra()
         {
-            Graph g = g1();
-            Dijkstra a = g.FindShortestPath(5, 4);
+            SharedGraph g = g1();
+            DijkstraInfo a = Dijkstra.FindShortestPath(ref g, 5, 4);
             Assert.AreEqual(13, a.cost);
             List<long> sa = new List<long>(){5, 1, 8, 3, 7, 4};
             Assert.AreEqual(sa , a.shortestPath);
 
-            Dijkstra b = g.FindShortestPath(4, 8);
+            DijkstraInfo b = Dijkstra.FindShortestPath(ref g, 4, 8);
             Assert.AreEqual(6, b.cost);
             List<long> sb = new List<long>(){4, 7, 3, 8};
             Assert.AreEqual(sb, b.shortestPath);
 
-            Dijkstra c = g.FindShortestPath(5, 8);
+            DijkstraInfo c = Dijkstra.FindShortestPath(ref g, 5, 8);
             Assert.AreEqual(7, c.cost);
             List<long> sc = new List<long>(){5, 1, 8};
             Assert.AreEqual(sc, c.shortestPath);
@@ -231,10 +230,10 @@ namespace tests
         [Test]
         public void testFloyd()
         {
-            long [,] ans = fg.FloydWarshall();
+            FloydInfo ans = FloydWarshall.AllShortestPaths(ref fg);
             long [,] correct = new long[4, 4]
             {{0, 1, 2, 1}, {1, 0, 2, 1}, {2, 2, 0, 1}, {1, 1, 1, 0}};
-            Assert.AreEqual(correct, ans);
+            Assert.AreEqual(correct, ans.map);
         }
 
         Graph mstGraph()
