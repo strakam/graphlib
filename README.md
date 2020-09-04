@@ -1,10 +1,12 @@
 # Používateľská príručka
 
-Už z názvu je jasné, že výsledkom tohto projektu je grafová knižnica.
+Výsledkom tohto projektu je grafová knižnica.
 Je napísaná v jazyku C# a je aj určená na používanie v C#.
 
-Jadrom knižnice sú triedy **Graph** (neorientovaný graf) a **OrientedGraph**. 
-V nich sa nachádzajú všetky metódy knižnice.
+Jadrom knižnice sú triedy **Graph** (neorientovaný graf) a **OrientedGraph**,
+ktoré obsahujú vlastnosti grafu a metódy na manipuláciu s hranami a vrcholmi.
+
+Každý algoritmus má svoju staticku triedu, v ktorej sa nachádza jeho implementácia.
 
 Spoločné metódy sú:
 - AddVertex
@@ -77,40 +79,39 @@ public long source;
 public long destination;
 public long weight;
 ```
-Pomocou týchto vlastností môže uživateľ zisťovať informácie o hranách pri výstupe metód ako **getSpanning()** vysvetlenej nižšie.
+Pomocou týchto vlastností môže uživateľ zisťovať informácie o hranách pri výstupe metód ako **SpanningTree.GetSpanning()** vysvetlenej nižšie.
 
 
 ### Spoločné algoritmy
 
 #### Floyd Warshall (nájdenie najkratších ciest medzi všetkými vrcholmi)
-Metóda **FloydWarshall()** platí pre oba typy grafov. jej výstupom je dvojrozmerné pole s rozmermi **VxV**, kde na pozícii **[i,j]**
-je vzdialenosť vrcholu s indexom **j** od vrcholu s indexom **i**. Pozor, pri orientovaných grafoch sa **[i,j]** a **[j,i]** môžu líšiť.
-Keďže index vrcholu **v** je odlišný od samotnej hodnoty **v**, na zistenie vzdialenosti v tomto 2D poli použijeme metódu **Vindex(v)**.
+Metóda **AllShortestPaths(ref SharedGraph g)** sa nachádza v statickej triede **FloydWarshall** a platí pre oba typy grafov. Jej výstupom je struct FloydInfo,
+ktorý obsahuje vzdialenosti medzi všetkymi dvojicami vrcholov. Na zistenie vzdialenosti medzi ľubovoľným párom slúži metóda **GetDistance(long source, long destination)**, ktorá vráti dĺžku cesty z vrcholu **source** do vrcholu **destination**.
 Použitie:
 ```c#
-long answer[,] = g.FloydWarshall();
-long distance = answer[g.Vindex(a), g.Vindex(b)];
+FloydInfo f = FloydWarshall.AllShortestPaths(ref Graph g);
+long distanceFromAtoB = f.GetDistance(a, b);
 ```
-Tento kód dostane vzdialenosť z vrcholu **a** do vrcholu **b** do premennej **distance**.
+Tento kód dostane vzdialenosť z vrcholu **a** do vrcholu **b** do premennej **distanceFromAtoB**.
 
 ***Pozor, ak medzi dvomi vrcholmi nevedie žiadna cesta, výsledné pole obsahuje na danom indexe hodnotu long.MaxValue***.
 Časová zložitosť tohto algoritmu je **O(V^3)**.
 
 #### Dijkstra
-Druhou spoločnou metódou je **FindShortestPath(long source, long destination)**, ktorá nájde najkratšiu cestu z vrcholu **source** do
-vrcholu **destination**. Návratovou hodnotou tejto metódy je inštancia triedy **Dijsktra**, ktorá má nasledovné vlasnosti:
+Druhou spoločnou metódou je **FindShortestPath(ref SharedGraph g, long source, long destination)**, ktorá nájde najkratšiu cestu z vrcholu **source** do
+vrcholu **destination**. Návratovou hodnotou tejto metódy je inštancia triedy **DijsktraInfo**, ktorá má nasledovné vlasnosti:
 ```c#
 List<long> shortestPath; // zoznam ID vrcholov, ktoré sú zoradené a ležia na najkratšej ceste vedúcej od source k destination
 long cost; // obsahuje cenu tejto najkratšej cesty
 ```
-Ako už z názvu triedy vyplýva, v tejto metóde je použitý Dijsktrov algoritmus, ktorý nefunguje na záporných hranách a preto si je treba
+V tejto metóde je použitý Dijsktrov algoritmus, ktorý nefunguje na záporných hranách a preto si je treba
 dať pozor. V prípade kedy neexistuje najkratšia cesta, list **shortestPath** bude prádzny.
 Časová zložitosť tejto verzie Dijkstrovho algoritmu je **O(ElogV)**.
 ```c#
-Dijkstra d = g.FindShortestPath(a, b);
-Console.WriteLine("Cena najkratsej cesty z vrcholu {0} do {1} je {2}.", a, b, d.cost);
+DijkstraInfo dInfo = Dijsktra.FindShortestPath(ref g, a, b);
+Console.WriteLine("Cena najkratsej cesty z vrcholu {0} do {1} je {2}.", a, b, dInfo.cost);
 Console.WriteLine("A vedie cez vrcholy:");
-foreach(long i in d.shortestPath)
+foreach(long i in dInfo.shortestPath)
 {
     Console.Write("i ");
 }
@@ -123,26 +124,27 @@ napísaná tak, aby metóda findShortestPath našla najkratšiu cestu v neohodno
 ### Algoritmy pre neorientované grafy
 
 #### Artikulácie
-Na hľadanie artikulácii v grafe slúži metóda **FindArticulations()**. Jej návratová hodnota je **List\<long\>**,
-ktorá obsahuje ID všetkých vrcholov, ktoré sú označené ako artikulácie v grafe. Artikulácia je vrchol, po ktorého
-odstránení sa graf rozdelí na viacero komponentov.
+Na hľadanie artikulácii v grafe slúži metóda **FindArticulations(ref Graph g)**, ktorá sa nachádza v statickej triede BridgesArticulations. 
+Jej návratová hodnota je **List\<long\>**, ktorá obsahuje ID všetkých vrcholov, ktoré sú označené ako artikulácie v grafe. 
+Artikulácia je vrchol, po ktorého odstránení sa graf rozdelí na viacero komponentov.
 ```c#
-List<long> ans = g.FindArticulations();
+List<long> articulationsVertices = BridgesArticulations.FindArticulations(ref g);
 Console.WriteLine("Artikulacie su vrcholy:");
-foreach(long i in ans)
+foreach(long vertexID in articulationVertices)
 {
-    Console.Write(i + " ");
+    Console.Write(vertexID + " ");
 }
 ```
 V prípade, kedy graf neobsahuje žiadne artikulácie, metóda vráti prázdny list. Časová zložitosť je **O(V+E)**.
 
 #### Mosty
 Most je hranový ekvivalent artikulácie. Ak zmažeme most, v grafe nám pribudne ďalšia komponenta. Metóda
-na hľadanie mostov je **FindBridges()** a jej výstupom je **List\<Edge\>**, čiže zoznam hrán, ktoré sú mostami.
+na hľadanie mostov je **FindBridges(ref Graph g)**, ktorá sa taktiež nachádza v statickej triede BridgesArticulations
+a jej výstupom je **List\<Edge\>**, čiže zoznam hrán, ktoré sú mostami.
 ```c#
-List<Edge> le = g.FindBridges();
+List<Edge> listOfEdges = BridgesArticulations.FindBridges(ref g);
 Console.WriteLine("Mosty su:");
-foreach(Edge e in le)
+foreach(Edge e in listOfEdges)
 {
     Console.WriteLine("Hrana veduca z {0} do {1}", e.source, e.destination);
 }
