@@ -153,22 +153,20 @@ Ak graf neobsahuje žiadne mosty, vráti prázdny list.
 Časová zložitosť tejto metódy je taktiež **O(V+E)**.
 
 #### Hľadanie najlacnejšej kostry
-Pre nájdenie najlacnejšej kostry grafu slúži metóda **GetSpanning()**. Jej návratovou hodnotou je
-inštancia triedy **SpanningTree**, ktorá má tieto vlasnosti:
+Pre nájdenie najlacnejšej kostry grafu slúži metóda **GetSpanning()**, ktorá sa nachádza v statickej triede
+SpanningTree. Jej návratovou hodnotou je inštancia triedy **SpanningTreeInfo**, ktorá má tieto vlasnosti:
 ```c#
-List<Edge> edges; // zoznam hrán, ktoré tvoria najlacnejšiu kostru
+Graph MST; // graf, ktorý je najlacnejšou kostrou vstupného grafu
 long cost; // cena najlacnejšej kostry
 ```
 Kostra grafu je množina hrán, ktorá spája všetky vrcholy do jednej komponenty a neobsahuje kružnicu.
 Najlacnejšia kostra je taká kostra, ktorej súčet všetkých cien hrán je najmenšia.
 ```c#
-SpanningTree st = g.GetSpanning();
-Console.WriteLine("Cena najlacnejsej kostry je " + st.cost);
-Console.WriteLine("A jej hrany su:");
-foreach(Edge e in st.edges)
-{
-    Console.WriteLine("Hrana veduca z {0} do {1}", e.source, e.destination);
-}
+SpanningTreeInfo MSTInfo = SpanningTree.GetSpanning(ref g);
+Console.WriteLine("Cena najlacnejsej kostry je " + MSTInfo.cost);
+Console.WriteLine("Hrany obsiahnuté v minimálnej kostre grafu g sú:");
+Graph MSTofG = MSTInfo.MST;
+MSTofG.PrintGraph();
 ```
 Na hľadanie najacnejšej kostry je použitý Kruskalov algoritmus, ktorý využíva Union-Find štruktúru.
 Časová zložitosť je **O(ElogE)**.
@@ -177,19 +175,16 @@ Na hľadanie najacnejšej kostry je použitý Kruskalov algoritmus, ktorý využ
 ### Algoritmy pre orientované grafy
 
 #### Hľadanie silno súvislých komponent
-Pre tento problém je určená metóda **FindSCCS()**, ktorá vracia 2D list, kde každý list obsahuje
-ID vrcholov, ktoré ležia v jednej komponente. Komponenta v orientovanom grafe je množina vrcholov,
-v ktorej medzi každou dvojicou vrcholov existuje orientovaná cesta. Na hľadanie týchto komponent je
-použitý Kosaraju algoritmus.
+Pre tento problém je určená metóda **FindSCCS(ref OrientedGraph og)** nachádzajúca sa v statickej triede Scc. 
+**FindSCCS(ref OrientedGraph og)** vracia list grafov, kde každý graf je jedna silno súvisla komponenta vstupného grafu.
+Komponenta v orientovanom grafe je taký podgraf, v ktorom medzi každou dvojicou vrcholov existuje orientovaná cesta. 
+Na hľadanie týchto komponent je použitý Kosaraju algoritmus.
 ```c#
-List<List<long>> components = g.FindSCCS();
+List<OrientedGraph> components = Scc.FindSCCS(ref og);
 for(int i = 1; i <= components.Count; i++)
 {
-    Console.WriteLine("Vrcholy v komponente {0} su:", i);
-    foreach(long v in components[i])
-    {
-        Console.Write(v + " ");
-    }
+    Console.WriteLine("Komponenta cislo {0} je:", i);
+    components[i].PrintGraph();
     Console.WriteLine();
 }
 ```
@@ -200,14 +195,15 @@ Topologické usporiadanie vrcholov v orientovanom grafe je také usporiadanie, v
 je vrchol **v** v danom usporiadaní pred vrcholom **u**, tak potom nemôže existovať orientovaná
 hrana z vrcholu **u** do **v**. Každý acyklický orientovaný graf má takéto usporiadanie.
 Grafy ktoré majú kružnicu, nemajú topologické usporiadanie. Na hľadanie tohto usporiadania
-je určená metóda **TopologicalOrdering()**, ktorá vracia zoznam vrcholov **List\<long\>** 
+je určená metóda **TopologicalOrdering()**, ktorá sa nachádza v statickej triede Toposort
+a vracia zoznam vrcholov **List\<long\>** 
 zoradený podľa vyššie spomenutej vlastnosti.
 ```c#
-List<long> ordering = g.TopologicalOrdering();
+List<long> ordering = Toposort.TopologicalOrdering(ref og);
 Console.WriteLine("Topologicke usporiadanie je nasledovne:");
-foreach(long v in ordering)
+foreach(long vertexID in ordering)
 {
-    Console.Write(v + " ");
+    Console.Write(vertexID + " ");
 }
 ```
 ***Pozor, ak topologické usporiadanie neexistuje, výsledný zoznam bude prázdny.*** Časová
