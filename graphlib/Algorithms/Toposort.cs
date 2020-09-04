@@ -4,8 +4,9 @@ using System.Collections.Generic;
 
 namespace graphlib
 {
-    public partial class OrientedGraph:SharedGraph
+    public static class Toposort
     {
+        private static Dictionary<long, List<Edge>> graph;
         // Function that finds topologicalOrdering if it exists
         /// <summary>
         /// Method finds topological ordering of a graph.
@@ -13,22 +14,23 @@ namespace graphlib
         /// <returns>
         /// It returns list of IDs of vertices sorted in topological order.
         /// </returns>
-        public List<long> TopologicalOrdering()
+        public static List<long> TopologicalOrdering(ref OrientedGraph g)
         {
+            graph = g.graph;
             List<long> order = new List<long>();
             /* In visited array there are 3 types of vertices
              * 0 - not visited
              * 1 - visited but not closed
              * 2 - visited and closed */
             Dictionary<long, long> visited = new Dictionary<long, long>();
-            foreach(KeyValuePair<long, List<Edge>> kp in this.graph)
+            foreach(KeyValuePair<long, List<Edge>> kp in graph)
             {
                 visited.Add(kp.Key, 0);
             }
             /* If result is true, topological ordering is returned, else - empty
              * list is returned */
             bool result = true;
-            foreach(KeyValuePair<long, List<Edge>> kp in this.graph)
+            foreach(KeyValuePair<long, List<Edge>> kp in graph)
             {
                 // If child vertex is not visied, go search from it
                 if(visited[kp.Key] == 0)
@@ -48,7 +50,7 @@ namespace graphlib
         // First argument - current vertex
         // Second argument - list of all vertices in order
         // Third argument - arrays that tells status of vertices
-        private bool tsDFS(long vertex, ref List<long> order, ref Dictionary<long, long> visited)
+        static bool tsDFS(long vertex, ref List<long> order, ref Dictionary<long, long> visited)
         {
             long v = vertex;
             // Set as visited but not closed

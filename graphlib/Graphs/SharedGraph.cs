@@ -67,7 +67,6 @@ namespace graphlib
             foreach(KeyValuePair<long, List<Edge>> k in graph)
             {
                 Console.Write("Susedia vrcholu {0}, su ", k.Key);
-                Console.WriteLine(k.Value.Count);
                 foreach(Edge e in k.Value)
                 {
                     Console.Write(e.destination + " ");

@@ -1,0 +1,13 @@
+xorg-xinit
+zsh,xorg-xinit
+pandoc,zsh
+snapd,zsh,wget
+wget,xorg-xinit
+which,wget
+systemd,wget,which
+python3,pandoc
+tar,python3
+mono,snapd,python3
+sxhkd,pandoc,systemd
+unzip,sxhkd,which
+graphlib,snapd,mono,unzip,systemd

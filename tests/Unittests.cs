@@ -182,11 +182,11 @@ namespace tests
         public void testToposort()
         {
             OrientedGraph og = oriented();
-            List<long> order = og.TopologicalOrdering();
+            List<long> order = Toposort.TopologicalOrdering(ref og);
             List<long> correct = new List<long>(){6, 3, 2, 5, 4, 1};
             Assert.AreEqual(correct, order);
             og.AddEdge(3, 1, 1);
-            order = og.TopologicalOrdering();
+            order = Toposort.TopologicalOrdering(ref og);
             Assert.AreEqual(new List<long>(), order);
         }
 

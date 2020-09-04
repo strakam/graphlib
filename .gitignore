@@ -76,3 +76,5 @@ graphlib/bin
 graphlib/obj
 tests/bin
 tests/obj
+example/bin
+example/obj

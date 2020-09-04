@@ -26,10 +26,14 @@ namespace graphlib
         {
             return indexes[v];
         }
+
+        public long GetDistance(long source, long destination)
+        {
+            return map[indexes[source], indexes[destination]];
+        }
     }
     public static class FloydWarshall
     {
-        static Dictionary<long, List<Edge>> graph;
         /// <summary>
         /// FloydWarshall method finds shortest paths between all pairs of
         /// vertices.
