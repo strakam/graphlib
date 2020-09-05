@@ -1,7 +1,10 @@
 using System.Collections.Generic;
-using System;
 namespace graphlib
 {
+    /// <summary>
+    /// This is implementation of heap for Dijkstra.
+    /// It's not very reproduceable for other algorithms.
+    /// </summary>
     public class Heap
     {
         List<Vertex> heap = new List<Vertex>();

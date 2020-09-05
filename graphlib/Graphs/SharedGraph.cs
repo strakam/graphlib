@@ -1,9 +1,12 @@
 using System;
-using System.IO;
 using System.Collections.Generic;
 
 namespace graphlib
 {
+    /// <summary>
+    /// SharedGraph is a class that contains common methods and properties
+    /// of Graph and Orientedgraph.
+    /// </summary>
     public class SharedGraph
     {
         public Dictionary<long, List<Edge>> graph = 

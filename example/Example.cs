@@ -6,7 +6,6 @@ namespace example
 {
     public class Example
     {
-        ///
         /// <summary>
         /// This is example program that reads CSV file containing dependencies
         /// for installing different programs and outputs order in which 

@@ -4,9 +4,12 @@ using System.Collections.Generic;
 
 namespace graphlib
 {
+    /// <summary>
+    /// Toposort class contains implementation of TopologicalOrdering method
+    /// </summary>
     public static class Toposort
     {
-        private static Dictionary<long, List<Edge>> graph;
+        static Dictionary<long, List<Edge>> graph;
         // Function that finds topologicalOrdering if it exists
         /// <summary>
         /// Method finds topological ordering of a graph.
@@ -50,7 +53,8 @@ namespace graphlib
         // First argument - current vertex
         // Second argument - list of all vertices in order
         // Third argument - arrays that tells status of vertices
-        static bool tsDFS(long vertex, ref List<long> order, ref Dictionary<long, long> visited)
+        static bool tsDFS(long vertex, ref List<long> order, 
+                ref Dictionary<long, long> visited)
         {
             long v = vertex;
             // Set as visited but not closed

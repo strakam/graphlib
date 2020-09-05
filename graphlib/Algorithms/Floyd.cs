@@ -3,6 +3,12 @@ using System.Collections.Generic;
 
 namespace graphlib
 {
+    /// <summary>
+    /// This struct contains lengths of shortest paths between all pairs of
+    /// vertices. Also it contains GetDistance(long source, long destination)
+    /// method that returns distance of shortest path between these two
+    /// vertices.
+    /// </summary>
     public struct FloydInfo
     {
         public long [,] map;
@@ -32,16 +38,16 @@ namespace graphlib
             return map[indexes[source], indexes[destination]];
         }
     }
+
+    /// <summary>
+    /// FloydWarshall method finds shortest paths between all pairs of
+    /// vertices.
+    /// </summary>
+    /// <returns>
+    /// It returns instance of FloydInfo containing needed information.
+    /// </returns>
     public static class FloydWarshall
     {
-        /// <summary>
-        /// FloydWarshall method finds shortest paths between all pairs of
-        /// vertices.
-        /// </summary>
-        /// <returns>
-        /// It returns 2D array where array at [i, j] is a shortest path from
-        /// vertex i to j. 
-        /// </returns>
         public static FloydInfo AllShortestPaths(ref SharedGraph g)
         {
             FloydInfo fi = new FloydInfo(ref g);

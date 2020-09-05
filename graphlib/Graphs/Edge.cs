@@ -1,7 +1,3 @@
-using System;
-using System.IO;
-using System.Collections.Generic;
-
 namespace graphlib
 {
     /// <summary>
@@ -9,7 +5,9 @@ namespace graphlib
     /// </summary>
     public class Edge
     {
-        // In oriented graph names are self explanatory
+        /// <value> source is starting vertex of edge
+        /// <value> destination is ending vertex of edge
+        /// <value> weight is value or cost of edge
         public long source {get; set;}
         public long destination {get;set;}
         public long weight {get;set;}

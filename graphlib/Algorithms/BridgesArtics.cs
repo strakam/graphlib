@@ -4,6 +4,10 @@ using System.Collections.Generic;
 
 namespace graphlib
 {
+    /// <summary>
+    /// This class contains implementations of algorithms
+    /// that find artiulation points and bridges in the graph.
+    /// </summary>
     public static class BridgesArticulations
     {
         // variable time is a timestamp indicating when was node visited
@@ -105,7 +109,7 @@ namespace graphlib
         /// as in articulation points entry function.
         /// </summary>
         /// <returns>
-        /// It returns list of edges that are marked as bridges.
+        /// It returns List<Edge> that are marked as bridges.
         /// </returns>
         public static List<Edge> FindBridges(ref Graph g)
         {

@@ -4,7 +4,7 @@ using System;
 namespace graphlib
 {
     /// <summary>
-    /// class Dijkstra contains informations about shortest path between two
+    /// Class DijkstraInfo contains informations about shortest path between two
     /// given vertices
     /// </summary>
     public class DijkstraInfo
@@ -21,9 +21,14 @@ namespace graphlib
         }
     }
 
+    /// <summary>
+    /// Class Dijkstra contains implementation of FindShortestPath algorithm
+    /// that finds shortest path between two given vertices
+    /// </summary>
     public static class Dijkstra
     {
         static Dictionary<long, List<Edge>> graph;
+
         /// <summary>
         /// Method finShortestPath is using Dijkstra's algorithm to find
         /// shortest path between two vertices.
@@ -38,7 +43,8 @@ namespace graphlib
         /// shortest path </param>
         /// <param name="destination"> long that is ID of destination vertex of
         /// the shortest path </param>
-        public static DijkstraInfo FindShortestPath(ref SharedGraph g, long source, long destination)
+        public static DijkstraInfo FindShortestPath(ref SharedGraph g, 
+                long source, long destination)
         {
             graph = g.graph;
             // Create priority queue

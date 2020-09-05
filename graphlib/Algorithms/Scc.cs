@@ -1,16 +1,24 @@
-using System;
-using System.IO;
 using System.Collections.Generic;
 
 namespace graphlib
 {
+    /// <summary>
+    /// Class Scc contains information about implementation of FindSCCS method
+    /// that finds strongly connected components of a given graph
+    /// </summary>
     public static class Scc
     {
         static Dictionary<long, List<Edge>> graph;
         static Dictionary<long, List<Edge>> gT;
-        /* findSCCS (find strongly connected components is implemented in form
-         * of Kosaraju's algorithm */
-        public static List<OrientedGraph> FindSCCS(ref SharedGraph g)
+        /// <summary>
+        /// findSCCS (find strongly connected components is implemented in form
+        /// of Kosaraju's algorithm.
+        /// </summary>
+        /// <returns>
+        /// It returns List<OrientedGraph> where every graph is one component.
+        /// <returns>
+        /// <param name="g"> is OrientedGraph that is operated on. </param>
+        public static List<OrientedGraph> FindSCCS(ref OrientedGraph g)
         {
             graph = g.graph;
             /* List vertices contains graph vertices in order of leaving them in
@@ -67,7 +75,8 @@ namespace graphlib
         }
         /* findSink is a modified dfs that searches transposed graph and
          * inserts vertices in desired order - that is, source is on top */
-        static void FindSink(long v, ref Dictionary<long, long> vertexComponents, ref Stack<long> st)
+        static void FindSink(long v, 
+                ref Dictionary<long, long> vertexComponents, ref Stack<long> st)
         {
             vertexComponents[v] = 0;	
             foreach(Edge e in gT[v])
