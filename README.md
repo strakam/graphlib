@@ -3,6 +3,20 @@
 Výsledkom tohto projektu je grafová knižnica.
 Je napísaná v jazyku C# a je aj určená na používanie v C#.
 
+Ukážka:
+Máme csv súbor, ktorý pre každý program obsahuje zoznam ďalších programov, ktoré musia byť nainštalované pred ním (dependencies).
+Chceme prísť na to, v akom poradí máme tieto programy inštalovať tak, aby vo chvíli inštalovania daného programu boli všetky
+jeho dependencies už nainštalované. Pomocou triedy **OrientedGraph** a jej metód vytvoríme graf, reprezentujúci vzťahy medzi programami.
+Vizuálne vyzerá takto:
+
+![dependencypicture](https://user-images.githubusercontent.com/19777512/92326386-fb753080-f051-11ea-9d75-273ad4c33051.png)
+
+Využijeme metódu TopologicalOrdering, ktorá nájde takéto usporiadanie a vypíšeme ho.
+Výstup je:
+> Install in following order:
+> xorg-xinit --> zsh --> pandoc --> wget --> snapd --> which --> systemd --> python3 --> tar --> mono --> sxhkd --> unzip --> graphlib
+
+
 Jadrom knižnice sú triedy **Graph** (neorientovaný graf) a **OrientedGraph**,
 ktoré obsahujú vlastnosti grafu a metódy na manipuláciu s hranami a vrcholmi.
 
@@ -61,13 +75,14 @@ ktorá zmaže hranu vedúcu z vrcholu **source** do vrcholu **destination**.
 
 ### Príklad vytvorenia grafu a vloženia vrcholov a hrán
 ```c#
-Graph g = new Graph();
-g.AddVertex(4);
-g.AddVertex(1);
-g.AddVertex(3);
-g.AddEdge(1, 3, 2);
-g.AddEdge(4, 1, 5);
-g.AddEdge(3, 4);
+Graph myGraph = new Graph();
+for(int i = 1; i < 5; i++)
+{
+    myGraph.AddVertex(i);
+}
+myGraph.AddEdge(1, 3, 2);
+myGraph.AddEdge(4, 1, 5);
+myGraph.AddEdge(3, 4);
 ```
 Tento kód vytvorí graf v tvare trojuholníka, kde súčet hodnôt hrán je 8, pretože hrana z vrcholu 3 do 4 má váhu 1.
 
