@@ -64,7 +64,7 @@ namespace graphlib
             foreach(KeyValuePair<long, List<Edge>> kp in graph)
             {
                 mst.AddVertex(kp.Key);
-                parents.Add(kp.Key, new UFvertex(kp.Key, 1));
+                parents.Add(kp.Key, new UFvertex(kp.Key));
             }
             // Get all edges
             for(int i = 0; i < graph.Count; i++)
@@ -83,7 +83,7 @@ namespace graphlib
             {
                 /* If union happened, that means that current edge connected
                  * together two components of a graph so it is added into MST */
-                if(UnionFind.union(e, ref parents))
+                if(UnionFind.Union(e, ref parents))
                 {
                     g.AddEdge(e.source, e.destination, e.weight);
                     totalCost += e.weight;

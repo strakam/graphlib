@@ -2,19 +2,28 @@ using System.Collections.Generic;
 namespace graphlib
 {
     /// <summary>
-    /// This is implementation of heap for Dijkstra.
-    /// It's not very reproduceable for other algorithms.
+    /// This is an implementation of binary heap.
+    /// Programmer can customize it by changing contents of Vertex struct
+    /// and compare method.
     /// </summary>
     public class Heap
     {
         List<Vertex> heap = new List<Vertex>();
-        // Key is vertex, value is positionition in heap
+        // Key is vertex, value is position in heap
         public Dictionary<long, int> position = new Dictionary<long, int>();
 
+        /// <summary>
+        /// This struct is used by the heap. It contains information about
+        /// vertices and compares its properties to determine poisiton in the
+        /// heap.
+        /// </summary>
         public struct Vertex
         {
+            /// <value> v is name of the vertex </value>
             public long v {get;set;}
+            /// <value> cost is price of the vertex (could be anything)</value>
             public long cost {get;set;}
+            /// <value> this is a special parameter used for dijkstra </value>
             public long parent {get;set;}
             public Vertex(long v, long cost, long parent)
             {
@@ -22,6 +31,14 @@ namespace graphlib
                 this.cost = cost;
                 this.parent = parent;
             }
+        }
+        /// <summary> 
+        /// These are custom comparators for this heap. 
+        /// You can customize them for more complex comparisons.
+        /// </summary>
+        bool compare(Vertex a, Vertex b)
+        {
+            return a.cost > b.cost;
         }
 
         void swap(int i, int j)
@@ -39,8 +56,10 @@ namespace graphlib
         {
             while(i > 0)
             {
-                if(heap[(i-1)/2].cost > heap[i].cost)
+                if(compare(heap[(i-1)/2], heap[i]))
+                {
                     swap((i-1)/2, i);					
+                }
                 i = (i - 1) / 2;
             }
         }
@@ -62,16 +81,23 @@ namespace graphlib
             while(i < heap.Count)
             {
                 int l = i*2+1, r = i*2+2, smallest = i;
-                if(l < heap.Count && heap[l].cost < heap[i].cost)
+                if(l < heap.Count && compare(heap[i], heap[l]))
+                {
                     smallest = l;
-                if(r < heap.Count && heap[r].cost < heap[smallest].cost)
+                }
+                if(r < heap.Count && compare(heap[smallest], heap[r]))
+                {
                     smallest = r;
+                }
                 if(smallest != i)
                 {
                     swap(smallest, i);
                     i = smallest;
                 }
-                else break;
+                else 
+                {
+                    break;
+                }
             }
             return top;
         }

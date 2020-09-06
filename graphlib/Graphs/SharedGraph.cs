@@ -7,11 +7,8 @@ namespace graphlib
     /// SharedGraph is a class that contains common methods and properties
     /// of Graph and Orientedgraph.
     /// </summary>
-    public class SharedGraph
+    public partial class SharedGraph
     {
-        public Dictionary<long, List<Edge>> graph = 
-            new Dictionary<long, List<Edge>>();
-
         /// <summary>
         /// AddVertex adds vertex with given value to a graph.
         /// </summary>
@@ -32,6 +29,7 @@ namespace graphlib
                 return false;
             }
             graph.Add(val, new List<Edge>());
+            NumberOfVertices++;
             return true;
         }
 
@@ -58,6 +56,7 @@ namespace graphlib
                         }
                     }
                 }
+                NumberOfVertices--;
                 return true;
             }
             return false;

@@ -83,31 +83,29 @@ namespace tests
             Assert.True(og.RemoveEdge(1, 3));
         }
 
-        // [Test]
-        // public void testSCCS()
-        // {
-        //     OrientedGraph s = new OrientedGraph();
-        //     OrientedGraph og = oriented();
-        //     for(int i = 1; i < 8; i++)
-        //         s.AddVertex(i);
-        //     s.AddEdge(1, 2);	
-        //     s.AddEdge(2, 3);	
-        //     s.AddEdge(3, 1);	
-        //     s.AddEdge(2, 4);	
-        //     s.AddEdge(2, 5);	
-        //     s.AddEdge(5, 6);	
-        //     s.AddEdge(6, 7);	
-        //     s.AddEdge(7, 5);	
-        //     List<List<long>> res = s.FindSCCS();
-        //     foreach(List<long> l in res)
-        //     {
-        //         foreach(long i in l)
-        //             Console.Write(i + " ");
-        //         Console.WriteLine();
-        //     }
-        //     Assert.AreEqual(3, res.Count);
-        //     Assert.AreEqual(6, og.FindSCCS().Count);
-        // }
+        [Test]
+        public void testSCCS()
+        {
+            OrientedGraph s = new OrientedGraph();
+            OrientedGraph og = oriented();
+            for(int i = 1; i < 8; i++)
+                s.AddVertex(i);
+            s.AddEdge(1, 2);	
+            s.AddEdge(2, 3);	
+            s.AddEdge(3, 1);	
+            s.AddEdge(2, 4);	
+            s.AddEdge(2, 5);	
+            s.AddEdge(5, 6);	
+            s.AddEdge(6, 7);	
+            s.AddEdge(7, 5);	
+            List<OrientedGraph> res = Scc.FindSCCS(ref s);
+            foreach(OrientedGraph component in res)
+            {
+                component.PrintGraph();
+            }
+            Assert.AreEqual(3, res.Count);
+            Assert.AreEqual(6, Scc.FindSCCS(ref og).Count);
+        }
 
         [Test]
         public void testAps()

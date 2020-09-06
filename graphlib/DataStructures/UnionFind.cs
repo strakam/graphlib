@@ -9,9 +9,9 @@ namespace graphlib
         /// <value> Size - number of vertices hanged under given vertex </value>
         /// <value> Parent - id of ancestor in union find tree </value>
         public long size, parent;
-        public UFvertex(long parent, long size)
+        public UFvertex(long parent)
         {
-            this.size = size;
+            this.size = 1;
             this.parent = parent;
         }
     }
@@ -36,11 +36,11 @@ namespace graphlib
         /// components.</param>
         /// <param name="p"> Is a dictionary, that contains pairs long
         /// (vertexID) and it's union find representation. </param>
-        public static bool union(Edge e, ref Dictionary<long, UFvertex> p)
+        public static bool Union(Edge e, ref Dictionary<long, UFvertex> p)
         {
             // Union hanging by size
-            long rootA = find(e.source, ref p);
-            long rootB = find(e.destination, ref p);
+            long rootA = Find(e.source, ref p);
+            long rootB = Find(e.destination, ref p);
             // If we are comparing two different trees, merge them into one
             if(rootA != rootB)
             {
@@ -79,13 +79,13 @@ namespace graphlib
         /// <returns>
         /// It return long that is ID of root vertex of given component
         /// </returns>
-        public static long find(long v, ref Dictionary<long, UFvertex> p)
+        public static long Find(long v, ref Dictionary<long, UFvertex> p)
         {
             // Path compression 
             long root = v;
             if(p[v].parent != v)
             {
-                root = find(p[v].parent, ref p);
+                root = Find(p[v].parent, ref p);
             }
             UFvertex t = p[v];
             t.parent = root;
