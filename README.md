@@ -1,5 +1,7 @@
 # Používateľská príručka
 
+Programátorská príručka a ukážkové použitie knižnice sa nachádza vo Wiki tohto projektu
+
 Výsledkom tohto projektu je grafová knižnica.
 Je napísaná v jazyku C# a je aj určená na používanie v C#.
 
