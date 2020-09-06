@@ -3,20 +3,6 @@
 Výsledkom tohto projektu je grafová knižnica.
 Je napísaná v jazyku C# a je aj určená na používanie v C#.
 
-Ukážka:
-Máme csv súbor, ktorý pre každý program obsahuje zoznam ďalších programov, ktoré musia byť nainštalované pred ním (dependencies).
-Chceme prísť na to, v akom poradí máme tieto programy inštalovať tak, aby vo chvíli inštalovania daného programu boli všetky
-jeho dependencies už nainštalované. Pomocou triedy **OrientedGraph** a jej metód vytvoríme graf, reprezentujúci vzťahy medzi programami.
-Vizuálne vyzerá takto:
-
-![dependencypicture](https://user-images.githubusercontent.com/19777512/92326386-fb753080-f051-11ea-9d75-273ad4c33051.png)
-
-Využijeme metódu TopologicalOrdering, ktorá nájde takéto usporiadanie a vypíšeme ho.
-Výstup je:
-> Install in following order:
-> xorg-xinit --> zsh --> pandoc --> wget --> snapd --> which --> systemd --> python3 --> tar --> mono --> sxhkd --> unzip --> graphlib
-
-
 Jadrom knižnice sú triedy **Graph** (neorientovaný graf) a **OrientedGraph**,
 ktoré obsahujú vlastnosti grafu a metódy na manipuláciu s hranami a vrcholmi.
 
