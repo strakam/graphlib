@@ -1,5 +1,3 @@
-using System;
-using System.IO;
 using System.Collections.Generic;
 
 namespace graphlib
@@ -9,7 +7,6 @@ namespace graphlib
     /// </summary>
     public static class Toposort
     {
-        static Dictionary<long, List<Edge>> graph;
         // Function that finds topologicalOrdering if it exists
         /// <summary>
         /// Method finds topological ordering of a graph.
@@ -17,9 +14,9 @@ namespace graphlib
         /// <returns>
         /// It returns list of IDs of vertices sorted in topological order.
         /// </returns>
-        public static List<long> TopologicalOrdering(ref OrientedGraph g)
+        public static List<long> TopologicalOrdering(OrientedGraph g)
         {
-            graph = g.graph;
+            Dictionary<long, List<Edge>> graph = g.graph;
             List<long> order = new List<long>();
             /* In visited array there are 3 types of vertices
              * 0 - not visited
@@ -38,7 +35,7 @@ namespace graphlib
                 // If child vertex is not visied, go search from it
                 if(visited[kp.Key] == 0)
                 {
-                    result = tsDFS(kp.Key, ref order, ref visited);
+                    result = tsDFS(kp.Key, order, visited, graph);
                     if(!result)
                     {
                         return new List<long>();
@@ -53,8 +50,8 @@ namespace graphlib
         // First argument - current vertex
         // Second argument - list of all vertices in order
         // Third argument - arrays that tells status of vertices
-        static bool tsDFS(long vertex, ref List<long> order, 
-                ref Dictionary<long, long> visited)
+        static bool tsDFS(long vertex, List<long> order, 
+            Dictionary<long, long> visited, Dictionary<long, List<Edge>> graph)
         {
             long v = vertex;
             // Set as visited but not closed
@@ -65,7 +62,7 @@ namespace graphlib
                 // If child is unvisited, go search from there
                 if(visited[neighbor] == 0)
                 {
-                    bool res = tsDFS(neighbor, ref order, ref visited);
+                    bool res = tsDFS(neighbor, order, visited, graph);
                     if(!res)
                     {
                         return false;

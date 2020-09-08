@@ -1,8 +1,6 @@
 using graphlib;
 using NUnit.Framework;
 using System.Collections.Generic;
-using System.IO;
-using System;
 
 namespace tests
 {
@@ -20,12 +18,12 @@ namespace tests
             fg.AddVertex(2);
             fg.AddVertex(3);
             fg.AddVertex(4);
-            fg.AddEdge(1, 2, 1);
-            fg.AddEdge(1, 4, 1);
-            fg.AddEdge(2, 3, 2);
-            fg.AddEdge(4, 2, 1);
-            fg.AddEdge(1, 3, 3);
-            fg.AddEdge(3, 4, 1);
+            /* fg.AddEdge(1, 2, 1); */
+            /* fg.AddEdge(1, 4, 1); */
+            /* fg.AddEdge(2, 3, 2); */
+            /* fg.AddEdge(4, 2, 1); */
+            /* fg.AddEdge(1, 3, 3); */
+            /* fg.AddEdge(3, 4, 1); */
 
             // g2
             for(int i = 1; i < 8; i++)
@@ -98,13 +96,13 @@ namespace tests
             s.AddEdge(5, 6);	
             s.AddEdge(6, 7);	
             s.AddEdge(7, 5);	
-            List<OrientedGraph> res = Scc.FindSCCS(ref s);
+            List<OrientedGraph> res = Scc.FindSCCS(s);
             foreach(OrientedGraph component in res)
             {
                 component.PrintGraph();
             }
             Assert.AreEqual(3, res.Count);
-            Assert.AreEqual(6, Scc.FindSCCS(ref og).Count);
+            Assert.AreEqual(6, Scc.FindSCCS(og).Count);
         }
 
         [Test]
@@ -119,9 +117,9 @@ namespace tests
             a.AddEdge(3, 4);
             a.AddEdge(4, 5);
             a.AddEdge(3, 5);
-            List<long> ans = BridgesArticulations.FindArticulations(ref a);
+            List<long> ans = BridgesArticulations.FindArticulations(a);
             Assert.AreEqual(new List<long>(){2,3}, ans);
-            Assert.AreEqual(2, BridgesArticulations.FindBridges(ref a).Count);
+            Assert.AreEqual(2, BridgesArticulations.FindBridges(a).Count);
 
             Graph t = new Graph();
             for(int i = 1; i < 8; i++)
@@ -133,12 +131,12 @@ namespace tests
             t.AddEdge(6, 4);	
             t.AddEdge(6, 5);	
             t.AddEdge(6, 7);	
-            List<long> ans2 = BridgesArticulations.FindArticulations(ref t);
-            Assert.AreEqual(3, BridgesArticulations.FindBridges(ref t).Count);
+            List<long> ans2 = BridgesArticulations.FindArticulations(t);
+            Assert.AreEqual(3, BridgesArticulations.FindBridges(t).Count);
             Assert.AreEqual(new List<long>(){3, 5, 6}, ans2);
 
-            ans = BridgesArticulations.FindArticulations(ref g);
-            Assert.AreEqual(1, BridgesArticulations.FindBridges(ref g).Count);
+            ans = BridgesArticulations.FindArticulations(g);
+            Assert.AreEqual(1, BridgesArticulations.FindBridges(g).Count);
             Assert.AreEqual(new List<long>(){7}, ans);
         }
 
@@ -146,11 +144,11 @@ namespace tests
         public void test_kruskal()
         {
             Graph g = g1();
-            SpanningTreeInfo s = SpanningTree.GetSpanning(ref g);
+            SpanningTreeInfo s = SpanningTree.GetSpanning(g);
             Assert.AreEqual(16, s.cost);
 
             Graph mg = mstGraph();
-            SpanningTreeInfo mst = SpanningTree.GetSpanning(ref mg);
+            SpanningTreeInfo mst = SpanningTree.GetSpanning(mg);
             Assert.AreEqual(10, mst.cost);
          // Test for listing edges
          /* foreach(Edge e in mst.edges) */
@@ -165,10 +163,10 @@ namespace tests
         public void testBipartity()
         {
             Graph g = g1();
-            BipartiteInfo b = Bipartite.CheckBipartity(ref g);
+            BipartiteInfo b = Bipartite.CheckBipartity(g);
             Assert.AreEqual(b.isBipartite, false);
 
-            BipartiteInfo b2 = Bipartite.CheckBipartity(ref g2);
+            BipartiteInfo b2 = Bipartite.CheckBipartity(g2);
             Assert.AreEqual(true, b2.isBipartite);
             List<long> redNodes = new List<long>(){1, 3, 6};
             List<long> blueNodes = new List<long>(){2, 4, 5, 7};
@@ -180,11 +178,11 @@ namespace tests
         public void testToposort()
         {
             OrientedGraph og = oriented();
-            List<long> order = Toposort.TopologicalOrdering(ref og);
+            List<long> order = Toposort.TopologicalOrdering(og);
             List<long> correct = new List<long>(){6, 3, 2, 5, 4, 1};
             Assert.AreEqual(correct, order);
             og.AddEdge(3, 1, 1);
-            order = Toposort.TopologicalOrdering(ref og);
+            order = Toposort.TopologicalOrdering(og);
             Assert.AreEqual(new List<long>(), order);
         }
 
@@ -209,17 +207,17 @@ namespace tests
         public void testDijkstra()
         {
             SharedGraph g = g1();
-            DijkstraInfo a = Dijkstra.FindShortestPath(ref g, 5, 4);
+            DijkstraInfo a = Dijkstra.FindShortestPath(g, 5, 4);
             Assert.AreEqual(13, a.cost);
             List<long> sa = new List<long>(){5, 1, 8, 3, 7, 4};
             Assert.AreEqual(sa , a.shortestPath);
 
-            DijkstraInfo b = Dijkstra.FindShortestPath(ref g, 4, 8);
+            DijkstraInfo b = Dijkstra.FindShortestPath(g, 4, 8);
             Assert.AreEqual(6, b.cost);
             List<long> sb = new List<long>(){4, 7, 3, 8};
             Assert.AreEqual(sb, b.shortestPath);
 
-            DijkstraInfo c = Dijkstra.FindShortestPath(ref g, 5, 8);
+            DijkstraInfo c = Dijkstra.FindShortestPath(g, 5, 8);
             Assert.AreEqual(7, c.cost);
             List<long> sc = new List<long>(){5, 1, 8};
             Assert.AreEqual(sc, c.shortestPath);
@@ -228,7 +226,7 @@ namespace tests
         [Test]
         public void testFloyd()
         {
-            FloydInfo ans = FloydWarshall.AllShortestPaths(ref fg);
+            FloydInfo ans = FloydWarshall.AllShortestPaths(fg);
             long [,] correct = new long[4, 4]
             {{0, 1, 2, 1}, {1, 0, 2, 1}, {2, 2, 0, 1}, {1, 1, 1, 0}};
             Assert.AreEqual(correct, ans.map);

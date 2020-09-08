@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 
 namespace graphlib
@@ -16,7 +17,7 @@ namespace graphlib
         public long cost;
 
         /// Constructor
-        public SpanningTreeInfo(ref Graph g, long cost)
+        public SpanningTreeInfo(Graph g, long cost)
         {
             this.mst = g;
             this.cost = cost;
@@ -46,15 +47,14 @@ namespace graphlib
         /// cost of MST and MST graph itself.
         /// </returns>
         /// <param name="g"> Is a graph in which MST will be found </param>
-        public static SpanningTreeInfo GetSpanning(ref Graph g)
+        public static SpanningTreeInfo GetSpanning(Graph g)
         {
             Dictionary<long, List<Edge>> graph = g.graph;
             // List of all graph edges
             List<Edge> edges = new List<Edge>();
 
             // For every vertex there is union-find representation for it
-            Dictionary<long, UFvertex> parents = 
-                new Dictionary<long, UFvertex>();
+            Dictionary<long, UFvertex> parents = new Dictionary<long, UFvertex>();
 
             // Actual MST
             Graph mst = new Graph();
@@ -64,7 +64,7 @@ namespace graphlib
             foreach(KeyValuePair<long, List<Edge>> kp in graph)
             {
                 mst.AddVertex(kp.Key);
-                parents.Add(kp.Key, new UFvertex(kp.Key));
+                parents.Add(kp.Key, new UFvertex(kp.Key, 1));
             }
             // Get all edges
             for(int i = 0; i < graph.Count; i++)
@@ -83,13 +83,14 @@ namespace graphlib
             {
                 /* If union happened, that means that current edge connected
                  * together two components of a graph so it is added into MST */
-                if(UnionFind.Union(e, ref parents))
+                if(UnionFind.Union(e, parents))
                 {
-                    g.AddEdge(e.source, e.destination, e.weight);
+                    mst.AddEdge(e.source, e.destination, e.weight);
                     totalCost += e.weight;
+                    /* Console.WriteLine("Hrana z {0} do {1}", e.source, e.destination); */
                 }
             }
-            return new SpanningTreeInfo(ref mst, totalCost);
+            return new SpanningTreeInfo(mst, totalCost);
         }
     }
 }

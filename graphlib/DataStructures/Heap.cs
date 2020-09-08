@@ -3,8 +3,6 @@ namespace graphlib
 {
     /// <summary>
     /// This is an implementation of binary heap.
-    /// Programmer can customize it by changing contents of Vertex struct
-    /// and compare method.
     /// </summary>
     public class Heap
     {
@@ -33,8 +31,7 @@ namespace graphlib
             }
         }
         /// <summary> 
-        /// These are custom comparators for this heap. 
-        /// You can customize them for more complex comparisons.
+        /// This is a custom comparator for this heap. 
         /// </summary>
         bool compare(Vertex a, Vertex b)
         {

@@ -5,7 +5,7 @@ namespace graphlib
     /// <summary>
     /// Struct that describes bipartity status of the graph
     /// </summary>
-    public struct BipartiteInfo
+    public class BipartiteInfo
     {
         /// <value> isBipartite is true if graph is bipartite </value>
         public bool isBipartite {get; set;}
@@ -22,7 +22,7 @@ namespace graphlib
         /// It returns instance of class Bipartite with needed info
         /// </returns>
         static Dictionary<long, List<Edge>> graph;
-        public static BipartiteInfo CheckBipartity(ref Graph g)
+        public static BipartiteInfo CheckBipartity(Graph g)
         {
             BipartiteInfo bp = new BipartiteInfo();
             bp.isBipartite = true;

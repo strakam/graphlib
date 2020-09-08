@@ -9,11 +9,11 @@ namespace graphlib
     /// method that returns distance of shortest path between these two
     /// vertices.
     /// </summary>
-    public struct FloydInfo
+    public class FloydInfo
     {
         public long [,] map;
         Dictionary<long, int> indexes;
-        public FloydInfo(ref SharedGraph g)
+        public FloydInfo(SharedGraph g)
         {
             long l = g.graph.Count;
             // Adjacency matrix
@@ -48,9 +48,9 @@ namespace graphlib
     /// </returns>
     public static class FloydWarshall
     {
-        public static FloydInfo AllShortestPaths(ref SharedGraph g)
+        public static FloydInfo AllShortestPaths(SharedGraph g)
         {
-            FloydInfo fi = new FloydInfo(ref g);
+            FloydInfo fi = new FloydInfo(g);
             long l = g.graph.Count;
             // Set distances to zero or 'infinity'
             for(int i = 0; i < l; i++)

@@ -43,7 +43,7 @@ namespace graphlib
         /// shortest path </param>
         /// <param name="destination"> long that is ID of destination vertex of
         /// the shortest path </param>
-        public static DijkstraInfo FindShortestPath(ref SharedGraph g, 
+        public static DijkstraInfo FindShortestPath(SharedGraph g, 
                 long source, long destination)
         {
             graph = g.graph;

@@ -8,8 +8,6 @@ namespace graphlib
     /// </summary>
     public static class Scc
     {
-        static Dictionary<long, List<Edge>> graph;
-        static Dictionary<long, List<Edge>> gT;
         /// <summary>
         /// findSCCS (find strongly connected components is implemented in form
         /// of Kosaraju's algorithm.
@@ -18,9 +16,10 @@ namespace graphlib
         /// It returns List<OrientedGraph> where every graph is one component.
         /// <returns>
         /// <param name="g"> is OrientedGraph that is operated on. </param>
-        public static List<OrientedGraph> FindSCCS(ref OrientedGraph g)
+        public static List<OrientedGraph> FindSCCS(OrientedGraph g)
         {
-            graph = g.graph;
+            Dictionary<long, List<Edge>> graph = g.graph;
+            Dictionary<long, List<Edge>> gT;
             /* List vertices contains graph vertices in order of leaving them in
              * dfs */
             Stack<long> vertices = new Stack<long>();
@@ -54,7 +53,7 @@ namespace graphlib
             {
                 if(vertexComponents[kp.Key] == -1)
                 {
-                    FindSink(kp.Key, ref vertexComponents, ref vertices);		
+                    FindSink(kp.Key, vertexComponents, vertices, gT);		
                 }
             }
             List<OrientedGraph> components = new List<OrientedGraph>();
@@ -65,7 +64,7 @@ namespace graphlib
                 {
                     OrientedGraph componentGraph = new OrientedGraph();
                     assignComponents(vertices.Peek(), component, 
-                            ref vertexComponents, ref componentGraph);
+                            vertexComponents, componentGraph, graph);
                     component++;
                     components.Add(componentGraph);
                 }
@@ -75,8 +74,8 @@ namespace graphlib
         }
         /* findSink is a modified dfs that searches transposed graph and
          * inserts vertices in desired order - that is, source is on top */
-        static void FindSink(long v, 
-                ref Dictionary<long, long> vertexComponents, ref Stack<long> st)
+        static void FindSink(long v, Dictionary<long, long> vertexComponents, 
+                Stack<long> st, Dictionary<long, List<Edge>> gT)
         {
             vertexComponents[v] = 0;	
             foreach(Edge e in gT[v])
@@ -84,7 +83,7 @@ namespace graphlib
                 long next = e.destination;
                 if(vertexComponents[next] == -1)
                 {
-                    FindSink(e.destination, ref vertexComponents, ref st);
+                    FindSink(e.destination, vertexComponents, st, gT);
                 }
             }
             st.Push(v);
@@ -97,7 +96,8 @@ namespace graphlib
         // Fourth argument - stack of vertices in correct order from first
         // search
         static void assignComponents(long v, int c, 
-        ref Dictionary<long, long> vertexComponents, ref OrientedGraph g)
+            Dictionary<long, long> vertexComponents, OrientedGraph g,
+            Dictionary<long, List<Edge>> graph)
         {
             vertexComponents[v] = c;
             foreach(Edge e in graph[v])
@@ -107,8 +107,8 @@ namespace graphlib
                 {
                     g.AddVertex(next);
                     g.AddEdge(e.source, e.destination, e.weight);
-                    assignComponents(e.destination, c, 
-                            ref vertexComponents, ref g);
+                    assignComponents(e.destination, c, vertexComponents, 
+                            g, graph);
                 }
             }
         }
