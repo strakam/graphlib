@@ -9,7 +9,7 @@ namespace benchmark
     {
         static void Main()
         {
-            Benchmark(10000, 300000, 5000, 2, "Scc-10k-300k");
+            Benchmark(200000, 500000, 5000, 2, "Kruskal-200k-500k");
         }
 
         static void Benchmark(int vertices, int maxEdges, int increment, int repetitions, string filename)
@@ -23,9 +23,9 @@ namespace benchmark
                     var rand = new Random();
                     for(int j = 0; j < repetitions; j++)
                     {
-                        OrientedGraph g = OrientedGraphGenerator(edges, maxEdges);
+                        Graph g = GraphGenerator(vertices, edges);
                         timer.Start();
-                        int [] sti = Scc.FindSCCS(g);
+                        SpanningTreeInfo sti = SpanningTree.GetSpanning(g);
                         timer.Stop();
                         averageTime += timer.ElapsedMilliseconds;
                         timer.Reset();
