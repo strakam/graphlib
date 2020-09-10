@@ -14,31 +14,27 @@ namespace graphlib
         /// <returns>
         /// It returns list of IDs of vertices sorted in topological order.
         /// </returns>
-        public static List<long> TopologicalOrdering(OrientedGraph g)
+        public static List<int> TopologicalOrdering(OrientedGraph g)
         {
-            Dictionary<long, List<Edge>> graph = g.graph;
-            List<long> order = new List<long>();
+            List<List<Edge>> graph = g.graph;
+            List<int> order = new List<int>();
             /* In visited array there are 3 types of vertices
              * 0 - not visited
              * 1 - visited but not closed
              * 2 - visited and closed */
-            Dictionary<long, long> visited = new Dictionary<long, long>();
-            foreach(KeyValuePair<long, List<Edge>> kp in graph)
-            {
-                visited.Add(kp.Key, 0);
-            }
+            byte [] visited = new byte[graph.Count];
             /* If result is true, topological ordering is returned, else - empty
              * list is returned */
             bool result = true;
-            foreach(KeyValuePair<long, List<Edge>> kp in graph)
+            for(int i = 0; i < graph.Count; i++)
             {
                 // If child vertex is not visied, go search from it
-                if(visited[kp.Key] == 0)
+                if(visited[i] == 0)
                 {
-                    result = tsDFS(kp.Key, order, visited, graph);
+                    result = tsDFS(i, order, visited, graph);
                     if(!result)
                     {
-                        return new List<long>();
+                        return new List<int>();
                     }
                 }
             }
@@ -50,15 +46,13 @@ namespace graphlib
         // First argument - current vertex
         // Second argument - list of all vertices in order
         // Third argument - arrays that tells status of vertices
-        static bool tsDFS(long vertex, List<long> order, 
-            Dictionary<long, long> visited, Dictionary<long, List<Edge>> graph)
+        static bool tsDFS(int v, List<int> order, byte [] visited, List<List<Edge>> graph)
         {
-            long v = vertex;
             // Set as visited but not closed
             visited[v] = 1;
             for(int i = 0; i < graph[v].Count; i++)
             {
-                long neighbor = graph[v][i].destination;
+                int neighbor = graph[v][i].destination;
                 // If child is unvisited, go search from there
                 if(visited[neighbor] == 0)
                 {
@@ -76,8 +70,8 @@ namespace graphlib
                 }
             }
             // Set as closed and add to ordering
-            visited[vertex] = 2;
-            order.Add(vertex);
+            visited[v] = 2;
+            order.Add(v);
             return true;
         }
     }

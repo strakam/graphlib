@@ -1,0 +1,15 @@
+/home/magpie/Skola/Programovanie_2/graphlib/benchmark/obj/Debug/netcoreapp3.1/benchmark.csprojAssemblyReference.cache
+/home/magpie/Skola/Programovanie_2/graphlib/benchmark/obj/Debug/netcoreapp3.1/benchmark.AssemblyInfoInputs.cache
+/home/magpie/Skola/Programovanie_2/graphlib/benchmark/obj/Debug/netcoreapp3.1/benchmark.AssemblyInfo.cs
+/home/magpie/Skola/Programovanie_2/graphlib/benchmark/bin/Debug/netcoreapp3.1/graphlib
+/home/magpie/Skola/Programovanie_2/graphlib/benchmark/bin/Debug/netcoreapp3.1/benchmark
+/home/magpie/Skola/Programovanie_2/graphlib/benchmark/bin/Debug/netcoreapp3.1/benchmark.deps.json
+/home/magpie/Skola/Programovanie_2/graphlib/benchmark/bin/Debug/netcoreapp3.1/benchmark.runtimeconfig.json
+/home/magpie/Skola/Programovanie_2/graphlib/benchmark/bin/Debug/netcoreapp3.1/benchmark.runtimeconfig.dev.json
+/home/magpie/Skola/Programovanie_2/graphlib/benchmark/bin/Debug/netcoreapp3.1/benchmark.dll
+/home/magpie/Skola/Programovanie_2/graphlib/benchmark/bin/Debug/netcoreapp3.1/benchmark.pdb
+/home/magpie/Skola/Programovanie_2/graphlib/benchmark/bin/Debug/netcoreapp3.1/graphlib.dll
+/home/magpie/Skola/Programovanie_2/graphlib/benchmark/bin/Debug/netcoreapp3.1/graphlib.pdb
+/home/magpie/Skola/Programovanie_2/graphlib/benchmark/obj/Debug/netcoreapp3.1/benchmark.csproj.CopyComplete
+/home/magpie/Skola/Programovanie_2/graphlib/benchmark/obj/Debug/netcoreapp3.1/benchmark.dll
+/home/magpie/Skola/Programovanie_2/graphlib/benchmark/obj/Debug/netcoreapp3.1/benchmark.pdb

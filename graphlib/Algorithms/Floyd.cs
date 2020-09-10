@@ -12,30 +12,16 @@ namespace graphlib
     public class FloydInfo
     {
         public long [,] map;
-        Dictionary<long, int> indexes;
         public FloydInfo(SharedGraph g)
         {
-            long l = g.graph.Count;
+            int l = g.graph.Count;
             // Adjacency matrix
             map = new long[l, l];
-            // Dictionary of vertices and their indices in adjacency matrix
-            indexes = new Dictionary<long, int>();
-            int i = 0;
-            foreach(KeyValuePair<long, List<Edge>> kp in g.graph)
-            {
-                indexes.Add(kp.Key, i);
-                i++;
-            }
         }
 
-        public int Vindex(long v)
+        public long GetDistance(int source, int destination)
         {
-            return indexes[v];
-        }
-
-        public long GetDistance(long source, long destination)
-        {
-            return map[indexes[source], indexes[destination]];
+            return map[source, destination];
         }
     }
 
@@ -51,7 +37,7 @@ namespace graphlib
         public static FloydInfo AllShortestPaths(SharedGraph g)
         {
             FloydInfo fi = new FloydInfo(g);
-            long l = g.graph.Count;
+            int l = g.graph.Count;
             // Set distances to zero or 'infinity'
             for(int i = 0; i < l; i++)
             {
@@ -61,13 +47,11 @@ namespace graphlib
                 }
             }
             // Set initial distances between vertices 
-            foreach(KeyValuePair<long, List<Edge>> kp in g.graph)
+            for(int i = 0; i < g.graph.Count; i++)
             {
-                long v = kp.Key;
-                for(int i = 0; i < g.graph[v].Count; i++)
+                foreach(Edge e in g.graph[i])
                 {
-                    fi.map[fi.Vindex(v), fi.Vindex(g.graph[v][i].destination)] =
-                        g.graph[v][i].weight;
+                    fi.map[i, e.destination] = e.weight;
                 }
             }	
             // Perform basic floyd warshall algorithm
@@ -77,6 +61,11 @@ namespace graphlib
                 {
                     for(int j = 0; j < l; j++)
                     {
+                        long far = long.MaxValue;
+                        if(fi.map[i, k] == far || fi.map[k, j] == far)
+                        {
+                            continue;
+                        }
                         fi.map[i,j] = Math.Min(fi.map[i,j],
                             fi.map[i,k] + fi.map[k,j]);
                     }

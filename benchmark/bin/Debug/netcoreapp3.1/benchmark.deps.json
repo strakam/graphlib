@@ -1,0 +1,36 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v3.1",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v3.1": {
+      "benchmark/1.0.0": {
+        "dependencies": {
+          "graphlib": "1.0.0"
+        },
+        "runtime": {
+          "benchmark.dll": {}
+        }
+      },
+      "graphlib/1.0.0": {
+        "runtime": {
+          "graphlib.dll": {}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "benchmark/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "graphlib/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    }
+  }
+}

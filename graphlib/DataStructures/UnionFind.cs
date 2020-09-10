@@ -9,8 +9,8 @@ namespace graphlib
     {
         /// <value> Size - number of vertices hanged under given vertex </value>
         /// <value> Parent - id of ancestor in union find tree </value>
-        public long size, parent;
-        public UFvertex(long parent, long size)
+        public int size, parent;
+        public UFvertex(int parent, int size)
         {
             this.size = size;
             this.parent = parent;
@@ -36,11 +36,11 @@ namespace graphlib
         /// components.</param>
         /// <param name="p"> Is a dictionary, that contains pairs long
         /// (vertexID) and it's union find representation. </param>
-        public static bool Union(Edge e, Dictionary<long, UFvertex> p)
+        public static bool Union(Edge e, UFvertex [] p)
         {
             // Union hanging by size
-            long rootA = Find(e.source, p);
-            long rootB = Find(e.destination, p);
+            int rootA = Find(e.source, p);
+            int rootB = Find(e.destination, p);
             // If we are comparing two different trees, merge them into one
             if(rootA != rootB)
             {
@@ -59,7 +59,7 @@ namespace graphlib
             }
             return false;
         }
-        static void AssignChild(Dictionary<long, UFvertex> p, long pIdx, long cIdx)
+        static void AssignChild(UFvertex [] p, int pIdx, int cIdx)
         {
             UFvertex t = p[pIdx];
             t.size += p[cIdx].size;
@@ -76,10 +76,10 @@ namespace graphlib
         /// <returns>
         /// It returns a long that is ID of root vertex of given component
         /// </returns>
-        public static long Find(long v, Dictionary<long, UFvertex> p)
+        public static int Find(int v, UFvertex [] p)
         {
             // Path compression 
-            long root = v;
+            int root = v;
             while(p[root].parent != root)
             {
                 root = p[root].parent;
@@ -87,7 +87,7 @@ namespace graphlib
 
             while(p[v].parent != v)
             {
-                long parent = p[v].parent;
+                int parent = p[v].parent;
                 p[v] = new UFvertex(root, 1);
                 v = parent;
             }

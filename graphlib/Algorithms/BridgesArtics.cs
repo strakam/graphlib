@@ -13,16 +13,16 @@ namespace graphlib
         class HelperData{
             /* Time for each node is stored in disc, low is the lowest node that
              * is reachable from a given node. */
-            public Dictionary<long, long> disc, low;
-            public Dictionary<long, bool> articulations, visited;
-            public Dictionary<long, List<Edge>> graph;
-            public long time = 0;
+            public int [] disc, low;
+            public bool [] articulations, visited;
+            public List<List<Edge>> graph;
+            public int time = 0;
             public HelperData(Graph g)
             {
-                disc = new Dictionary<long, long>();
-                low = new Dictionary<long, long>();
-                articulations = new Dictionary<long, bool>();
-                visited = new Dictionary<long, bool>();
+                disc = new int [g.graph.Count];
+                low = new int [g.graph.Count];
+                articulations = new bool [g.graph.Count];
+                visited = new bool [g.graph.Count];
                 graph = g.graph;
             }
         }
@@ -34,42 +34,40 @@ namespace graphlib
         /// It returns List<long> where elements of a list are IDs of
         /// articulation vertices.
         /// </returns>
-        public static List<long> FindArticulations(Graph g)
+        public static List<int> FindArticulations(Graph g)
         {
             // variable time is a timestamp indicating when was node visited
             HelperData info = new HelperData(g);
             // answer is a list of articlation points
-            List<long> answer = new List<long>();
-            foreach(KeyValuePair<long, List<Edge>> kp in info.graph)
+            List<int> answer = new List<int>();
+            for(int i = 0; i < g.graph.Count; i++)
             {
-                info.low[kp.Key] = long.MaxValue;
-                info.disc[kp.Key] = long.MaxValue;
-                info.visited[kp.Key] = false;
-                info.articulations[kp.Key] = false;
+                info.low[i] = Int32.MaxValue;
+                info.disc[i] = Int32.MaxValue;
             }
-            foreach(KeyValuePair<long, List<Edge>> kp in info.graph)
+            for(int i = 0; i < g.graph.Count; i++)
             {
                 // Start searching for articulations if not visited
-                if(!info.visited[kp.Key])
+                if(!info.visited[i])
                 {
-                    apDFS(kp.Key, kp.Key, ref info);
+                    apDFS(i, i, info);
                 }
             }
-            foreach(KeyValuePair<long, List<Edge>> kp in info.graph)
+            for(int i = 0; i < info.articulations.Length; i++)
             {
-                if(info.articulations[kp.Key])
+                if(info.articulations[i])
                 {
-                    answer.Add(kp.Key);
+                    answer.Add(i);
                 }
             }
             return answer;
         }
 
         // Recursive function (modified dfs) that is searching for articulations
-        static void apDFS(long v, long parent, ref HelperData info)
+        static void apDFS(int v, int parent, HelperData info)
         {
             long children = 0;
-            long time = info.time;
+            int time = info.time;
             // Uploading informations
             info.visited[v] = true;	
             info.disc[v] = time;
@@ -77,16 +75,15 @@ namespace graphlib
             foreach(Edge e in info.graph[v])
             {
                 children++;
-                long next = e.destination;
+                int next = e.destination;
                 // if a child is not visited, start search from it
                 if(!info.visited[next])
                 {
                     info.time++;
-                    apDFS(e.destination, v, ref info);
+                    apDFS(e.destination, v, info);
                     /* Compute lowest visitable ancestor and compare it with
                      * current node to determine whether it is an articulation */
-                    info.low[v] = 
-                        Math.Min(info.low[v], info.low[next]);
+                    info.low[v] = Math.Min(info.low[v], info.low[next]);
                     if(info.disc[v] <= info.low[next] && v != parent)
                     {
                         info.articulations[v] = true;
@@ -98,8 +95,7 @@ namespace graphlib
                 }
                 if(e.destination != parent)
                 {
-                    info.low[v] = 
-                        Math.Min(info.low[v], info.low[next]);
+                    info.low[v] = Math.Min(info.low[v], info.low[next]);
                 }
             }
         }
@@ -114,18 +110,16 @@ namespace graphlib
         {
             HelperData info = new HelperData(g);
             List<Edge> answer = new List<Edge>();
-            foreach(KeyValuePair<long, List<Edge>> kp in info.graph)
+            for(int i = 0; i < g.graph.Count; i++)
             {
-                info.low[kp.Key] = long.MaxValue;
-                info.disc[kp.Key] = long.MaxValue;
-                info.visited[kp.Key] = false;
-                info.articulations[kp.Key] = false;
+                info.low[i] = Int32.MaxValue;
+                info.disc[i] = Int32.MaxValue;
             }
-            foreach(KeyValuePair<long, List<Edge>> kp in info.graph)
+            for(int i = 0; i < g.graph.Count; i++)
             {
-                if(!info.visited[kp.Key])
+                if(!info.visited[i])
                 {
-                    bDFS(kp.Key, kp.Key, answer, ref info);
+                    bDFS(i, i, answer, info);
                 }
             }
             return answer;
@@ -133,10 +127,10 @@ namespace graphlib
 
         /* Function very similiar to ab function, difference is in comparison
          * signs and 1 less if statement */
-        static void bDFS(long v, long parent, List<Edge> ans, ref HelperData info)
+        static void bDFS(int v, int parent, List<Edge> ans, HelperData info)
         {
-            long children = 0;
-            long time = info.time;
+            int children = 0;
+            int time = info.time;
             info.visited[v] = true;	
             info.disc[v] = time;
             info.low[v] = time;
@@ -147,7 +141,7 @@ namespace graphlib
                 if(!info.visited[next])
                 {
                     info.time++;
-                    bDFS(e.destination, v, ans, ref info);
+                    bDFS(e.destination, v, ans, info);
                     info.low[v] = 
                         Math.Min(info.low[v], info.low[next]);
                     if(info.disc[v] < info.low[next])

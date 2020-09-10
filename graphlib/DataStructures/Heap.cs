@@ -8,7 +8,7 @@ namespace graphlib
     {
         List<Vertex> heap = new List<Vertex>();
         // Key is vertex, value is position in heap
-        public Dictionary<long, int> position = new Dictionary<long, int>();
+        public Dictionary<int, int> position = new Dictionary<int, int>();
 
         /// <summary>
         /// This struct is used by the heap. It contains information about
@@ -18,12 +18,12 @@ namespace graphlib
         public struct Vertex
         {
             /// <value> v is name of the vertex </value>
-            public long v {get;set;}
+            public int v {get;set;}
             /// <value> cost is price of the vertex (could be anything)</value>
             public long cost {get;set;}
             /// <value> this is a special parameter used for dijkstra </value>
-            public long parent {get;set;}
-            public Vertex(long v, long cost, long parent)
+            public int parent {get;set;}
+            public Vertex(int v, long cost, int parent)
             {
                 this.v = v;
                 this.cost = cost;
@@ -61,7 +61,7 @@ namespace graphlib
             }
         }
 
-        public void add(long vertex, long cost, long parent)
+        public void add(int vertex, long cost, int parent)
         {
             heap.Add(new Vertex(vertex, cost, parent));	
             position.Add(vertex, heap.Count-1);
@@ -104,7 +104,7 @@ namespace graphlib
             return heap.Count;
         }
 
-        public void decrease_key(int target, long val, long new_parent)
+        public void decrease_key(int target, long val, int new_parent)
         {
             if(heap[position[target]].cost > val)
             {

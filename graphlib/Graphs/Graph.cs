@@ -44,46 +44,10 @@ namespace graphlib
         /// True, if vertex was added. False if vertex is already in graph.
         /// </returns>
         /// <param name="val"> Long that is an ID of added vertex. </param>
-        public override bool AddVertex(long val)
+        public override int AddVertex()
         {
-            if(graph.ContainsKey(val))
-            {
-                return false;
-            }
-            graph.Add(val, new List<Edge>());
-            Vertices.Add(val);
-            NumberOfVertices++;
-            return true;
-        }
-
-        /// <summary>
-        /// RemoveVertex removes vertex with given value to a graph.
-        /// </summary>
-        /// <returns>
-        /// True, if vertex was removed. False if vertex wasn't in a graph.
-        /// </returns>
-        /// <param name="v"> Long that is an ID of removed vertex. </param>
-        public override bool RemoveVertex(long v)
-        {
-            if(graph.ContainsKey(v))
-            {
-                graph.Remove(v);
-                foreach(KeyValuePair<long, List<Edge>> l in graph)
-                {
-                    for(int i = 0; i < l.Value.Count; i++)
-                    {
-                        if(l.Value[i].destination == v)
-                        {
-                            l.Value.RemoveAt(i);
-                            Vertices.Remove(v);
-                            break;
-                        }
-                    }
-                }
-                NumberOfVertices--;
-                return true;
-            }
-            return false;
+            graph.Add(new List<Edge>());
+            return graph.Count-1;
         }
 
         /// <summary>
@@ -92,14 +56,13 @@ namespace graphlib
         /// <param name="v1"> Long that is an ID of a first vertex. </param>
         /// <param name="v2"> Long that is an ID of a second vertex. </param>
         /// <param name="weight"> Long that represents weight of edge. </param>
-        public void AddEdge(long v1, long v2, long weight)
+        public override void AddEdge(int v1, int v2, long weight)
         {
-            if(graph.ContainsKey(v1) && graph.ContainsKey(v2))
+            if(Math.Max(v1, v2) < graph.Count)
             {
-                Edge newEdge = new Edge(v1, v2, weight);
-                graph[v1].Add(newEdge);
-                graph[v2].Add(newEdge);
-                Edges.Add(newEdge);
+                graph[v1].Add(new Edge(v1, v2, weight));
+                graph[v2].Add(new Edge(v2, v1, weight));
+                Edges.Add(new Edge(v1, v2, weight));
             }
         }
 
@@ -110,9 +73,9 @@ namespace graphlib
         /// </summary>
         /// <param name="v1"> Long that is an ID of a first vertex. </param>
         /// <param name="v2"> Long that is an ID of a second vertex. </param>
-        public override void AddEdge(long v1, long v2)
+        public override void AddEdge(int v1, int v2)
         {
-            if(graph.ContainsKey(v1) && graph.ContainsKey(v2))
+            if(Math.Max(v1, v2) < graph.Count)
             {
                 long weight = 1;
                 graph[v1].Add(new Edge(v1, v2, weight));
@@ -129,9 +92,9 @@ namespace graphlib
         /// </returns>
         /// <param name="v1"> Long that is an ID of a first vertex. </param>
         /// <param name="v2"> Long that is an ID of a second vertex. </param>
-        public override bool RemoveEdge(long v1, long v2)
+        public override bool RemoveEdge(int v1, int v2)
         {
-            if(graph.ContainsKey(v1) && graph.ContainsKey(v2))
+            if(Math.Max(v1, v2) < graph.Count)
             {
                 bool removed = false;
                 for(int i = 0; i < graph[v1].Count; i++)
@@ -171,15 +134,42 @@ namespace graphlib
         /// </summary>
         public override void PrintGraph()
         {
-            foreach(KeyValuePair<long, List<Edge>> k in graph)
+            int i = 0;
+            foreach(List<Edge> k in graph)
             {
-                Console.Write("Susedia vrcholu {0}, su ", k.Key);
-                foreach(Edge e in k.Value)
+                Console.Write("Susedia vrcholu {0}, su ", i);
+                foreach(Edge e in k)
                 {
                     Console.Write(e.destination + " ");
                 }
                 Console.WriteLine();
+                i++;
             }
+        }
+
+        /// <summary>
+        /// Method that computes number of components in a graph
+        /// </summary>
+        /// <returns>
+        /// Int that represents number of components
+        /// </returns>
+        public int GetNumberOfComponents()
+        {
+            UFvertex [] uf = new UFvertex[graph.Count];
+            HashSet<int> comps = new HashSet<int>();
+            for(int i = 0; i < graph.Count; i++)
+            {
+                uf[i] = new UFvertex(i, 1);
+            }
+            foreach(Edge e in Edges)
+            {
+                UnionFind.Union(e, uf);
+            }
+            foreach(UFvertex uv in uf)
+            {
+                comps.Add(uv.parent);
+            }
+            return comps.Count;
         }
     }
 }

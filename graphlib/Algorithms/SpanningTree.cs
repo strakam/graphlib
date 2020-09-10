@@ -49,28 +49,27 @@ namespace graphlib
         /// <param name="g"> Is a graph in which MST will be found </param>
         public static SpanningTreeInfo GetSpanning(Graph g)
         {
-            Dictionary<long, List<Edge>> graph = g.graph;
+            List<List<Edge>> graph = g.graph;
             // List of all graph edges
             List<Edge> edges = new List<Edge>();
 
             // For every vertex there is union-find representation for it
-            Dictionary<long, UFvertex> parents = new Dictionary<long, UFvertex>();
+            UFvertex [] parents = new UFvertex[graph.Count];
 
             // Actual MST
             Graph mst = new Graph();
 
             // Edges that are used in MST
             long totalCost = 0;
-            foreach(KeyValuePair<long, List<Edge>> kp in graph)
+            for(int i = 0; i < graph.Count; i++)
             {
-                mst.AddVertex(kp.Key);
-                parents.Add(kp.Key, new UFvertex(kp.Key, 1));
+                mst.AddVertex();
+                parents[i] = new UFvertex(i, 1);
             }
             // Get all edges
-            for(int i = 0; i < graph.Count; i++)
-            foreach(KeyValuePair<long, List<Edge>> kp in graph)
+            foreach(List<Edge> l in graph)
             {
-                foreach(Edge e in kp.Value)
+                foreach(Edge e in l)
                 {
                     edges.Add(e);
                 }
@@ -78,7 +77,6 @@ namespace graphlib
 
             // Sort all edges
             edges.Sort(comparison);
-
             foreach(Edge e in edges)
             {
                 /* If union happened, that means that current edge connected

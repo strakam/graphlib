@@ -10,10 +10,10 @@ namespace graphlib
     public class DijkstraInfo
     {
         /// <value> List of vertices in shortest path in order </value>
-        public List<long> shortestPath = new List<long>();
+        public List<int> shortestPath = new List<int>();
         /// <value> Cost of the shortest path </value>
         public long cost = long.MaxValue;
-        public DijkstraInfo(long cP, List<long> shortestPath)
+        public DijkstraInfo(long cP, List<int> shortestPath)
         {
             cost = cP;
             this.shortestPath = shortestPath;
@@ -27,7 +27,6 @@ namespace graphlib
     /// </summary>
     public static class Dijkstra
     {
-        static Dictionary<long, List<Edge>> graph;
 
         /// <summary>
         /// Method finShortestPath is using Dijkstra's algorithm to find
@@ -44,26 +43,23 @@ namespace graphlib
         /// <param name="destination"> long that is ID of destination vertex of
         /// the shortest path </param>
         public static DijkstraInfo FindShortestPath(SharedGraph g, 
-                long source, long destination)
+            int source, int destination)
         {
-            graph = g.graph;
+            List<List<Edge>> graph = g.graph;
             // Create priority queue
             Heap pq = new Heap();
-            Dictionary<long, byte> visited = new Dictionary<long, byte>();
-            foreach(KeyValuePair<long, List<Edge>> kp in graph)
-            {
-                visited.Add(kp.Key, 0);
-            }
+
+            // 0 - not visited, 1 - in queue, 2 - closed
+            byte [] visited = new byte[graph.Count];
+
             // For every node, remember from where it was visited first
-            Dictionary<long, long> backtrack = new Dictionary<long, long>();
-            foreach(KeyValuePair<long, List<Edge>> kp in graph)
+            int [] backtrack = new int[graph.Count];
+            for(int i = 0; i < graph.Count; i++)
             {
-                backtrack.Add(kp.Key, long.MaxValue);
+                backtrack[i] = i;
             }
             long cost = long.MaxValue;
-            // 0 - not visited, 1 - in queue, 2 - closed
             pq.add(source, 0, source);
-            backtrack[source] = source;
 
             // While there are unprocessed vertices do search
             while(pq.size() > 0)
@@ -83,7 +79,7 @@ namespace graphlib
                 // for all neighbors
                 for(int i = 0; i < graph[top.v].Count; i++)
                 {
-                    long neighbor = graph[top.v][i].destination;
+                    int neighbor = graph[top.v][i].destination;
                     long weight = graph[top.v][i].weight;
                     // Skip if the neighbor was already processed
                     if(visited[neighbor] == 2)
@@ -91,7 +87,7 @@ namespace graphlib
                         continue;
                     }
                     // If neighbor is not visited, add it to queue
-                    if(visited[neighbor] == 0)
+                    else if(visited[neighbor] == 0)
                     {
                         long price = top.cost + weight;
                         pq.add(neighbor, price, top.v);
@@ -100,12 +96,12 @@ namespace graphlib
                     // Upload cost if there was a better path found
                     else if(pq.position.ContainsKey(neighbor))
                     {
-                        pq.decrease_key((int)neighbor, top.cost+weight, top.v);
+                        pq.decrease_key(neighbor, top.cost+weight, top.v);
                     }
                 }	
             }
-            long parent = destination;
-            List<long> path = new List<long>();
+            int parent = destination;
+            List<int> path = new List<int>();
             // Reconstruct the shortest path
             while(backtrack[parent] != parent)
             {

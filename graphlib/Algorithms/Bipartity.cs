@@ -10,7 +10,7 @@ namespace graphlib
         /// <value> isBipartite is true if graph is bipartite </value>
         public bool isBipartite {get; set;}
         /// <value> Two lists containing vertices of both partitions </value>
-        public List<long> redPart, bluePart;
+        public List<int> redPart, bluePart;
     }
 
     public static class Bipartite
@@ -21,26 +21,27 @@ namespace graphlib
         /// <returns>
         /// It returns instance of class Bipartite with needed info
         /// </returns>
-        static Dictionary<long, List<Edge>> graph;
         public static BipartiteInfo CheckBipartity(Graph g)
         {
+            List<List<Edge>> graph = g.graph;
             BipartiteInfo bp = new BipartiteInfo();
             bp.isBipartite = true;
-            graph = g.graph;
             // color[i] is telling to what partition i-th vertex belongs
-            Dictionary<long, long> color = new Dictionary<long, long>();
-            foreach(KeyValuePair<long, List<Edge>> kp in graph)
-            {
-                color[kp.Key] = 0;
-            }
+            int [] color = new int[graph.Count];
+
             // If result is false, is not bipartite and algorithm halts
             bool result = true;
-            // Search from unvisited vertices
-            foreach(KeyValuePair<long, List<Edge>> kp in graph)
+            if(g.GetNumberOfComponents() > 1)
             {
-                if(color[kp.Key] == 0)
+                bp.isBipartite = false;
+                return bp;
+            }
+            // Search from unvisited vertices
+            for(int i = 0; i < graph.Count; i++)
+            {
+                if(color[i] == 0)
                 {
-                    result = cbDFS(kp.Key, 1, ref color);
+                    result = cbDFS(i, 1, color, graph);
                     if(!result)
                     {
                         bp.isBipartite = false;
@@ -52,17 +53,17 @@ namespace graphlib
              * according to vertex colors */
             if(result)
             {
-                bp.redPart = new List<long>();
-                bp.bluePart = new List<long>();
-                foreach(KeyValuePair<long, List<Edge>> kp in graph)
+                bp.redPart = new List<int>();
+                bp.bluePart = new List<int>();
+                for(int i = 0; i < graph.Count; i++)
                 {
-                    if(color[kp.Key] == 1)
+                    if(color[i] == 1)
                     {
-                        bp.redPart.Add(kp.Key);
+                        bp.redPart.Add(i);
                     }
                     else 
                     {
-                        bp.bluePart.Add(kp.Key);
+                        bp.bluePart.Add(i);
                     }
                 }
             }
@@ -73,21 +74,19 @@ namespace graphlib
         // First argument - current vertex number
         // Second argument - its color
         // Third argument - array of colors of all vertices
-        static bool cbDFS(long vertex, short color,
-            ref Dictionary<long, long> colors)
+        static bool cbDFS(int v, short color, int [] colors, List<List<Edge>> g)
         {
-            long v = vertex;	
             // Variable result serves the same function as above
             bool result = true;
             // Set color
             colors[v] = color;
             // Check all neighbors and recursively visit them
-            for(int i = 0; i < graph[v].Count; i++)
+            for(int i = 0; i < g[v].Count; i++)
             {
-                long neighbor = graph[v][i].destination;
+                int neighbor = g[v][i].destination;
                 if(colors[neighbor] == 0)
                 {
-                    result = cbDFS(neighbor, (short)(color * -1), ref colors);
+                    result = cbDFS(neighbor, (short)(color * -1), colors, g);
                 }
                 else if(colors[(neighbor)] == color)
                 {
