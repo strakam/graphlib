@@ -86,12 +86,6 @@ namespace graphlib
             }
             
             p[v].parent = root;
-            /* while(p[v].parent != v) */
-            /* { */
-            /*     int parent = p[v].parent; */
-            /*     p[v] = new UFvertex(root, 1); */
-            /*     v = parent; */
-            /* } */
 
             return root;
         }
