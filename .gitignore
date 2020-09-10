@@ -78,3 +78,5 @@ tests/bin
 tests/obj
 example/bin
 example/obj
+benchmark/bin
+benchmark/obj
