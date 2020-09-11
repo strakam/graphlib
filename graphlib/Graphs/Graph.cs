@@ -37,6 +37,47 @@ namespace graphlib
     /// </item>
     public class Graph:SharedGraph
     {
+
+
+        bool updated = false;
+        
+        /// <value> NumberOfComponents is the number of components in a graph
+        /// </value>
+        public int NumberOfComponents
+        {
+            get{
+                if(updated)
+                {
+                    GetNumberOfComponents();
+                    return NumberOfComponents;
+                }
+                else
+                {
+                    return NumberOfComponents;
+                }
+            }
+            set { NumberOfComponents = value; }
+        }
+
+        /// <value> ComponentNumbers on i-th index contains component number of
+        /// i-th vertex. </value>
+        public int [] ComponentNumbers
+        {
+            get
+            {
+                if(updated)
+                {
+                    GetNumberOfComponents();
+                    return ComponentNumbers;
+                }
+                else
+                {
+                    return ComponentNumbers;
+                }
+            }
+            set { ComponentNumbers = value; }
+        }
+
         /// <summary>
         /// AddVertex adds vertex with given value to a graph.
         /// </summary>
@@ -148,15 +189,14 @@ namespace graphlib
         }
 
         /// <summary>
-        /// Method that computes number of components in a graph
+        /// Method that computes number of components in a graph and assigns
+        /// component number to every vertex.
         /// </summary>
-        /// <returns>
-        /// Int that represents number of components
-        /// </returns>
-        public int GetNumberOfComponents()
+        public void GetNumberOfComponents()
         {
             UFvertex [] uf = new UFvertex[graph.Count];
             HashSet<int> comps = new HashSet<int>();
+            int [] components = new int[graph.Count];
             for(int i = 0; i < graph.Count; i++)
             {
                 uf[i] = new UFvertex(i, 1);
@@ -166,9 +206,14 @@ namespace graphlib
                 UnionFind.Union(e, uf);
             }
             foreach(UFvertex uv in uf)
+            for(int i = 0; i < uf.Length; i++)
             {
-                comps.Add(uv.parent);
+                comps.Add(uf[i].parent);
+                components[i] = uf[i].parent;
             }
+
+            NumberOfComponents = comps.Count;
+            ComponentNumbers = components;
             return comps.Count;
         }
     }
