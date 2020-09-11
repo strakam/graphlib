@@ -68,6 +68,11 @@ Tento kód vytvorí graf v tvare trojuholníka, kde súčet hodnôt hrán je 8, 
 
 Ďalšou metódou je **PrintGraph()**, ktorá vypíše pre každý vrchol susedov, ku ktorým od neho vedie hrana.
 
+Graf ma taktiež vlastnosť **Edges**, ktorá osbsahuje list hrán.
+```c#
+List<Edge> edges = myGraph.Edges;
+```
+
 Na reprezentáciu hrán je využitá trieda **Edge**, ktorá má vlastnosti:
 ```c#
 public int source;
